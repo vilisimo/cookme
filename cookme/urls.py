@@ -17,9 +17,10 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
 from recipes import views
+from home import views
 
 urlpatterns = [
-	url(r'^$', views.home, name='home'),
+	url(r'^$', views.home, name='home'),  # Points to the 'home' 'app'.
 	# Everything that goes after .../recipes/ refers to recipes app's urls.
 	url(r'^recipes/', include('recipes.urls')),
     url(r'^admin/', admin.site.urls),
