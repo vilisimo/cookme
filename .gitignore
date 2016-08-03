@@ -96,3 +96,6 @@ settings.py
 
 # SQLite DB
 db.sqlite3
+
+# idea stuff
+.idea/
