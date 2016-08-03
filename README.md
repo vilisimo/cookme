@@ -2,7 +2,7 @@
 The website is designed to be a simple recipe holder with fast, intuitive front-end. 
 
 <h2>Purpose</h2>
-This is a practice project to get hang of Django, Python, CSS, HTML, JavaScript, jQuery, Ajax, etc. properly.
+This is a practice project to get hang of Django, Python, CSS, HTML, JavaScript, jQuery, Ajax, etc.
 
 <h3>Features</h3>
 <ul>
@@ -20,14 +20,15 @@ This is a practice project to get hang of Django, Python, CSS, HTML, JavaScript,
 			<li>Entering an ingredient shows all the recipes containing that ingredient. STATUS: not started.</li>
 			<li>Entering several ingredients in the search bar shows recipes that have those ingredients.</li>
 		</ol>
-	<li>Allowing user to have his/her 'fridge': available recipes. STATUS: not started.</li>
+	<li>Allowing user to have his/her 'fridge': available ingredients. STATUS: not started.</li>
 	<li>Allowing user to request recipes that he/she can make with ingredients in the fridge. STATUS: not started.</li>
 	<li>Allowing user to rate the recipes. STATUS: not started.</li>
-	<li>Showing recently viewed recipes. STATUS: not started.</li>
 	<li>Allowing user to add an ingredient. STATUS: not started.</li>
 	<li>Allowing user to choose recipes from a specific category or two. STATUS: not started.</li>
 	<li>Allowing user to see most popular recipes. STATUS: not started.</li>
 	<li>Allowing user to see best rated recipes. STATUS: not started.</li>
+	<li>Showing recently viewed recipes. STATUS: not started.</li>
+	<li>Depending on what user chooses in profile, either show recipes on front page or not.</li>
 </ul>
 
 <h3>TO DO:</h3>
