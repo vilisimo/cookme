@@ -1,0 +1,38 @@
+body {
+    margin: 0;
+}
+
+header {
+    background: red;
+    position: fixed;
+    height: 30px;
+    width: 100%;
+    top: 0;
+}
+
+footer {
+    background: red;
+    position: fixed;
+    height: 30px;
+    width: 100%;
+    bottom: 0;
+    margin: 0;
+}
+
+#copyright {
+    margin: 0;
+    width: 100%;
+    height:100%;
+    text-align: center;
+    line-height: 30px;
+}
+
+main {
+    width: 97%;
+    height: 100%;
+    padding: 15px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: justify;
+}
+
