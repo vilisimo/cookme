@@ -3,7 +3,7 @@ body {
 }
 
 header {
-    background: red;
+    background: white;
     position: fixed;
     height: 30px;
     width: 100%;
@@ -12,7 +12,7 @@ header {
 
 footer {
     background: red;
-    position: fixed;
+    /*position: fixed;*/
     height: 30px;
     width: 100%;
     bottom: 0;
@@ -36,3 +36,10 @@ main {
     text-align: justify;
 }
 
+/*Problem: padding/margin is still white if background is applied.*/
+/*Problem: if there is no text, header is not at the bottom of the page.*/
+
+/*Useful colours: */
+/*#ACF3FA*/
+/*#B3D7E3*/
+/*#5F8689*/
