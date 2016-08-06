@@ -1,0 +1,64 @@
+1. User can register on the website.
+
+Test cases:
+  - attmept to register with unique username & password combination (PASS)
+  - attempt to register with a username that already exists in the databse (FAIL)
+  - attempt to register with a password that already exists in the databse (FAIL)
+  - attempt to register without a username (FAIL)
+  - attempt to register without a password (FAIL)
+
+Priority: MUST HAVE
+Status: NOT STARTED
+
+
+2. User receives an email upon registration.
+
+Test cases:
+  - register a user with existing email (FAIL)
+  - register a user with non-existent email provider (FAIL)
+  - register a user with an existing email (FAIL)
+
+Priority: COULD HAVE
+Status: NOT STARTED
+
+
+3. User can log in to the website using his/her ID and password combination.
+
+Test cases:
+  - attempt to log in with correct id & password combination (PASS)
+  - attempt to log in with incorrect id & password combination (FAIL)
+  - attempt to log in without password (FAIL)
+  - attempt to log in without username (FAIL)
+  - attempt to log in without either password or username (FAIL)
+
+Priority: MUST HAVE
+Status: NOT STARTED
+
+
+
+STILL TO FORMALIZE:
+<h3>Features</h3>
+<ul>
+	<li>Adding a recipe. STATUS: not started.</li>
+		<ol>
+			<li>Allowing user to add recipe. STATUS: not started.</li>
+			<li>Allowing user to add recipe's photo.</li>
+			<li>Allowing user to create his 'recipe book'. STATUS: not started.</li>
+			<li>Allowing other users to see the recipes added by others. STATUS: not started.</li>
+		</ol>
+	<li>Browsing the recipes. STATUS: not started.</li>
+		<ol>
+			<li>Responsive UI: entering a word/half a word shows matches immediately. STATUS: not started.</li>
+			<li>Entering an ingredient shows all the recipes containing that ingredient. STATUS: not started.</li>
+			<li>Entering several ingredients in the search bar shows recipes that have those ingredients.</li>
+		</ol>
+	<li>Allowing user to have his/her 'fridge': available ingredients. STATUS: not started.</li>
+	<li>Allowing user to request recipes that he/she can make with ingredients in the fridge. STATUS: not started.</li>
+	<li>Allowing user to rate the recipes. STATUS: not started.</li>
+	<li>Allowing user to add an ingredient. STATUS: not started.</li>
+	<li>Allowing user to choose recipes from a specific category or two. STATUS: not started.</li>
+	<li>Allowing user to see most popular recipes. STATUS: not started.</li>
+	<li>Allowing user to see best rated recipes. STATUS: not started.</li>
+	<li>Showing recently viewed recipes. STATUS: not started.</li>
+	<li>Depending on what user chooses in profile, either show recipes on front page or not.</li>
+</ul>

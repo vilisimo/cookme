@@ -1,42 +1,24 @@
 <h2>Idea</h2>
 The website is designed to be a simple recipe holder with fast, intuitive front-end. 
-
-<h2>Purpose</h2>
+<br />
+<br />
 This is a practice project to get hang of Django, Python, CSS, HTML, JavaScript, jQuery, Ajax, etc.
 
-<h3>Features</h3>
-<ul>
-	<li>Being able to register. STATUS: not started.</li>
-	<li>Adding a recipe. STATUS: not started.</li>
-		<ol>
-			<li>Allowing user to add recipe. STATUS: not started.</li>
-			<li>Allowing user to add recipe's photo.</li>
-			<li>Allowing user to create his 'recipe book'. STATUS: not started.</li>
-			<li>Allowing other users to see the recipes added by others. STATUS: not started.</li>
-		</ol>
-	<li>Browsing the recipes. STATUS: not started.</li>
-		<ol>
-			<li>Responsive UI: entering a word/half a word shows matches immediately. STATUS: not started.</li>
-			<li>Entering an ingredient shows all the recipes containing that ingredient. STATUS: not started.</li>
-			<li>Entering several ingredients in the search bar shows recipes that have those ingredients.</li>
-		</ol>
-	<li>Allowing user to have his/her 'fridge': available ingredients. STATUS: not started.</li>
-	<li>Allowing user to request recipes that he/she can make with ingredients in the fridge. STATUS: not started.</li>
-	<li>Allowing user to rate the recipes. STATUS: not started.</li>
-	<li>Allowing user to add an ingredient. STATUS: not started.</li>
-	<li>Allowing user to choose recipes from a specific category or two. STATUS: not started.</li>
-	<li>Allowing user to see most popular recipes. STATUS: not started.</li>
-	<li>Allowing user to see best rated recipes. STATUS: not started.</li>
-	<li>Showing recently viewed recipes. STATUS: not started.</li>
-	<li>Depending on what user chooses in profile, either show recipes on front page or not.</li>
-</ul>
+<h2>About the project</h2>
+The website was created with MacBook (Late 2011), mainly tested on Chrome. Focus was more in the area of proof of concept, thus compatability was not focused on more than necessary.
 
-<h3>TO DO:</h3>
+<h2>Installation</h2>
 <ol>
-	<li>Split settings file.</li>
-	<li>Prepare user cases.</li>
-	<li>Prepare entity diagrams.</li>
-	<li>Draw wireframes.</li>
-	<li>Prepare pseudo-UML.</li>
-	<li>Create folder for design docs.</li>
+	<li>Open terminal.</li>
+	<li>Ensure that Python 3.5.2 is installed: `>>> python --version`.</li>
+	<li>Ensure Git is installed: `>>> git --version`.</li>
+	<li>Navigate to the folder where `Cookme` project should live: `>>> cd path/to/where/the/project/should/be`.</li>
+	<li>Enter: `git clone https://github.com/vilisimo/cookme`.</li>
+	<li><i>(Optional)</i> Ensure virtualenvwrapper is installed: `>>> pip list`. If it is not, enter `>>> pip install virtualenvwrapper`.</li>
+	<li><i>(Optional)</i> Create virtual environment for the project: `>>> mkvirtualenv -p python3.5 cookme`.</li>
+	<li>Once cloned, move to project's directory: `>>> cd cookme`.</li>
+	<li>Install required packages: `pip install -r requirements.txt`</li>
+	<li>Run the server: `python manage.py runserver`</li>
+	<li>Celebrate the fact that the project is written in python, and there are no more setup steps.</li>
 </ol>
+

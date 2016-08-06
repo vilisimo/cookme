@@ -1,0 +1,5 @@
+- [ ] Split settings file.
+- [ ] Prepare user cases: STARTED
+- [ ] Prepare entity diagrams.
+- [ ] Draw wireframes: STARTED
+- [ ] Prepare pseudo-UML.
