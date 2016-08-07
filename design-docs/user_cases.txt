@@ -35,17 +35,88 @@ Priority: MUST HAVE
 Status: NOT STARTED
 
 
+4. User can add a recipe to his/her fridge.
+
+Test cases:
+  - attempt to add a recipe with title, description and ingredients (PASS)
+  - attempt to add a recipe without title (FAIL)
+  - attempt to add a recipe without description (FAIL)
+  - attempt to add recipe without ingredients (FAIL)
+  - attempt to access the page without logging in (FAIL)
+
+Priority: MUST HAVE
+Status: NOT STARTED
+
+5. User can add a recipe to a global recipe book.
+  - attempt to add a recipe with title, description and ingredients (PASS)
+  - attempt to add a recipe without title (FAIL)
+  - attempt to add a recipe without description (FAIL)
+  - attempt to add recipe without ingredients (FAIL)
+  - attempt to access the page without logging in (FAIL)
+
+Priority: MUST HAVE
+Status: NOT STARTED
+
+
+6. User can add/edit the photo associated with recipe.
+  - attempt to add a valid-sized photo (300x300?) (PASS)
+  - attempt to add an over-sized photo (FAIL)
+    - photo should be resized
+  - attempt to add an undersized photo (FAIL)
+  - attempt to add a photo that is not a JPG (FAIL)
+
+Priority: SHOULD HAVE
+Status: NOT STARTED
+
+
+7. User can see recipes added by others.
+  - attempt to access the global recipe book (PASS)
+  - attempt to access a recipe that does not exist (FAIL)
+    - redirect or error 404
+
+Priority: SHOULD HAVE
+Status: NOT STARTED
+
+
+8. User can access fridge's (individual) recipe book.
+  - attempt to access individual recipe book (PASS)
+  - attempt to access other's recipe book (FAIL)
+    - unless it is publicly shared
+  - attempt to access non-existent recipe book (FAIL)
+
+Priority: MUST HAVE
+Status: NOT STARTED
+
+
+9. User can save recipes from global recipe book to his fridge.
+  - attempt to save a recipe from global recipe book (PASS)
+  - attempt to save a recipe that is already saved (FAIL)
+
+Priority: MUST HAVE
+Status: NOT STARTED
+
+
+10. User can share his/her fridge's recipe book (as a list of recipes).
+  - attempt to share his/her fridge's recipe book with others (make it publicly available) (PASS)
+  - attempt to share other's recipe book (FAIL)
+  - attempt to access fridge that was not shared
+
+Priority: COULD HAVE
+Status: NOT STARTED
+
+
+11. User can rate his/her recipes, as well as others.
+  - attempt to rate his/her own recipe (PASS)
+  - attempt to rate others' recipes (PASS)
+  - attempt to rate recipes without logging in (FAIL)
+
+Priority: SHOULD HAVE
+Status: NOT STARTED
+
 
 STILL TO FORMALIZE:
 <h3>Features</h3>
 <ul>
-	<li>Adding a recipe. STATUS: not started.</li>
-		<ol>
-			<li>Allowing user to add recipe. STATUS: not started.</li>
-			<li>Allowing user to add recipe's photo.</li>
-			<li>Allowing user to create his 'recipe book'. STATUS: not started.</li>
-			<li>Allowing other users to see the recipes added by others. STATUS: not started.</li>
-		</ol>
 	<li>Browsing the recipes. STATUS: not started.</li>
 		<ol>
 			<li>Responsive UI: entering a word/half a word shows matches immediately. STATUS: not started.</li>
@@ -54,7 +125,6 @@ STILL TO FORMALIZE:
 		</ol>
 	<li>Allowing user to have his/her 'fridge': available ingredients. STATUS: not started.</li>
 	<li>Allowing user to request recipes that he/she can make with ingredients in the fridge. STATUS: not started.</li>
-	<li>Allowing user to rate the recipes. STATUS: not started.</li>
 	<li>Allowing user to add an ingredient. STATUS: not started.</li>
 	<li>Allowing user to choose recipes from a specific category or two. STATUS: not started.</li>
 	<li>Allowing user to see most popular recipes. STATUS: not started.</li>
