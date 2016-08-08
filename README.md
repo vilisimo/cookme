@@ -9,5 +9,6 @@ The website was created with MacBook (Late 2011), mainly tested on Chrome. Focus
 ### Installation
 For installation instructions, please refer [here](../../tree/master/docs/instalation.md).
 
-### Design documents To see the thought process behind the project, refer to the [docs](../../tree/master/docs). An attempt was made to follow agile
+### Design documents 
+To see the thought process behind the project, refer to the [docs](../../tree/master/docs). An attempt was made to follow agile
 practices, but as this is a personal project, documenting enthusiasm was rather often overshadowed by the joy coding.
