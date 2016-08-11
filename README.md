@@ -7,7 +7,7 @@ This is a practice project to get hang of Django, Python, CSS, HTML, JavaScript,
 The website was created with MacBook (Late 2011), mainly tested on Chrome. Focus was more in the area of proof of concept, thus compatability was not focused on more than necessary.
 
 ### Installation
-For installation instructions, please refer [here](../../tree/master/docs/instalation.md).
+For installation instructions, please refer [here](../../tree/master/docs/installation.md).
 
 ### Design documents 
 To see the thought process behind the project, refer to the [docs](../../tree/master/docs). An attempt was made to follow agile
