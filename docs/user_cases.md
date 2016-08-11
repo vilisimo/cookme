@@ -1,3 +1,9 @@
+## About
+The file contains user stories for the project.
+
+
+## User stories
+
 1. User can register on the website.
 
 Test cases:
