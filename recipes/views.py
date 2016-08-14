@@ -3,8 +3,9 @@ from django.http import HttpResponse  # DELETE LATER
 
 
 def recipes(request):
-    return HttpResponse("Recipes")
-
-
-def test(request):
+    """
+    Should show the list of recipes.
+    :param request:
+    :return:
+    """
     return render(request, 'recipes/test.html', {})
