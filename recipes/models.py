@@ -1,5 +1,7 @@
 from django.db import models
+from django.utils import timezone
 
+from django.contrib.auth.models import User
 # from django.core.validators import MinValueValidator, MaxValueValidator
 
 
@@ -27,10 +29,29 @@ INGREDIENTS = (
 )
 
 
+def user_directory_path(instance, filename):
+    return 'user_{0}/{1}'.format(instance.user.id, filename)
+
+
+class Recipe(models.Model):
+    """    Model that represents recipes.    """
+    author = models.ForeignKey(User)
+    title = models.CharField(max_length=250, null=False)
+    description = models.TextField()
+    date = models.DateTimeField(editable=False)
+    views = models.PositiveIntegerField(default=0)
+    image = models.ImageField(upload_to='recipes/',
+                              default='recipes/no-image.jpg')
+
+    def save(self, *args, **kwargs):
+        """ Date is updated only when model is saved """
+        if not self.id:
+            self.date = timezone.now()
+        return super(Recipe, self).save(*args, **kwargs)
+
+
 class Ingredient(models.Model):
-    """
-    Model representing ingredients of recipes.
-    """
+    """    Model that represents ingredients of recipes.    """
     name = models.CharField(max_length=250, null=False)
     type = models.CharField(max_length=250, null=False, choices=INGREDIENTS)
 

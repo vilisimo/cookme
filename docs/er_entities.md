@@ -12,11 +12,12 @@ The document contains extension of ER diagram: fields that belong to models/enti
 ###Recipe
 | Field | Description |
 | --- | --- |
-| *name* | Name of the recipe. |
-| *description* | Description of the recipe (instructions). |
 | *author (FK)* | User that has created the recipe. |
+| *title* | Name of the recipe. |
+| *description* | Description of the recipe (instructions). |
 | *date* | When the recipe was added. |
 | *views* | How many times the recipe has been viewed. |
+| *image* | Image representing the recipe |
 
 ###Fridge
 | Field | Description |
