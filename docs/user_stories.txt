@@ -7,9 +7,9 @@ The file contains user stories for the project.
 1. User can register on the website.
 
 Test cases:
-  - attmept to register with unique username & password combination (PASS)
-  - attempt to register with a username that already exists in the databse (FAIL)
-  - attempt to register with a password that already exists in the databse (FAIL)
+  - attempt to register with unique username & password combination (PASS)
+  - attempt to register with a username that already exists in the database (FAIL)
+  - attempt to register with a password that already exists in the database (FAIL)
   - attempt to register without a username (FAIL)
   - attempt to register without a password (FAIL)
 
@@ -71,7 +71,7 @@ Status: NOT STARTED
 Test cases:
   - attempt to add a valid-sized photo (300x300?) (PASS)
   - attempt to add an over-sized photo (FAIL)
-    - photo should be resized
+    - photo should be re-sized
   - attempt to add an undersized photo (FAIL)
   - attempt to add a photo that is not a JPG (FAIL)
 
@@ -147,7 +147,7 @@ Status: NOT STARTED
 13. User can access the 5 best rated recipes from the home page (should it be on front page?).
 
 Test cases:
-  - attempt to acces best rated recipes (PASS)
+  - attempt to access best rated recipes (PASS)
   - ensure that the recipes shown are really the most popular ones (TRUE)
 
 Priority: COULD HAVE
@@ -187,8 +187,8 @@ Status: NOT STARTED
 17. Upon entering part of the ingredient's name, drop-down appears to shown autocomplete options.
 
 Test cases:
-  - entering an existing ingredient shows a dropdown with its name (PASS)
-  - entering non-existent ingriedient does not show a dropdown (PASS)
+  - entering an existing ingredient shows a drop-down with its name (PASS)
+  - entering non-existent ingredient does not show a drop-down (PASS)
   - entering combination that has more than one option shows all of them, or at least 5 of them (PASS)
   - clicking on autocomplete option sends the correct data (the one shown in autocomplete) (PASS)
 
@@ -298,7 +298,7 @@ Status: NOT STARTED
 
 Test cases:
   - attempt to add an ingredient to the fridge (PASS)
-  - attempt to remove igredient from the fridge (PASS)
+  - attempt to remove ingredient from the fridge (PASS)
   - attempt to change the quantity of an ingredient (PASS)
 
 Priority: WOULD LIKE TO HAVE
@@ -320,4 +320,15 @@ Status: NOT STARTED
 29. User can choose from what category he/she should be shown the recipes.
   - attempt to pick a category that has recipes available (PASS)
   - attempt to pick a category that has no recipes available (should not be shown at all) (FAIL)
-  - attempt to acces the non-existent category and suggested recipes (FAIL)
+  - attempt to access the non-existent category and suggested recipes (FAIL)
+
+Priority: COULD HAVE
+Status: NOT STARTED
+
+
+30. User can edit the recipes he/she has uploaded.
+  - attempt to edit his/her own recipe (PASS)
+  - attempt to edit others' recipes (FAIL)
+
+Priority: SHOULD HAVE
+Status: NOT STARTED
