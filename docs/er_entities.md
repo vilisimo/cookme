@@ -33,12 +33,6 @@ The document contains extension of ER diagram: fields that belong to models/enti
 | *name* | Name of the ingredient |
 | *description* | Description of the ingredient. |
 
-###RecipeIngredient
-| Field | Description |
-| --- | --- |
-| *recipe (FK)* | Recipe that the ingredient is part of. |
-| *ingredient (FK)* | Ingredient that makes up the recipe. |
-
 ###Quantity
 | Field | Description |
 | --- | --- |
@@ -48,3 +42,19 @@ The document contains extension of ER diagram: fields that belong to models/enti
 ###User
 | Field | Description |
 | --- | --- |
+
+###RecipeIngredientQuantity (tentative)
+| Field | Description |
+| --- | --- |
+| *recipe (FK) | Recipe that has ingredient. |
+| *ingredient (FK) | Ingredient that has quantity. |
+| *quantity (FK) | Quantity that has amount. |
+| amount | Amount of the ingredient (float). |
+
+###FridgeIngredientQuantity (tentative)
+| Field | Description |
+| --- | --- |
+| *fridge (FK) | Fridge that has ingredient. |
+| *ingredient (FK) | Ingredient that has quantity. |
+| *quantity (FK) | Quantity that has amount. |
+| amount | Amount of the ingredient (float). |
