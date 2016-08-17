@@ -2,10 +2,10 @@ from django.db import models
 from django.utils import timezone
 
 from django.contrib.auth.models import User
-# from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
-INGREDIENTS = (
+INGREDIENTS = [
     ('Additives', 'Food additives'),
     ('Condiments', 'Condiments'),
     ('Oils', 'Cooking oils'),
@@ -26,28 +26,13 @@ INGREDIENTS = (
     ('Spices', 'Spices'),
     ('Sugars', 'Sugars'),
     ('Vegetables', 'Vegetables'),
-)
+]
+
+INGREDIENTS = sorted(INGREDIENTS, key=lambda x: x[1])
 
 
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.id, filename)
-
-
-class Recipe(models.Model):
-    """    Model that represents recipes.    """
-    author = models.ForeignKey(User)
-    title = models.CharField(max_length=250, null=False)
-    description = models.TextField()
-    date = models.DateTimeField(editable=False)
-    views = models.PositiveIntegerField(default=0)
-    image = models.ImageField(upload_to='recipes/',
-                              default='recipes/no-image.jpg')
-
-    def save(self, *args, **kwargs):
-        """ Date is updated only when model is saved """
-        if not self.id:
-            self.date = timezone.now()
-        return super(Recipe, self).save(*args, **kwargs)
 
 
 class Ingredient(models.Model):
@@ -59,13 +44,63 @@ class Ingredient(models.Model):
         return self.name
 
 
-# Should I just use already existing packages? Good: easy; tested, etc. Bad:
-# won't learn anything; everything's done for me.
-# class Rating(models.Model):
-#     """
-#     Model representing the ratings that can be made.
-#     """
-#     stars = models.IntegerField(MinValueValidator(1), MaxValueValidator(5))
-#     user = models.ForeignKey(User, unique=True)
+class Recipe(models.Model):
+    """    Model that represents recipes.    """
+    author = models.ForeignKey(User)
+    title = models.CharField(max_length=250, null=False)
+    description = models.TextField()
+    ingredients = models.ManyToManyField(Ingredient)
+    date = models.DateTimeField(editable=False)
+    views = models.PositiveIntegerField(default=0)
+    image = models.ImageField(upload_to='recipes/',
+                              default='recipes/no-image.jpg')
+
+    def ingredient_list(self):
+        return ", ".join([str(ingredient) for ingredient in
+                          self.ingredients.all()])
+
+    def save(self, *args, **kwargs):
+        """ Date is updated only when model is saved """
+        if not self.id:
+            self.date = timezone.now()
+        return super(Recipe, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
 
 
+# Note: there are rating packages for Django, but more fun to create it from 0.
+class Rating(models.Model):
+    """ Model representing ratings that can be made. """
+    stars = models.IntegerField(validators=[MinValueValidator(1),
+                                MaxValueValidator(5)])
+    user = models.OneToOneField(User)
+    recipe = models.ForeignKey(Recipe, blank=False, null=False)
+    date = models.DateTimeField(editable=False)
+
+    def save(self, *args, **kwargs):
+        """ Date is updated only when model is saved """
+        if not self.id:
+            self.date = timezone.now()
+        return super(Rating, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return str(self.user) + \
+               '\'s ' + str(self.recipe) + ' rating: {0}'.format(self.stars)
+
+
+class Fridge(models.Model):
+    """ Model representing fridge (collection of recipes & ingredients). """
+    user = models.OneToOneField(User)
+    recipes = models.ManyToManyField(Recipe)
+    ingredients = models.ManyToManyField(Ingredient)
+
+    def recipe_list(self):
+        return ", ".join([str(recipe) for recipe in self.recipes.all()])
+
+    def ingredient_list(self):
+        return ", ".join([str(ingredient) for ingredient in
+                          self.ingredients.all()])
+
+    def __str__(self):
+        return str(self.user) + '\'s fridge'

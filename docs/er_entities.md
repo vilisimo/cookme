@@ -15,6 +15,7 @@ The document contains extension of ER diagram: fields that belong to models/enti
 | *author (FK)* | User that has created the recipe. |
 | *title* | Name of the recipe. |
 | *description* | Description of the recipe (instructions). |
+| *ingredients (m2m) * | Ingredients that make up the recipe. |
 | *date* | When the recipe was added. |
 | *views* | How many times the recipe has been viewed. |
 | *image* | Image representing the recipe |
@@ -23,24 +24,14 @@ The document contains extension of ER diagram: fields that belong to models/enti
 | Field | Description |
 | --- | --- |
 | *owner (FK)* | Fridge's owner (user). |
+| *recipes (m2m)* | Recipes that belong to the fridge. |
+| *ingredients (m2m)* | Ingredients that belong to the fridge. |
 
 ###Ingredient
 | Field | Description |
 | --- | --- |
 | *name* | Name of the ingredient |
 | *description* | Description of the ingredient. |
-
-###FridgeRecipe
-| Field | Description |
-| --- | --- |
-| *fridge (FK)* | Fridge the recipe belongs to. |
-| *recipe (FK)* | Recipe that belongs to the fridge. |
-
-###FridgeIngredient
-| Field | Description |
-| --- | --- |
-| *fridge (FK)* | Fridge the ingredient belongs to. |
-| *ingredient (FK)* | Recipe that belongs to the fridge. |
 
 ###RecipeIngredient
 | Field | Description |
