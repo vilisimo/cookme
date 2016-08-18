@@ -1,5 +1,8 @@
 ##Installation
-As the project is fairly simple and only a few packages were used, installation should be pretty straightforward on all OS'es. However, instructions are geared towards OS X & Linux distributions, though Windows should be fairly similar as well.
+As the project is fairly simple and only a few packages were used, 
+installation should be pretty straightforward on all OS'es. However, 
+instructions are geared towards OS X & Linux distributions, though 
+Windows should be fairly similar as well.
 
 1. Open terminal.
 2. Ensure that Python 3.5.2 is installed: `>>> python --version`.

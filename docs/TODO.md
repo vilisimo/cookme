@@ -6,4 +6,5 @@ that should eventually be done (and that are likely to be forgotten by
 me).
 
 ###Tasks
-1. Add URL fields to models (added: 18-08-2016)
+1. Add URL fields to models (added: 18-08-2016).
+2. Create population script for units (added: 18-08-2016).

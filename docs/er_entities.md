@@ -1,5 +1,6 @@
 ##About
-The document contains extension of ER diagram: fields that belong to models/entities.
+The document contains extension of ER diagram: fields that belong to 
+models/entities.
 
 ###Rating
 | Field | Description |
@@ -15,17 +16,19 @@ The document contains extension of ER diagram: fields that belong to models/enti
 | *author (FK)* | User that has created the recipe. |
 | *title* | Name of the recipe. |
 | *description* | Description of the recipe (instructions). |
-| *ingredients (m2m)* | Ingredients that make up the recipe. |
 | *date* | When the recipe was added. |
 | *views* | How many times the recipe has been viewed. |
 | *image* | Image representing the recipe |
 
 ###Fridge
+Note: it is possible to model database in such a way, that there is no 
+need for fridges. That is, all recipes and ingredients would have a FK
+to User, and only an illusion of the fridge would be created in the 
+front end. However, Fridge entity allows for multiple fridges in the 
+future. Also, it improves clarity somewhat (at least for me).
 | Field | Description |
 | --- | --- |
-| *owner (FK)* | Fridge's owner (user). |
-| *recipes (m2m)* | Recipes that belong to the fridge. |
-| *ingredients (m2m)* | Ingredients that belong to the fridge. |
+| *owner (FK)* | Fridge's owner (User). |
 
 ###Ingredient
 | Field | Description |
@@ -40,21 +43,21 @@ The document contains extension of ER diagram: fields that belong to models/enti
 | *abbrev* | Abbreviation of the measurement unit (oz/kg/ml/etc.) |
 | *description* | Description of the measurement. |
 
-###RecipeIngredientQuantity (tentative)
-| Field | Description |
-| --- | --- |
-| *recipe (FK)* | Recipe that has ingredient. |
-| *ingredient (FK)* | Ingredient that has quantity. |
-| *quantity (FK)* | Quantity that has amount. |
-| *amount* | Amount of the ingredient (float). |
-
-###FridgeIngredientQuantity (tentative)
+###FridgeIngredient
 | Field | Description |
 | --- | --- |
 | *fridge (FK)* | Fridge that has ingredient. |
 | *ingredient (FK)* | Ingredient that has quantity. |
-| *quantity (FK)* | Quantity that has amount. |
-| *amount* | Amount of the ingredient (float). |
+| *unit (FK)* | Quantity that has amount. |
+| *quantity* | Amount of the ingredient (float). |
+
+###RecipeIngredient
+| Field | Description |
+| --- | --- |
+| *recipe (FK)* | Recipe that has ingredient. |
+| *ingredient (FK)* | Ingredient that has quantity. |
+| *unit (FK)* | Quantity that has amount. |
+| *quantity* | Amount of the ingredient (float). |
 
 ###User
 | Field | Description |
