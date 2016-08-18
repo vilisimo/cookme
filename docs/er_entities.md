@@ -33,7 +33,7 @@ The document contains extension of ER diagram: fields that belong to models/enti
 | *name* | Name of the ingredient |
 | *description* | Description of the ingredient. |
 
-###Units
+###Unit
 | Field | Description |
 | --- | --- |
 | *unit* | Full name of the measurement unit (ounce/kilogram/etc.). |
