@@ -332,3 +332,10 @@ Status: NOT STARTED
 
 Priority: SHOULD HAVE
 Status: NOT STARTED
+
+
+31. User can hover on the unit of measurement to get its description and conversions.
+  - hover on unit of measurement to see description (PASS)
+
+Priority: WOULD LIKE TO HAVE
+Status: NOT STARTED
