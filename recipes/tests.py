@@ -2,6 +2,7 @@ from django.test import TestCase
 
 from .models import *
 
+from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
 
@@ -21,17 +22,28 @@ class IngredientTestCase(TestCase):
 class RecipeTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
-        Recipe.objects.create(author=self.user, title='test', description='')
+        self.r = Recipe.objects.create(author=self.user, title='test',
+                                       description='')
+        self.a = Recipe.objects.create(author=self.user, title='test',
+                                       description='')
         self.time = timezone.now()
 
     def test_str_representation(self):
-        recipe = Recipe.objects.get(title='test')
-        self.assertEqual(str(recipe), recipe.title)
+        self.assertEqual(str(self.r), self.r.title)
 
     def test_date_field(self):
         """ Pretty lame test! """
-        recipe = Recipe.objects.get(title='test')
-        self.assertNotEquals(recipe.date, self.time)
+        self.assertNotEquals(self.r.date, self.time)
+
+    def test_slug_field_remains_the_same(self):
+        self.r.title = 'test2'
+        self.assertNotEquals(self.r.slug, slugify(self.r.title))
+
+    def test_unique_slug_creation(self):
+        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title, 1))
+
+    def test_slug_field_is_unique(self):
+        self.assertNotEquals(self.a.slug, self.r.slug)
 
 
 class RatingTestCase(TestCase):

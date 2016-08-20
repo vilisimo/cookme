@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from django.template.defaultfilters import slugify
+from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -51,6 +53,7 @@ class Recipe(models.Model):
     description = models.TextField()
     date = models.DateTimeField(editable=False)
     views = models.PositiveIntegerField(default=0)
+    slug = models.SlugField()
     image = models.ImageField(upload_to='recipes/',
                               default='recipes/no-image.jpg')
 
@@ -58,6 +61,12 @@ class Recipe(models.Model):
         """ Date is updated only when model is saved """
         if not self.id:
             self.date = timezone.now()
+            slug = slugify(self.title)
+            slugs = Recipe.objects.filter(slug__icontains=slug)
+            if len(slugs) > 0:
+                self.slug = slug + '-' + str(len(slugs))
+            else:
+                self.slug = slug
         return super(Recipe, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -89,6 +98,7 @@ class Rating(models.Model):
 class Fridge(models.Model):
     """ Model representing fridge (collection of recipes & ingredients). """
     user = models.OneToOneField(User)
+    visible = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.user) + '\'s fridge'

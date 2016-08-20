@@ -5,7 +5,9 @@ from .models import FridgeIngredient, RecipeIngredient
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'description', 'date', 'views', 'image')
+    list_display = ('author', 'title', 'description', 'date', 'views', 'slug',
+                    'image')
+    prepopulated_fields = {"slug":("title",)}
 
 
 class IngredientAdmin(admin.ModelAdmin):
