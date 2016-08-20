@@ -18,6 +18,7 @@ models/entities.
 | *description* | Description of the recipe (instructions). |
 | *date* | When the recipe was added. |
 | *views* | How many times the recipe has been viewed. |
+| *slug* | Field that is used to compute URL. |
 | *image* | Image representing the recipe |
 
 ###Fridge
@@ -29,6 +30,7 @@ future. Also, it improves clarity somewhat (at least for me).
 | Field | Description |
 | --- | --- |
 | *owner (FK)* | Fridge's owner (User). |
+| *visible * | Whether the fridge is visible to others. |
 
 ###Ingredient
 | Field | Description |
