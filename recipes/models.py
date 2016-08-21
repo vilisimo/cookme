@@ -7,44 +7,11 @@ from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-
-INGREDIENTS = [
-    ('Additives', 'Food additives'),
-    ('Condiments', 'Condiments'),
-    ('Oils', 'Cooking oils'),
-    ('Eggs', 'Eggs'),
-    ('Dairy', 'Dairy'),
-    ('Flour', 'Flour'),
-    ('Fruits', 'Fruits'),
-    ('Grains', 'Grains'),
-    ('Herbs', 'Herbs'),
-    ('Meat', 'Meat'),
-    ('Nuts', 'Nuts'),
-    ('Pasta', 'Pasta'),
-    ('Poultry', 'Poultry'),
-    ('Salts', 'Salts'),
-    ('Sauces', 'Sauces'),
-    ('Seafood', 'Seafood'),
-    ('Seeds', 'Seeds'),
-    ('Spices', 'Spices'),
-    ('Sugars', 'Sugars'),
-    ('Vegetables', 'Vegetables'),
-]
-
-INGREDIENTS = sorted(INGREDIENTS, key=lambda x: x[1])
+from ingredients.models import Ingredient, Unit
 
 
 def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.author.id, filename)
-
-
-class Ingredient(models.Model):
-    """    Model that represents ingredients of recipes.    """
-    name = models.CharField(max_length=250, null=False, unique=True)
-    type = models.CharField(max_length=250, null=False, choices=INGREDIENTS)
-
-    def __str__(self):
-        return self.name
 
 
 class Recipe(models.Model):
@@ -74,7 +41,10 @@ class Recipe(models.Model):
         return reverse('recipes:recipe_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
-        return self.title
+        if len(Recipe.objects.all()) > 1:
+            return "{0}-{1}".format(self.title, self.pk)
+        else:
+            return self.title
 
 
 # Note: there are rating packages for Django, but more fun to create it from 0.
@@ -95,44 +65,6 @@ class Rating(models.Model):
     def __str__(self):
         return str(self.user) + \
                '\'s ' + str(self.recipe) + ' rating: {0}'.format(self.stars)
-
-
-# May not be needed. May be possible to go through user and create illusion
-# of fridge. However, having Fridge entity allows multiple fridges if needed.
-class Fridge(models.Model):
-    """ Model representing fridge (collection of recipes & ingredients). """
-    user = models.OneToOneField(User)
-    visible = models.BooleanField(default=True)
-
-    def __str__(self):
-        return str(self.user) + '\'s fridge'
-
-
-class Unit(models.Model):
-    """ Model representing quantities, such as oz, kg, ml, etc. """
-    unit = models.CharField(max_length=30, blank=False, null=False, unique=True)
-    abbrev = models.CharField(max_length=5, blank=True, null=True)
-    description = models.CharField(max_length=1000, blank=True, null=True)
-
-    def __str__(self):
-        return "{0} ({1})".format(self.unit, self.abbrev)
-
-
-class FridgeIngredient(models.Model):
-    """
-    Model representing ingredients in the fridge. Note on quantity: users may
-    not necessarily know how much of an ingredient they have.
-    """
-    fridge = models.ForeignKey(Fridge)
-    ingredient = models.ForeignKey(Ingredient)
-    unit = models.ForeignKey(Unit, blank=True, null=True)
-    quantity = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        unique_together = ('fridge', 'ingredient')
-
-    def __str__(self):
-        return "{0} in {1}".format(self.ingredient, self.fridge)
 
 
 class RecipeIngredient(models.Model):

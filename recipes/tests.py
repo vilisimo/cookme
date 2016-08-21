@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from .models import *
+from ingredients.models import Ingredient
 
 from django.template.defaultfilters import slugify
 from django.core.urlresolvers import reverse, resolve

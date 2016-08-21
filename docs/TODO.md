@@ -7,4 +7,9 @@ me).
 
 ###Tasks
 1. Add URL fields to models (added: 18-08-2016).
+    - 20-08-2016: added fields to Recipe model.
+    - Add fields to Fridge model.
+    - Add fields to Ingredient model.
+    - Add fields to Unit model.
 2. Create population script for units (added: 18-08-2016).
+3. Create population script for test data (aded: 21-08-2016). 
