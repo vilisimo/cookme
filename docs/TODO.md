@@ -12,4 +12,4 @@ me).
     - Add fields to Ingredient model.
     - Add fields to Unit model.
 2. Create population script for units (added: 18-08-2016).
-3. Create population script for test data (aded: 21-08-2016). 
+3. Create population script for test data (added: 21-08-2016). 

@@ -7,7 +7,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('abbrev', 'unit', 'description', '__str__')
+    list_display = ('abbrev', 'name', 'description', '__str__')
 
 
 admin.site.register(Ingredient, IngredientAdmin)

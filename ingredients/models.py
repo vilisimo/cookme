@@ -38,9 +38,9 @@ class Ingredient(models.Model):
 
 class Unit(models.Model):
     """ Model representing quantities, such as oz, kg, ml, etc. """
-    unit = models.CharField(max_length=30, blank=False, null=False, unique=True)
+    name = models.CharField(max_length=30, blank=False, null=False, unique=True)
     abbrev = models.CharField(max_length=5, blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
-        return "{0} ({1})".format(self.unit, self.abbrev)
+        return "{0} ({1})".format(self.name, self.abbrev)
