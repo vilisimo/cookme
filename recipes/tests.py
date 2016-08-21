@@ -11,15 +11,6 @@ from django.contrib.auth.models import User
 """ Testing models """
 
 
-class IngredientTestCase(TestCase):
-    def setUp(self):
-        Ingredient.objects.create(name='Meat', type='Meat')
-
-    def test_str_representation(self):
-        ingredient = Ingredient.objects.get(name='Meat')
-        self.assertEqual(str(ingredient), ingredient.name)
-
-
 class RecipeTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
@@ -30,7 +21,7 @@ class RecipeTestCase(TestCase):
         self.time = timezone.now()
 
     def test_str_representation(self):
-        self.assertEqual(str(self.r), self.r.title)
+        self.assertEqual(str(self.r), "{0}-{1}".format(self.r.title, self.r.pk))
 
     def test_date_field(self):
         """ Pretty lame test! """
@@ -60,29 +51,6 @@ class RatingTestCase(TestCase):
             self.user.username, self.r, self.rating.stars))
 
 
-class FridgeTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='test')
-        self.fridge = Fridge.objects.create(user=self.user)
-
-    def test_str_representation(self):
-        self.assertEqual(str(self.fridge), "{0}'s fridge".format(
-            self.user.username))
-
-
-class FridgeIngredientTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='test')
-        self.fridge = Fridge.objects.create(user=self.user)
-        self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
-        self.fi = FridgeIngredient.objects.create(fridge=self.fridge,
-                                                  ingredient=self.ingredient)
-
-    def test_str_representation(self):
-        self.assertEquals(str(self.fi), "{0} in {1}".format(self.ingredient,
-                                                            self.fridge))
-
-
 class RecipeIngredientTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
@@ -104,12 +72,12 @@ class RecipeIngredientTestCase(TestCase):
 class UrlTestCase(TestCase):
     def test_recipes_url(self):
         resolver = resolve('/recipes/')
-        self.assertEqual(resolver.view_name, 'recipes')
+        self.assertEqual(resolver.view_name, 'recipes:recipes')
 
 
 class ViewsTestCase(TestCase):
     def test_recipes_view(self):
-        response = self.client.get(reverse('recipes'))
+        response = self.client.get(reverse('recipes:recipes'))
         self.assertEqual(response.status_code, 200)
 
 
