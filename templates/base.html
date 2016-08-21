@@ -5,7 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Cookme</title>
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    {% endblock %}
 </head>
 
 <body>

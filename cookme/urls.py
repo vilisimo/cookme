@@ -16,13 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls import include
-from django.conf.urls.static import static
 from django.conf import settings
-from home import views
+
+from django.conf.urls.static import static
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
-    url(r'^$', views.home, name='home'),  # Points to the 'home' 'app'.
-    # Everything that goes after .../recipes/ refers to recipes app's urls.
+    # Should NOT be used in production environment.
+    url(r'^$', TemplateView.as_view(template_name='base.html'), name='home'),
     url(r'^recipes/', include('recipes.urls', namespace='recipes')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
