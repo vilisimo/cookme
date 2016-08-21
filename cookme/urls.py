@@ -23,6 +23,6 @@ from home import views
 urlpatterns = [
     url(r'^$', views.home, name='home'),  # Points to the 'home' 'app'.
     # Everything that goes after .../recipes/ refers to recipes app's urls.
-    url(r'^recipes/', include('recipes.urls')),
+    url(r'^recipes/', include('recipes.urls', namespace='recipes')),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

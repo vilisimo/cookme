@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 from django.template.defaultfilters import slugify
 from django.utils.text import slugify
@@ -68,6 +69,9 @@ class Recipe(models.Model):
             else:
                 self.slug = slug
         return super(Recipe, self).save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('recipes:recipe_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
         return self.title

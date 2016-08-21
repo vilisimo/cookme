@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <h2>{{ title }}</h2>
+    Uploaded by: {{ author }} on {{ date }}
+
+    <br/><br/>
+    <h3>Description:</h3>
+    {{ description }}
+
+    <br/><br/>
+    <h4>Views</h4>
+    {{ views }}
+
+    <br/><br/>
+    surround with img tag: {{ image.url }}
+
+    <br/><br/>
+    <a href="{% url 'recipes:recipes' %}">Back to recipes</a>
+
+{% endblock %}
