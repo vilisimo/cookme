@@ -19,11 +19,13 @@ from django.conf.urls import include
 from django.conf import settings
 
 from django.conf.urls.static import static
-from django.views.generic.base import TemplateView
+# from django.views.generic.base import TemplateView
+
+from .views import home
 
 urlpatterns = [
     # Should NOT be used in production environment.
-    url(r'^$', TemplateView.as_view(template_name='base.html'), name='home'),
+    url(r'^$', home, name='home'),
     url(r'^recipes/', include('recipes.urls', namespace='recipes')),
     # url(r'^ingredients/', include('ingredients.urls', namespace='ingredients')),
     url(r'^fridge/', include('fridge.urls', namespace='fridge')),

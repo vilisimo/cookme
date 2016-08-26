@@ -15,3 +15,4 @@ me).
 4. Test login required for fridge (added: 26-08-2016).
 5. Add tests for fridge url (added: 26-08-2016).
 6. Figure out how to get fridge in index page (added: 26-08-2016).
+7. Figure out if views in cookme is a good practice. If so, need tests (added: 26-08-2016).
