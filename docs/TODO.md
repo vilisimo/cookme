@@ -7,9 +7,11 @@ me).
 
 ###Tasks
 1. Add URL fields to models (added: 18-08-2016).
-    - 20-08-2016: added fields to Recipe model.
-    - Add fields to Fridge model.
-    - Add fields to Ingredient model.
-    - Add fields to Unit model.
+    - 20-08-2016: added url field to Recipe model.
+    - Add url field to Fridge model.
+    - Add url field to Ingredient model.
 2. Create population script for units (added: 18-08-2016).
-3. Create population script for test data (added: 21-08-2016). 
+3. Create population script for test data (added: 21-08-2016).
+4. Test login required for fridge (added: 26-08-2016).
+5. Add tests for fridge url (added: 26-08-2016).
+6. Figure out how to get fridge in index page (added: 26-08-2016).

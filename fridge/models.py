@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 from django.contrib.auth.models import User
 
@@ -14,6 +15,9 @@ class Fridge(models.Model):
 
     def __str__(self):
         return str(self.user) + '\'s fridge'
+
+    def get_absolute_url(self):
+        return reverse('fridge:fridge_detail')
 
 
 class FridgeIngredient(models.Model):

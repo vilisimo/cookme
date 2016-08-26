@@ -6,7 +6,7 @@
             {% for recipe in recipes %}
                 <li>
                     <a href="{{ recipe.get_absolute_url }}">
-                        {{ recipe.title }}
+                        {{ recipe.title }} by <span id="author">{{ recipe.author }}</span>
                     </a>
                 </li>
             {% endfor %}
