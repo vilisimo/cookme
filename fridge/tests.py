@@ -6,6 +6,24 @@ from ingredients.models import Ingredient
 from .models import Fridge, FridgeIngredient
 
 
+"""
+Tests for views
+"""
+
+
+class FridgeViewsURLsTestCase(TestCase):
+    """
+    Test suite to check whether the views associated with Fridge model are
+    functioning correctly. Includes tests on views and URLs.
+    """
+
+    pass
+
+"""
+Tests for custom model functionality
+"""
+
+
 class FridgeTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
