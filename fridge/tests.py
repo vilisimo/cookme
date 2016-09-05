@@ -1,14 +1,18 @@
 from django.test import TestCase
-
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.test.client import Client
 
 from ingredients.models import Ingredient
 from .models import Fridge, FridgeIngredient
 
 
-"""
-Tests for views
-"""
+def logged_in_client():
+    """ Creates logged in user. """
+
+    client = Client()
+    client.login(username='test', password='test')
+    return client
 
 
 class FridgeViewsURLsTestCase(TestCase):
@@ -17,11 +21,48 @@ class FridgeViewsURLsTestCase(TestCase):
     functioning correctly. Includes tests on views and URLs.
     """
 
-    pass
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.fridge = Fridge.objects.create(user=self.user)
+        self.client = logged_in_client()
 
-"""
-Tests for custom model functionality
-"""
+    def test_user_access(self):
+        """ Test to ensure that the user is allowed to access the fridge """
+
+        response = self.client.get(reverse('fridge:fridge_detail'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_access_shows_no_ingredients(self):
+        """ Test to ensure that nothing is shown when fridge is empty. """
+
+        response = self.client.get(reverse('fridge:fridge_detail'))
+        self.assertContains(response, 'There are no ingredients')
+
+    def test_user_access_shows_ingredients(self):
+        """ Test to ensure that the user is shown contents of a fridge. """
+
+        ingredient = Ingredient.objects.create(name='test', type='Fruit')
+        FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
+                                        ingredient=ingredient)
+        response = self.client.get(reverse('fridge:fridge_detail'))
+
+        self.assertContains(response, 'Ingredients in the fridge')
+
+    # THIS SHOULD BE CHANGED IF FUNCTIONALITY EDITED TO AUTOMATICALLY ADD FRIDGE
+    def test_user_acces_no_fridge(self):
+        """ Test to ensure that when the fridge is missing, 404 is thrown. """
+
+        Fridge.objects.all().delete()
+        response = self.client.get(reverse('fridge:fridge_detail'))
+
+        self.assertEqual(response.status_code, 404)
+
+    """ Needs a test with anonymous user: once logging in is implemented """
+
+
+############################################
+""" Tests for custom model functionality """
+############################################
 
 
 class FridgeTestCase(TestCase):

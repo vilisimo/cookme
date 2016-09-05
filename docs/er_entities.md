@@ -30,18 +30,19 @@ future. Also, it improves clarity somewhat (at least for me).
 | Field | Description |
 | --- | --- |
 | *owner (FK)* | Fridge's owner (User). |
-| *visible * | Whether the fridge is visible to others. |
+| *visible* | Whether the fridge is visible to others. |
 
 ###Ingredient
 | Field | Description |
 | --- | --- |
 | *name* | Name of the ingredient |
+| *type* | Type of the ingredient |
 | *description* | Description of the ingredient. |
 
 ###Unit
 | Field | Description |
 | --- | --- |
-| *unit* | Full name of the measurement unit (ounce/kilogram/etc.). |
+| *name* | Full name of the measurement unit (ounce/kilogram/etc.). |
 | *abbrev* | Abbreviation of the measurement unit (oz/kg/ml/etc.) |
 | *description* | Description of the measurement. |
 
