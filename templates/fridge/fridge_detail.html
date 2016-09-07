@@ -10,7 +10,10 @@
                 {% for ingredient in ingredients %}
                     <li>
                         {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
-                        of {{ ingredient.ingredient }}
+                        of
+                        <a href="{{ ingredient.get_absolute_url }}">
+                            {{ ingredient.ingredient }}
+                        </a>
                     </li>
                 {% endfor %}
             </ul>

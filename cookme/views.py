@@ -16,10 +16,10 @@ def home(request):
     user = request.user
     if user.is_authenticated:
         fridge = Fridge.objects.get(user=user)
-        content['fridge'] = fridge
 
-    content = {
-        'user': user,
-    }
+        content = {
+            'user': user,
+            'fridge': fridge,
+        }
 
     return render(request, 'base.html', content)

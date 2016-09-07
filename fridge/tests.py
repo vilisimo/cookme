@@ -46,10 +46,10 @@ class FridgeViewsURLsTestCase(TestCase):
                                         ingredient=ingredient)
         response = self.client.get(reverse('fridge:fridge_detail'))
 
-        self.assertContains(response, 'Ingredients in the fridge')
+        self.assertContains(response, ingredient.name)
 
     # THIS SHOULD BE CHANGED IF FUNCTIONALITY EDITED TO AUTOMATICALLY ADD FRIDGE
-    def test_user_acces_no_fridge(self):
+    def test_user_access_no_fridge(self):
         """ Test to ensure that when the fridge is missing, 404 is thrown. """
 
         Fridge.objects.all().delete()

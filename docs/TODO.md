@@ -8,11 +8,11 @@ me).
 ###Tasks
 1. Add URL fields to models (added: 18-08-2016).
     - 20-08-2016: added url field to Recipe model.
-    - Add url field to Fridge model.
     - Add url field to Ingredient model.
 2. Create population script for units (added: 18-08-2016).
 3. Create population script for test data (added: 21-08-2016).
 4. Test login required for fridge (added: 26-08-2016).
-5. Add tests for fridge url (added: 26-08-2016).
-6. Figure out how to get fridge in index page (added: 26-08-2016).
-7. Figure out if views in cookme is a good practice. If so, need tests (added: 26-08-2016).
+5. Create model for types of ingredients? (added: 07-09-2016).
+6. Add tests to Ingredient model, urls, slug (added: 07-09-2016).
+7. Add many to many with through attribute to recipe (added: 07-09-2016). 
+URL: https://docs.djangoproject.com/en/1.10/topics/db/models/#intermediary-manytomany 

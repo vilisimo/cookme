@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import Recipe
+from .models import Recipe, RecipeIngredient
 
 
 def recipes(request):

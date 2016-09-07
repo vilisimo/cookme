@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    {% if ingredient %}
+        <h3>{{ ingredient.name }} ({{ ingredient.type }})</h3>
+        <p>{{ ingredient.description }}</p>
+    {% else %}
+        No such ingredient found! Strange!
+    {% endif %}
+{% endblock %}
