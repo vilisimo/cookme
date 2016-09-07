@@ -11,7 +11,7 @@
                     <li>
                         {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
                         of
-                        <a href="{{ ingredient.get_absolute_url }}">
+                        <a href="{{ ingredient.ingredient.get_absolute_url }}">
                             {{ ingredient.ingredient }}
                         </a>
                     </li>

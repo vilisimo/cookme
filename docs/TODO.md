@@ -16,3 +16,4 @@ me).
 6. Add tests to Ingredient model, urls, slug (added: 07-09-2016).
 7. Add many to many with through attribute to recipe (added: 07-09-2016). 
 URL: https://docs.djangoproject.com/en/1.10/topics/db/models/#intermediary-manytomany 
+8. Add many to many with through to fridge as well (added: 07-09-2016).
