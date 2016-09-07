@@ -8,7 +8,7 @@ def ingredient_detail(request, slug):
     View responsible for showing detailed ingredient info.
 
     :param request: standard request object
-    :param pk: primary key of an ingredient
+    :param slug: slug of a desired ingredient
     :return: standard render object
     """
 

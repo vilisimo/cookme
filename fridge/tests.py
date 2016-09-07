@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.test.client import Client
 
 from ingredients.models import Ingredient, Unit
@@ -13,6 +13,11 @@ def logged_in_client():
     client = Client()
     client.login(username='test', password='test')
     return client
+
+
+###################################
+""" Test Views, URLS & Templates"""
+###################################
 
 
 class FridgeViewsURLsTestCase(TestCase):
@@ -77,8 +82,17 @@ class FridgeTestCase(TestCase):
         self.fridge = Fridge.objects.create(user=self.user)
 
     def test_str_representation(self):
+        """ Test to ensure that a correct string represent. is constructed """
+
         self.assertEqual(str(self.fridge), "{0}'s fridge".format(
             self.user.username))
+
+    def test_absolute_url(self):
+        """ Test to ensure that the absolute URL routes to correct view """
+
+        resolver = resolve(self.fridge.get_absolute_url())
+
+        self.assertEqual(resolver.view_name, 'fridge:fridge_detail')
 
 
 class FridgeIngredientTestCase(TestCase):
@@ -90,5 +104,7 @@ class FridgeIngredientTestCase(TestCase):
                                                   ingredient=self.ingredient)
 
     def test_str_representation(self):
+        """ Test to ensure that a correct string represent. is constructed """
+
         self.assertEquals(str(self.fi), "{0} in {1}".format(self.ingredient,
                                                             self.fridge))
