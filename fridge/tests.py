@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test.client import Client
 
-from ingredients.models import Ingredient
+from ingredients.models import Ingredient, Unit
 from .models import Fridge, FridgeIngredient
 
 
@@ -25,6 +25,8 @@ class FridgeViewsURLsTestCase(TestCase):
         self.user = User.objects.create_user(username='test', password='test')
         self.fridge = Fridge.objects.create(user=self.user)
         self.client = logged_in_client()
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg',
+                                        description='test')
 
     def test_user_access(self):
         """ Test to ensure that the user is allowed to access the fridge """
@@ -42,11 +44,15 @@ class FridgeViewsURLsTestCase(TestCase):
         """ Test to ensure that the user is shown contents of a fridge. """
 
         ingredient = Ingredient.objects.create(name='test', type='Fruit')
-        FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
-                                        ingredient=ingredient)
+        fi = FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
+                                             ingredient=ingredient,
+                                             unit=self.unit)
         response = self.client.get(reverse('fridge:fridge_detail'))
 
         self.assertContains(response, ingredient.name)
+        self.assertContains(response, ingredient.get_absolute_url())
+        self.assertContains(response, fi.quantity)
+        self.assertContains(response, fi.unit.abbrev)
 
     # THIS SHOULD BE CHANGED IF FUNCTIONALITY EDITED TO AUTOMATICALLY ADD FRIDGE
     def test_user_access_no_fridge(self):
