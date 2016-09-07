@@ -37,7 +37,20 @@ class FridgeViewsURLsTestCase(TestCase):
         """ Test to ensure that the user is allowed to access the fridge """
 
         response = self.client.get(reverse('fridge:fridge_detail'))
+
         self.assertEqual(response.status_code, 200)
+
+    # Needs login page first, otherwise 404?
+    # def test_anonymous_access(self):
+    #     """ Test to ensure that the anonymous user is not shown a fridge """
+    #
+    #     cl = Client()
+    #
+    #     r = reverse('fridge:fridge_detail')
+    #     redirect_string = 'accounts/login/?next='
+    #     response = cl.get(reverse('fridge:fridge_detail'))
+    #
+    #     self.assertRedirects(response, redirect_string + r)
 
     def test_user_access_shows_no_ingredients(self):
         """ Test to ensure that nothing is shown when fridge is empty. """
