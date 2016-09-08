@@ -18,19 +18,16 @@
 
 <body>
     <header>
-        <nav>
-            <!-- Test links: in reality, here should be expandable section -->
-            <a href="https://www.google.lt">Google</a>
-            <a href="https://www.theguardian.com/">Guardian</a>
 
+        <nav>
             <!-- Here should be a link to user's fridge (on the right side). -->
-            {% if fridge %}
+            {% if user.is_authenticated %}
                 <div id="fridge">
-                    <a href="{{ fridge.get_absolute_url }}">Fridge</a>
+                    <a href="{% url 'fridge:fridge_detail' %}">Fridge</a>
                 </div>
             {% endif %}
-
         </nav>
+
         {% block header %}
         {% endblock %}
     </header>
@@ -54,7 +51,6 @@
         {% endblock %}
     </footer>
 
-{#    <img src="{% static "home/images/test.png" %}" alt="Test image"/>#}
 </body>
 
 </html>

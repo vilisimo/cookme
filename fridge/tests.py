@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse, resolve
 from django.test.client import Client
 
 from ingredients.models import Ingredient, Unit
+from recipes.models import Recipe
 from .models import Fridge, FridgeIngredient
 from .admin import FridgeAdmin
 
@@ -46,9 +47,24 @@ class FridgeAdminTests(TestCase):
         FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i2)
 
         expected = ", ".join([i1.name, i2.name])
-        ma = FridgeAdmin(Fridge, self.site)
+        fa = FridgeAdmin(Fridge, self.site)
 
-        self.assertEqual(ma.ingredient_list(self.fridge), expected)
+        self.assertEqual(fa.ingredient_list(self.fridge), expected)
+
+    def test_recipes_list(self):
+        """ Test to ensure that recipe list shows up properly """
+
+        r1 = Recipe.objects.create(author=self.user, title='test',
+                                   description='test')
+        r2 = Recipe.objects.create(author=self.user, title='test2',
+                                   description='test2')
+        self.fridge.recipes.add(r1)
+        self.fridge.recipes.add(r2)
+
+        expected = ", ".join([r1.title, r2.title])
+        fa = FridgeAdmin(Fridge, self.site)
+
+        self.assertEqual(fa.recipe_list(self.fridge), expected)
 
 
 ###################################

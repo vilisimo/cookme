@@ -13,6 +13,3 @@ me).
 3. Create population script for test data (added: 21-08-2016).
 4. Test login required for fridge (added: 26-08-2016).
 5. Create model for types of ingredients? (added: 07-09-2016).
-7. Add many to many with through attribute to recipe (added: 07-09-2016). 
-URL: https://docs.djangoproject.com/en/1.10/topics/db/models/#intermediary-manytomany 
-8. Add many to many with through to fridge as well (added: 07-09-2016).

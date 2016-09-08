@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 
 from ingredients.models import Ingredient, Unit
+from recipes.models import Recipe
 
 
 # May not be needed. May be possible to go through user and create illusion
@@ -14,6 +15,7 @@ class Fridge(models.Model):
     user = models.OneToOneField(User)
     visible = models.BooleanField(default=True)
     ingredients = models.ManyToManyField(Ingredient, through='FridgeIngredient')
+    recipes = models.ManyToManyField(Recipe)
 
     def __str__(self):
         return str(self.user) + '\'s fridge'
