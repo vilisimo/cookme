@@ -10,8 +10,10 @@ from ingredients.models import Ingredient, Unit
 # of fridge. However, having Fridge entity allows multiple fridges if needed.
 class Fridge(models.Model):
     """ Model representing fridge (collection of recipes & ingredients). """
+
     user = models.OneToOneField(User)
     visible = models.BooleanField(default=True)
+    ingredients = models.ManyToManyField(Ingredient, through='FridgeIngredient')
 
     def __str__(self):
         return str(self.user) + '\'s fridge'
@@ -25,6 +27,7 @@ class FridgeIngredient(models.Model):
     Model representing ingredients in the fridge. Note on quantity: users may
     not necessarily know how much of an ingredient they have.
     """
+
     fridge = models.ForeignKey(Fridge)
     ingredient = models.ForeignKey(Ingredient)
     unit = models.ForeignKey(Unit, blank=True, null=True)

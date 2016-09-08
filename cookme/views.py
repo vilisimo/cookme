@@ -15,7 +15,7 @@ def home(request):
 
     user = request.user
     if user.is_authenticated:
-        fridge = Fridge.objects.get(user=user)
+        fridge, created = Fridge.objects.get_or_create(user=user)
 
         content = {
             'user': user,

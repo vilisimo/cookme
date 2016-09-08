@@ -4,9 +4,13 @@ from .models import Recipe, Rating, RecipeIngredient
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'description', 'date', 'views', 'slug',
-                    'image')
+    list_display = ('author', 'title', 'description', 'ingredient_list', 'date',
+                    'views', 'slug', 'image')
     prepopulated_fields = {"slug": ("title",)}
+
+    def ingredient_list(self, obj):
+        return ", ".join([ingredient.name for ingredient in \
+                          obj.ingredients.all()])
 
 
 class RatingAdmin(admin.ModelAdmin):

@@ -19,6 +19,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(User)
     title = models.CharField(max_length=250, null=False)
     description = models.TextField()
+    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
     date = models.DateTimeField(editable=False)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField()
