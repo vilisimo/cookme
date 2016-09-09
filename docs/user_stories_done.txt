@@ -1,8 +1,10 @@
-User can access his fridge, which contains his ingredients and recipes.
+***************************************************************************
+1. User can access his fridge, which contains his ingredients and recipes.
   - clicking on a fridge icon/text will bring up user's fridge (PASS)
   - attempt to access some else's fridge (FAIL) 
   - the fridge correctly shows ingredient count (PASS)
   - the fridge correctly shows recipes saved (PASS)
   - attempt to add a recipe to see if the recipe book gets updated
 Priority: MUST HAVE
-Status: **FINISHED** (09/09/2016)
+Status: FINISHED (09/09/2016)
+***************************************************************************
