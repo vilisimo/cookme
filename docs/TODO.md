@@ -6,10 +6,6 @@ that should eventually be done (and that are likely to be forgotten by
 me).
 
 ###Tasks
-1. Add URL fields to models (added: 18-08-2016).
-    - 20-08-2016: added url field to Recipe model.
-    - Add url field to Ingredient model.
-2. Create population script for units (added: 18-08-2016).
-3. Create population script for test data (added: 21-08-2016).
-4. Test login required for fridge (added: 26-08-2016).
-5. Create model for types of ingredients? (added: 07-09-2016).
+1. Create population script for units (added: 18-08-2016).
+2. Create population script for test data (added: 21-08-2016).
+3. Test login required for fridge (added: 26-08-2016).

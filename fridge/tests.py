@@ -124,14 +124,45 @@ class FridgeViewsURLsTestCase(TestCase):
         self.assertContains(response, fi.quantity)
         self.assertContains(response, fi.unit.abbrev)
 
-    # THIS SHOULD BE CHANGED IF FUNCTIONALITY EDITED TO AUTOMATICALLY ADD FRIDGE
+    def test_shows_recipes(self):
+        """ Test to ensure that the user is shown recipes in the fridge. """
+
+        r1 = Recipe.objects.create(author=self.user, title='test',
+                                   description='test')
+        r2 = Recipe.objects.create(author=self.user, title='test',
+                                   description='test')
+        self.fridge.recipes.add(r1)
+
+        response = self.client.get(reverse('fridge:fridge_detail'))
+
+        self.assertContains(response, r1.title)
+        self.assertContains(response, r2.title)
+
     def test_user_access_no_fridge(self):
-        """ Test to ensure that when the fridge is missing, 404 is thrown. """
+        """
+        Test to ensure that when the fridge is missing, 404 is thrown. Note
+        that the way it is coded right now (09-09-2016) is that upon accessing
+        the home page, fridge is created. Hence, the test below
+        """
 
         Fridge.objects.all().delete()
         response = self.client.get(reverse('fridge:fridge_detail'))
 
         self.assertEqual(response.status_code, 404)
+
+    def test_user_access_no_fridge_homepage_first(self):
+        """
+        Test to ensure that if the user does not have the fridge and tries
+        to access home page, a fridge will be created.
+        """
+
+        Fridge.objects.all().delete()
+
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(reverse('fridge:fridge_detail'))
+        self.assertEqual(response.status_code, 200)
 
     """ Needs a test with anonymous user: once logging in is implemented """
 

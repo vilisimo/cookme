@@ -20,10 +20,12 @@ def fridge_detail(request):
     # upon registration a fridge should be created.
     fridge = get_object_or_404(Fridge, user=user)
     ingredients = FridgeIngredient.objects.filter(fridge=fridge)
+    recipes = fridge.recipes.all()
 
     content = {
         'fridge': fridge,
         'ingredients': ingredients,
+        'recipes': recipes,
     }
 
     return render(request, 'fridge/fridge_detail.html', content)

@@ -3,27 +3,48 @@
 {% block main %}
     {% if fridge %}
         <h2>{{ fridge.user }}'s fridge</h2>
+        <!-- Take care of spacing with CSS -->
         <br/><br/>
-        {% if ingredients %}
-            <!-- Should this div cover else statement as well? -->
-            <div class="fridge-ingredients">
-                <h3>Ingredients in the fridge:</h3>
-                <ul>
-                    {% for ingredient in ingredients %}
+        <div class="fridge-recipes">
+            {% if recipes %}
+                <h3>Favorite recipes</h3>
+                {% for recipe in recipes %}
+                    <ul>
                         <li>
-                            {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
-                            of
-                            <a href="{{ ingredient.ingredient.get_absolute_url }}">
-                                {{ ingredient.ingredient }}
+                            <a href="{{ recipe.get_absolute_url }}">
+                                {{ recipe }}
                             </a>
                         </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% else %}
-            There are no ingredients in the fridge. Perhaps it is time to do
-            some shopping..?
-        {% endif %}
+                    </ul>
+                {% endfor %}
+            {% else %}
+                <p>You have no favorite recipes. Your grandma would be sad!</p>
+            {% endif %}
+        </div>
+        <!-- Take care of spacing with CSS -->
+        <br/><br/>
+        <div class="fridge-ingredients">
+            {% if ingredients %}
+                <!-- Should this div cover else statement as well? -->
+                    <h3>Ingredients in the fridge:</h3>
+                    <ul>
+                        {% for ingredient in ingredients %}
+                            <li>
+                                {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
+                                of
+                                <a href="{{ ingredient.ingredient.get_absolute_url }}">
+                                    {{ ingredient.ingredient }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+            {% else %}
+                <p>
+                    There are no ingredients in the fridge. Perhaps it is
+                    time to do some shopping..?
+                </p>
+            {% endif %}
+        </div>
     {% else %}
         No fridge was found. That is strange!
     {% endif %}
