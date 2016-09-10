@@ -5,6 +5,7 @@ from django.test.client import Client
 
 from fridge.tests import logged_in_client
 from .models import Ingredient, Unit
+from .views import ingredient_detail
 
 
 ###################################
@@ -18,6 +19,13 @@ class IngredientViewsURLsTestCase(TestCase):
         self.logged = logged_in_client()
         self.i = Ingredient.objects.create(name='test', type='Fruit',
                                            description='test')
+
+    def test_URL_resolves_to_correct_view(self):
+        """ Test to ensure that ingredient's URL resolves to correct view """
+
+        view = resolve('/ingredients/' + self.i.slug + '/')
+
+        self.assertEqual(view.func, ingredient_detail)
 
     def test_user_access(self):
         """ Test to ensure that all users can access ingredient details """

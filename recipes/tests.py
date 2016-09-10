@@ -8,6 +8,7 @@ from django.contrib.admin.sites import AdminSite
 from .models import *
 from .admin import RecipeAdmin
 from ingredients.models import Ingredient
+from .views import recipes, recipe_detail
 
 
 ###################################
@@ -117,11 +118,13 @@ class UrlTestCase(TestCase):
     def test_recipes_url(self):
         resolver = resolve('/recipes/')
         self.assertEqual(resolver.view_name, 'recipes:recipes')
+        self.assertEqual(resolver.func, recipes)
 
     def test_recipes_detail_url(self):
         recipe_path = self.r.slug + '/'
         resolver = resolve('/recipes/' + recipe_path)
         self.assertEqual(resolver.view_name, 'recipes:recipe_detail')
+        self.assertEqual(resolver.func, recipe_detail)
 
 
 class ViewsTestCase(TestCase):

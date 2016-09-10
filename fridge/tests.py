@@ -8,6 +8,7 @@ from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
 from .models import Fridge, FridgeIngredient
 from .admin import FridgeAdmin
+from .views import fridge_detail
 
 
 class MockRequest(object):
@@ -84,6 +85,14 @@ class FridgeViewsURLsTestCase(TestCase):
         self.client = logged_in_client()
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg',
                                         description='test')
+
+    def test_url_resolves_to_detail_fridge(self):
+        """ Test to ensure that URL resolves to correct view function """
+
+        view = resolve('/fridge/')
+
+        self.assertEqual(view.func, fridge_detail)
+
 
     def test_user_access(self):
         """ Test to ensure that the user is allowed to access the fridge """

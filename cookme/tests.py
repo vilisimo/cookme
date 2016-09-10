@@ -1,7 +1,9 @@
 from django.test import TestCase
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
 from django.test.client import Client
+
+from .views import home
 
 
 ###################################
@@ -16,6 +18,14 @@ class HomePageTestCase(TestCase):
         self.user = User.objects.create_user(username='test', password='test')
         self.logged = Client()
         self.logged.login(username='test', password='test')
+
+    def test_correct_root_url_resolves_to_home_function(self):
+        """ Test suite to ensure that the root URL is mapped to correct view """
+
+        view = resolve('/')
+
+        self.assertEqual(view.view_name, 'home')
+        self.assertEqual(view.func, home)
 
     def test_anonymous_visit(self):
         """ Test to ensure anonymous users do not see link to a fridge """
