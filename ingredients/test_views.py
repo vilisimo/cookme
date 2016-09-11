@@ -1,16 +1,15 @@
+"""
+Test suite for views, urls & templates.
+"""
+
+
 from django.test import TestCase
-from django.utils.text import slugify
 from django.core.urlresolvers import resolve, reverse
 from django.test.client import Client
 
-from fridge.tests import logged_in_client
-from .models import Ingredient, Unit
+from fridge.test_views import logged_in_client
+from .models import Ingredient
 from .views import ingredient_detail
-
-
-###################################
-""" Test Views, URLS & Templates"""
-###################################
 
 
 class IngredientViewsURLsTestCase(TestCase):
@@ -39,7 +38,7 @@ class IngredientViewsURLsTestCase(TestCase):
         self.assertEqual(response2.status_code, 200)
 
     def test_no_ingredient_404(self):
-        """ Test that the user is shown 404 error when there are no ingr. """
+        """ Test that a user is shown 404 error when there are no ingr. """
 
         Ingredient.objects.all().delete()
 
@@ -59,41 +58,3 @@ class IngredientViewsURLsTestCase(TestCase):
         self.assertContains(response, self.i.type)
 
 
-#######################################
-""" Test custom model functionality """
-#######################################
-
-
-class IngredientTestCase(TestCase):
-    def setUp(self):
-        self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
-        self.ingredient2 = Ingredient.objects.create(name='test test',
-                                                     type='Meat')
-
-    def test_str_representation(self):
-        """ Test to ensure that the string representation of a model is ok """
-
-        self.assertEqual(str(self.ingredient), self.ingredient.name)
-
-    def test_slug(self):
-        """ Test to ensure that the slug is properly created """
-
-        self.assertEqual(slugify(self.ingredient2.name), self.ingredient2.slug)
-
-    def test_absolute_url(self):
-        """ Test to ensure that the absolute path leads to a correct view """
-
-        resolver = resolve(self.ingredient2.get_absolute_url())
-
-        self.assertEqual(resolver.view_name, 'ingredients:ingredient_detail')
-
-
-class UnitTestCase(TestCase):
-    def setUp(self):
-        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
-
-    def test_str_representation(self):
-        """ Test to ensure that the string representation of a model is ok """
-
-        unit_str = "{0} ({1})".format(self.unit.name, self.unit.abbrev)
-        self.assertEqual(str(self.unit), unit_str)

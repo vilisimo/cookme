@@ -1,13 +1,16 @@
+"""
+Test suite for views, urls & templates.
+"""
+
+
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.contrib.admin.sites import AdminSite
 from django.core.urlresolvers import reverse, resolve
 from django.test.client import Client
 
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
 from .models import Fridge, FridgeIngredient
-from .admin import FridgeAdmin
 from .views import fridge_detail
 
 
@@ -21,56 +24,6 @@ def logged_in_client():
     client = Client()
     client.login(username='test', password='test')
     return client
-
-
-###################################
-""" Test Custom Admin Functions """
-###################################
-
-
-class FridgeAdminTests(TestCase):
-    """
-    Test suite to ensure that custom functionality in Fridge admin panel
-    works as expected.
-    """
-
-    def setUp(self):
-        self.user = User.objects.create_user(username='test')
-        self.fridge = Fridge.objects.create(user=self.user)
-        self.site = AdminSite()
-
-    def test_ingredient_list(self):
-        """ Test to ensure that ingredient list shows up properly """
-
-        i1 = Ingredient.objects.create(name='Apple', type='Fruit')
-        i2 = Ingredient.objects.create(name='Orange', type='Fruit')
-        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i1)
-        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i2)
-
-        expected = ", ".join([i1.name, i2.name])
-        fa = FridgeAdmin(Fridge, self.site)
-
-        self.assertEqual(fa.ingredient_list(self.fridge), expected)
-
-    def test_recipes_list(self):
-        """ Test to ensure that recipe list shows up properly """
-
-        r1 = Recipe.objects.create(author=self.user, title='test',
-                                   description='test')
-        r2 = Recipe.objects.create(author=self.user, title='test2',
-                                   description='test2')
-        self.fridge.recipes.add(r1)
-        self.fridge.recipes.add(r2)
-
-        expected = ", ".join([r1.title, r2.title])
-        fa = FridgeAdmin(Fridge, self.site)
-
-        self.assertEqual(fa.recipe_list(self.fridge), expected)
-
-
-###################################
-""" Test Views, URLS & Templates"""
-###################################
 
 
 class FridgeViewsURLsTestCase(TestCase):
@@ -87,12 +40,11 @@ class FridgeViewsURLsTestCase(TestCase):
                                         description='test')
 
     def test_url_resolves_to_detail_fridge(self):
-        """ Test to ensure that URL resolves to correct view function """
+        """ Test to ensure that URL resolves to a correct view function """
 
         view = resolve('/fridge/')
 
         self.assertEqual(view.func, fridge_detail)
-
 
     def test_user_access(self):
         """ Test to ensure that the user is allowed to access the fridge """
@@ -176,40 +128,3 @@ class FridgeViewsURLsTestCase(TestCase):
     """ Needs a test with anonymous user: once logging in is implemented """
 
 
-############################################
-""" Tests for custom model functionality """
-############################################
-
-
-class FridgeTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='test')
-        self.fridge = Fridge.objects.create(user=self.user)
-
-    def test_str_representation(self):
-        """ Test to ensure that a correct string represent. is constructed """
-
-        self.assertEqual(str(self.fridge), "{0}'s fridge".format(
-            self.user.username))
-
-    def test_absolute_url(self):
-        """ Test to ensure that the absolute URL routes to correct view """
-
-        resolver = resolve(self.fridge.get_absolute_url())
-
-        self.assertEqual(resolver.view_name, 'fridge:fridge_detail')
-
-
-class FridgeIngredientTestCase(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='test')
-        self.fridge = Fridge.objects.create(user=self.user)
-        self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
-        self.fi = FridgeIngredient.objects.create(fridge=self.fridge,
-                                                  ingredient=self.ingredient)
-
-    def test_str_representation(self):
-        """ Test to ensure that a correct string represent. is constructed """
-
-        self.assertEquals(str(self.fi), "{0} in {1}".format(self.ingredient,
-                                                            self.fridge))

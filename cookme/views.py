@@ -1,3 +1,7 @@
+"""
+Test suite to ensure that views work correctly.
+"""
+
 from django.shortcuts import render
 
 from fridge.models import Fridge
