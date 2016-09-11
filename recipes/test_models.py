@@ -2,10 +2,10 @@
 Tests suite for custom model functionality.
 """
 
-from datetime import timezone
-
+from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 from .models import Recipe, Rating, RecipeIngredient
 from ingredients.models import Ingredient, Unit

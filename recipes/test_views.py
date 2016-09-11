@@ -6,7 +6,6 @@ Test suite for views, urls & templates.
 from django.test import TestCase
 
 from django.core.urlresolvers import reverse, resolve
-from django.utils.text import slugify
 from django.contrib.auth.models import User
 
 from .models import *
