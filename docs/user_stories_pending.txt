@@ -12,7 +12,7 @@ User can add a recipe to his/her fridge.
   - attempt to add recipe without ingredients (FAIL)
   - attempt to access the page without logging in (FAIL)
 Priority: MUST HAVE
-Status: NOT STARTED
+Status: STARTED
 ***************************************************************************
 
 
