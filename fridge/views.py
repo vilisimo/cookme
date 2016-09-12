@@ -37,7 +37,7 @@ def fridge_detail(request):
     """
 
     user = request.user
-    fridge = get_object_or_404(Fridge, user=user)
+    fridge, created = Fridge.objects.get_or_create(user=user)
     ingredients = FridgeIngredient.objects.filter(fridge=fridge)
     recipes = fridge.recipes.all()
 
