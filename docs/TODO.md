@@ -9,3 +9,4 @@ me).
 1. Create population script for units (added: 18-08-2016).
 2. Create population script for test data (added: 21-08-2016).
 3. Test login required for fridge (added: 26-08-2016).
+4. Make sure that a user can delete a recipe from his/her fridge (added: 13-09-2016)

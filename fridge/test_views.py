@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, resolve
 from django.test.client import Client
 
+from recipes.models import Recipe
 from .models import Fridge
 from .views import fridge_detail, add_recipe
 
@@ -91,6 +92,52 @@ class AddRecipeTests(TestCase):
         response = self.client.get(reverse('fridge:add_recipe'))
 
         self.assertEqual(response.context['user'], self.user)
+
+    def test_add_recipe_form_is_sent(self):
+        """ Ensures that a correct form is sent to a template """
+
+        response = self.client.get(reverse('fridge:add_recipe'))
+
+        self.assertNotEquals(response.context['form'], None)
+
+    def test_form_valid_post(self):
+        """
+        Ensures that a model is created when a valid form is passed. Note
+        that a test for invalid forms is provided in forms & templates tests.
+        """
+
+        self.client.post(reverse('fridge:add_recipe'), {"title": 'test',
+                                                        "description": 'test'})
+        recipe = Recipe.objects.get(title='test')
+
+        self.assertTrue(recipe)
+
+    def test_form_valid_post_added_to_a_fridge(self):
+        """
+        Ensures that upon a creation a recipe is added to a fridge that
+        belongs to a user that added the recipe.
+        """
+
+        self.client.post(reverse('fridge:add_recipe'), {"title": 'test',
+                                                        "description": 'test'})
+        fridge = Fridge.objects.get(user=self.user)
+        recipe = Recipe.objects.get(title='test')
+        recipes = fridge.recipes.all()
+
+        self.assertIn(recipe, recipes)
+
+    def test_form_valid_redirects(self):
+        """
+        Ensures when a form is posted, user is redirected back to his/her
+        fridge.
+        """
+
+        url = reverse('fridge:fridge_detail')
+        response = self.client.post(reverse('fridge:add_recipe'),
+                                    {"title": 'test', "description": 'test'})
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, url)
 
 
 class FridgeDetailViewURLsTests(TestCase):

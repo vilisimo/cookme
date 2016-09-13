@@ -13,6 +13,32 @@ from .models import Fridge, FridgeIngredient
 
 
 class AddRecipeTests(TestCase):
+    """ Test suite to check whether add_recipe template is correct """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.client = logged_in_client()
+
+    def test_add_recipe_form_is_sent(self):
+        """ Ensures that a correct form is sent to a template """
+
+        response = self.client.get(reverse('fridge:add_recipe'))
+        self.assertContains(response, 'Title')
+        self.assertContains(response, 'Description')
+
+    def test_form_invalid(self):
+        """
+        Ensures that missing fields are caught and an error message is shown.
+        """
+
+        response = self.client.post(reverse('fridge:add_recipe'), {})
+
+        self.assertContains(response, 'This field is required')
+
+
+class FridgeDetailTests(TestCase):
+    """ Test suite to ensure that fridge_detail template is correct """
+
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
