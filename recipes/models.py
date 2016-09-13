@@ -16,6 +16,7 @@ def user_directory_path(instance, filename):
 
 class Recipe(models.Model):
     """    Model that represents recipes.    """
+
     author = models.ForeignKey(User)
     title = models.CharField(max_length=250, null=False)
     description = models.TextField()
@@ -23,11 +24,12 @@ class Recipe(models.Model):
     date = models.DateTimeField(editable=False)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField()
-    image = models.ImageField(upload_to='recipes/',
+    image = models.ImageField(upload_to='recipes/', blank=True,
                               default='recipes/no-image.jpg')
 
     def save(self, *args, **kwargs):
         """ Date is updated only when model is saved """
+
         if not self.id:
             self.date = timezone.now()
             slug = slugify(self.title)
@@ -42,7 +44,7 @@ class Recipe(models.Model):
         return reverse('recipes:recipe_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
-        if len(Recipe.objects.all()) > 1:
+        if len(Recipe.objects.filter(title=self.title)) > 1:
             return "{0}-{1}".format(self.title, self.pk)
         else:
             return self.title
@@ -51,6 +53,7 @@ class Recipe(models.Model):
 # Note: there are rating packages for Django, but more fun to create it from 0.
 class Rating(models.Model):
     """ Model representing ratings that can be made. """
+
     stars = models.IntegerField(validators=[MinValueValidator(1),
                                 MaxValueValidator(5)])
     user = models.OneToOneField(User)
@@ -59,6 +62,7 @@ class Rating(models.Model):
 
     def save(self, *args, **kwargs):
         """ Date is updated only when model is saved """
+
         if not self.id:
             self.date = timezone.now()
         return super(Rating, self).save(*args, **kwargs)
@@ -70,6 +74,7 @@ class Rating(models.Model):
 
 class RecipeIngredient(models.Model):
     """ Model representing ingredients in the recipe. Quantity is a must! """
+
     recipe = models.ForeignKey(Recipe)
     ingredient = models.ForeignKey(Ingredient)
     unit = models.ForeignKey(Unit, blank=False, null=False)

@@ -20,11 +20,48 @@ class RecipeTestCase(TestCase):
                                        description='')
         self.time = timezone.now()
 
-    def test_str_representation(self):
+    def test_str_representation_one_name(self):
+        """
+        Ensure that string representation does not contain numbers when
+        recipe name is more or less unique.
+        """
+        recipe = Recipe.objects.create(author=self.user, title='another',
+                                       description='')
+
+        self.assertEqual(str(recipe), recipe.title)
+
+    def test_str_representation_one_name_other_similar(self):
+        """
+        Ensure that string representation does not have numbers when recipe
+        names contain the same (part of the) string
+        """
+
+        recipe = Recipe.objects.create(author=self.user, title='one',
+                                       description='')
+        Recipe.objects.create(author=self.user, title='phone',
+                              description='')
+
+        self.assertEqual(str(recipe), recipe.title)
+
+    def test_str_representation_one_name_other_similar_in_part(self):
+        """
+        Ensure that string representation does not have numbers when recipe
+        name is in another recipe's name (e.g.: 'test' vs 'test recipe'.)
+        """
+
+        recipe = Recipe.objects.create(author=self.user, title='one',
+                                       description='')
+        Recipe.objects.create(author=self.user, title='one one',
+                              description='')
+
+        self.assertEqual(str(recipe), recipe.title)
+
+    def test_str_representation_two_same_names(self):
         """
         Test recipe string representation when there are two recipes with the
         same name.
         """
+
         self.assertEqual(str(self.r), "{0}-{1}".format(self.r.title, self.r.pk))
 
     def test_date_field(self):
