@@ -3,6 +3,7 @@ Test suite for custom form functionality.
 """
 
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from django.test import TestCase
 
@@ -38,3 +39,13 @@ class AddRecipeFormTests(TestCase):
         form = AddRecipeFridgeForm(data=data)
 
         self.assertFalse(form.is_valid())
+
+    def test_image_field(self):
+        """ Ensure that the form can take image field """
+
+        with open('static/test/test.png', 'rb') as image:
+            data = {'title': 'test', 'description': 'testing'}
+            image_data = {'image': SimpleUploadedFile(image.name, image.read())}
+            form = AddRecipeFridgeForm(data=data, files=image_data)
+
+            self.assertTrue(form.is_valid())

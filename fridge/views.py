@@ -24,7 +24,7 @@ def add_recipe(request):
     fridge, created = Fridge.objects.get_or_create(user=user)
 
     if request.method == 'POST':
-        form = AddRecipeFridgeForm(request.POST)
+        form = AddRecipeFridgeForm(request.POST, request.FILES)
         if form.is_valid():
             # Form only has title, description and image. However, author field
             # cannot be null. Hence, assign authorship to the user.

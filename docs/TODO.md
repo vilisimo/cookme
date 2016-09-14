@@ -10,3 +10,5 @@ me).
 2. Create population script for test data (added: 21-08-2016).
 3. Test login required for fridge (added: 26-08-2016).
 4. Make sure that a user can delete a recipe from his/her fridge (added: 13-09-2016)
+5. Figure out settings stuff (added: 14-09-2016)
+6. Figure out how to allow user to add additional forms for RecipeIngredient (added: 15-09-2016)

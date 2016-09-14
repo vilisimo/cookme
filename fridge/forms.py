@@ -19,3 +19,6 @@ class AddRecipeFridgeForm(ModelForm):
 # So use formsets
 # http://stackoverflow.com/questions/28054991/combining-two-forms-in-one-django-view
 # https://docs.djangoproject.com/en/1.10/topics/forms/formsets/
+# Also, needs to add additional form for every ingredient. Calls for JS:
+# http://stackoverflow.com/questions/5478432/making-a-django-form-class-with-a-dynamic-number-of-fields
+# (second answer seems to be about right).

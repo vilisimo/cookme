@@ -2,8 +2,8 @@
 
 {% block main %}
     <!-- Needs to be made prettier by CSS -->
-    <form action="{% url 'fridge:add_recipe' %}" method="post"
-          class="add-recipe-form">
+    <form enctype="multipart/form-data" action="{% url 'fridge:add_recipe' %}"
+          method="post" class="add-recipe-form">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Add" />
