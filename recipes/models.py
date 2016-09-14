@@ -32,6 +32,7 @@ class Recipe(models.Model):
 
         if not self.id:
             self.date = timezone.now()
+            # Not an ideal method. E.g., 'm' and 'milk' results in 'm-1'.
             slug = slugify(self.title)
             slugs = Recipe.objects.filter(slug__icontains=slug)
             if len(slugs) > 0:
