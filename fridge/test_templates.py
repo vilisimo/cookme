@@ -25,13 +25,71 @@ class AddRecipeTests(TestCase):
         response = self.client.get(reverse('fridge:add_recipe'))
         self.assertContains(response, 'Title')
         self.assertContains(response, 'Description')
+        self.assertContains(response, '')
 
     def test_form_invalid(self):
         """
         Ensures that missing fields are caught and an error message is shown.
         """
 
-        response = self.client.post(reverse('fridge:add_recipe'), {})
+        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
+        unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        data = {
+            'description': 'test',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MAX_NUM_FORMS': '',
+            'form-0-ingredient': str(potato.pk),
+            'form-0-unit': str(unit.pk),
+            'form-0-quantity': '1',
+        }
+        response = self.client.post(reverse('fridge:add_recipe'), data)
+
+        self.assertContains(response, 'This field is required')
+
+        data['title'] = 'test'
+        data['description'] = ''
+        response = self.client.post(reverse('fridge:add_recipe'), data)
+
+        self.assertContains(response, 'This field is required')
+
+    def test_form_invalid_same_ingredients(self):
+        """
+        Ensures that the same ingredients cannot be selected and posted.
+        """
+
+        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
+        unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        data = {
+            'title': 'test',
+            'description': 'test',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MAX_NUM_FORMS': '',
+            'form-0-ingredient': str(potato.pk),
+            'form-0-unit': str(unit.pk),
+            'form-0-quantity': '1',
+            'form-1-ingredient': str(potato.pk),
+            'form-1-unit': str(unit.pk),
+            'form-1-quantity': '1',
+        }
+
+        response = self.client.post(reverse('fridge:add_recipe'), data)
+        self.assertContains(response, 'Ingredients should be distinct.')
+
+    def test_form_invalid_missing_ingredient(self):
+        """
+        Ensures that missing fields are caught and an error message is shown.
+        """
+
+        data = {
+            'title': 'test',
+            'description': 'test',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MAX_NUM_FORMS': '',
+        }
+        response = self.client.post(reverse('fridge:add_recipe'), data)
 
         self.assertContains(response, 'This field is required')
 

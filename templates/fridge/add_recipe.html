@@ -6,6 +6,8 @@
           method="post" class="add-recipe-form">
         {% csrf_token %}
         {{ form.as_p }}
+        {{ formset.as_p }}
+        {{ formset.non_form_errors }}
         <input type="submit" value="Add" />
     </form>
 {% endblock %}

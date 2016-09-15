@@ -1,10 +1,11 @@
 from django.shortcuts import render, HttpResponseRedirect
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.forms import formset_factory
 
-from .models import Fridge
-from .models import FridgeIngredient
-from .forms import AddRecipeFridgeForm
+from .forms import AddRecipeFridgeForm, RecipeIngredientForm
+from .forms import BaseRecipeIngredientFormSet
+from .models import FridgeIngredient, Fridge
 
 
 @login_required
@@ -22,10 +23,13 @@ def add_recipe(request):
     # before requesting to add a recipe (should be impossible, but who knows).
     user = request.user
     fridge, created = Fridge.objects.get_or_create(user=user)
+    RecipeIngredientFormSet = formset_factory(RecipeIngredientForm,
+                                          formset=BaseRecipeIngredientFormSet)
 
     if request.method == 'POST':
         form = AddRecipeFridgeForm(request.POST, request.FILES)
-        if form.is_valid():
+        formset = RecipeIngredientFormSet(request.POST)
+        if all([form.is_valid(), formset.is_valid()]):
             # Form only has title, description and image. However, author field
             # cannot be null. Hence, assign authorship to the user.
             recipe = form.save(commit=False)
@@ -40,10 +44,12 @@ def add_recipe(request):
 
     else:
         form = AddRecipeFridgeForm()
+        formset = RecipeIngredientFormSet()
 
     content = {
         'user': user,   # No need to send if decide to set user in this view
         'form': form,
+        'formset': formset,
     }
 
     return render(request, 'fridge/add_recipe.html', content)
