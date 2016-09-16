@@ -44,6 +44,12 @@ def add_recipe(request):
             recipe.save()
             fridge.recipes.add(recipe)
 
+            for f in formset:
+                # Ingredients need recipe FK.
+                ingredient = f.save(commit=False)
+                ingredient.recipe = recipe
+                ingredient.save()
+
             url = reverse('fridge:fridge_detail')
 
             return HttpResponseRedirect(url)

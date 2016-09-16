@@ -12,10 +12,9 @@ me).
 4. Make sure that a user can delete a recipe from his/her fridge 
 (added: 13-09-2016).
 5. Figure out settings stuff (added: 14-09-2016).
-6. Figure out how to allow user to add additional forms for RecipeIngredient 
-(added: 14-09-2016).
-7. Figure out how to delete formsets if user accidentally clicks on it 
-(added: 15-09-2016).
-8. Add ingredients to a recipe (added 15-09-2016).
-9. Try adding a form for recipe ingredient and overriding required. (added 
+6. Add ingredients to a recipe (added 15-09-2016).
+7. Try adding a form for recipe ingredient and overriding required. (added 
 15-09-2016).
+8. Figure out what the jquery.formset.js script does and create another one 
+with relevant functionality only (added 16-09-2016).
+9. Recipe detail: add ingredients! (added 16-09-2016).

@@ -191,6 +191,37 @@ class AddRecipeTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, url)
 
+    def test_ingredients_added_to_recipe(self):
+        """ Test to ensure that ingredients are added to the recipe """
+
+        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
+        tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
+        unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        data = {
+            'title': 'test',
+            'description': 'test',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MAX_NUM_FORMS': '',
+            'form-0-ingredient': str(potato.pk),
+            'form-0-unit': str(unit.pk),
+            'form-0-quantity': '1',
+            'form-1-ingredient': str(tomato.pk),
+            'form-1-unit': str(unit.pk),
+            'form-1-quantity': '1',
+        }
+
+
+        url = reverse('fridge:fridge_detail')
+        response = self.client.post(reverse('fridge:add_recipe'), data)
+
+        recipe = Recipe.objects.get(title='test')
+        ingredients = recipe.ingredients.all()
+
+        self.assertEqual(len(ingredients), 2)
+        self.assertIn(potato, ingredients)
+        self.assertIn(tomato, ingredients)
+
     def test_add_ingredient_form_is_sent(self):
         """ Ensures that a correct form is sent to a template """
 

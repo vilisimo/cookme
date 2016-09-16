@@ -20,12 +20,11 @@ class AddRecipeTests(TestCase):
         self.client = logged_in_client()
 
     def test_add_recipe_form_is_sent(self):
-        """ Ensures that a correct form is sent to a template """
+        """ Ensures that a form & formset is sent to a template """
 
         response = self.client.get(reverse('fridge:add_recipe'))
-        self.assertContains(response, 'Title')
-        self.assertContains(response, 'Description')
-        self.assertContains(response, '')
+        self.assertIn('form', response.context)
+        self.assertIn('formset', response.context)
 
     def test_form_invalid(self):
         """

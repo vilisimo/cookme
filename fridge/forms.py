@@ -16,6 +16,21 @@ class AddRecipeFridgeForm(ModelForm):
         model = Recipe
         fields = ("title", "description", "image", )
 
+        widgets = {
+            'title': forms.TextInput(
+                attrs={'placeholder': 'Recipe\'s title'}),
+            'description': forms.Textarea(
+                attrs={'placeholder': 'Please explain how to prepare a dish, '
+                                      'and upload a photo of a finished '
+                                      'product'})
+        }
+
+        labels = {
+            'title': '',
+            'description': '',
+            'image': '',
+        }
+
 
 class RecipeIngredientForm(ModelForm):
     """
