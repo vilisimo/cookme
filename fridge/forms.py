@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm, BaseFormSet
+from django.utils.translation import gettext as _
 
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
@@ -66,13 +67,14 @@ class BaseRecipeIngredientFormSet(BaseFormSet):
             return
 
         if not self.forms[0].has_changed():
-            raise forms.ValidationError('Please add at least one field.')
+            raise forms.ValidationError(_('Please add at least one field.'))
 
         ingredients = []
         for form in self.forms:
             ingredient = form.cleaned_data['ingredient']
             if ingredient in ingredients:
-                raise forms.ValidationError("Ingredients should be distinct.")
+                raise forms.ValidationError(_("Ingredients should be "
+                                              "distinct."))
             ingredients.append(ingredient)
 
 
