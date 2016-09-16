@@ -296,3 +296,12 @@ User can hover on the unit of measurement to get its description and conversions
 Priority: WOULD LIKE TO HAVE
 Status: NOT STARTED
 ***************************************************************************
+
+
+***************************************************************************
+User can click on a form field, wait for a bit and see the help text appearing.
+  - click on a form field to see a tooltip. (PASS)
+  - start writing to make the tooltip disappear. (PASS)
+Priority: WOULD LIKE TO HAVE
+Status: NOT STARTED
+***************************************************************************

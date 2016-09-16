@@ -85,7 +85,7 @@ class AddRecipeTests(TestCase):
         data = {
             'title': 'test',
             'description': 'test',
-            'form-TOTAL_FORMS': '2',
+            'form-TOTAL_FORMS': '1',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
         }
