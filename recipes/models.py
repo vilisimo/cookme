@@ -28,17 +28,21 @@ class Recipe(models.Model):
                               default='recipes/no-image.jpg')
 
     def save(self, *args, **kwargs):
-        """ Date is updated only when model is saved """
+        """
+        Date is updated only when model is saved.
+        Unique (user-friendly, hence 2) slug is assigned upon creation.
+        """
 
         if not self.id:
             self.date = timezone.now()
-            # Not an ideal method. E.g., 'm' and 'milk' results in 'm-1'.
+
+            i = 2  # user-friendly; if we find something, there are 2 instances
             slug = slugify(self.title)
-            slugs = Recipe.objects.filter(slug__icontains=slug)
-            if len(slugs) > 0:
-                self.slug = slug + '-' + str(len(slugs))
-            else:
-                self.slug = slug
+            while Recipe.objects.filter(slug=slug):
+                slug = "{0}-{1}".format(slug, i)
+                i += 1
+            self.slug = slug
+
         return super(Recipe, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
