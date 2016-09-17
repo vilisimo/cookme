@@ -6,20 +6,41 @@ USER STORIES
 
 ***************************************************************************
 User can add a recipe to his/her fridge.
-  - attempt to add a recipe with title, description and ingredients (PASS)
-  - attempt to add a recipe without title (FAIL)
-  - attempt to add a recipe without description (FAIL)
-  - attempt to add recipe without ingredients (FAIL)
-  - attempt to access the page without logging in (FAIL)
+  - Test: add a recipe with title, description and ingredients.
+    Outcome: recipe is added both to a fridge and a global recipe book.
+  - Test: add a recipe without title.
+    Outcome: operation not allowed.
+  - Test: add a recipe without description.
+    Outcome: operation not allowed.
+  - Test: add recipe without ingredients.
+    Outcome: operation not allowed.
+  - Test: access fridge's page without logging in.
+    Outcome: operation not allowed, user is redirected.
 Priority: MUST HAVE
 Status: STARTED
 ***************************************************************************
 
 
 ***************************************************************************
+User can instruct the fridge to show possible recipes he/she can make with
+ingredients in the fridge.
+    - Test: ask for recipes without any ingredients.
+      Outcome: no recipes are shown.
+    - Test: ask for recipes with one ingredient.
+      Outcome: only a recipe with one ingredient is shown.
+    - Test: request a recipe with ingredients that should bring it up.
+      Outcome: recipe is shown.
+PRIORITY: MUST HAVE
+Status: NOT STARTED
+***************************************************************************
+
+
+***************************************************************************
 User can save recipes from global recipe book to his fridge.
-  - attempt to save a recipe from global recipe book (PASS)
-  - attempt to save a recipe that is already saved (FAIL)
+  - Test: save a recipe from global recipe book.
+    Outcome: recipe is added to a fridge.
+  - Test: save a recipe that is already saved.
+    Outcome: recipe is not duplicated.
 Priority: MUST HAVE
 Status: NOT STARTED
 ***************************************************************************
@@ -27,11 +48,16 @@ Status: NOT STARTED
 
 ***************************************************************************
 User can add a recipe to a global recipe book.
-  - attempt to add a recipe with title, description and ingredients (PASS)
-  - attempt to add a recipe without title (FAIL)
-  - attempt to add a recipe without description (FAIL)
-  - attempt to add recipe without ingredients (FAIL)
-  - attempt to access the page without logging in (FAIL)
+  - Test: add a recipe with title, description and ingredients.
+    Outcome: recipe is added.
+  - Test: add a recipe without title.
+    Outcome: operation not allowed.
+  - Test: add a recipe without description.
+    Outcome: operation not allowed.
+  - Test: add recipe without ingredients.
+    Outcome: operation not allowed.
+  - Test: access the page without logging in.
+    Outcome: operation not allowed, user is redirected.
 Priority: MUST HAVE
 Status: NOT STARTED
 ***************************************************************************
@@ -39,11 +65,14 @@ Status: NOT STARTED
 
 ***************************************************************************
 User can log in to the website using his/her ID and password combination.
-  - attempt to log in with correct id & password combination (PASS)
-  - attempt to log in with incorrect id & password combination (FAIL)
-  - attempt to log in without password (FAIL)
-  - attempt to log in without username (FAIL)
-  - attempt to log in without either password or username (FAIL)
+  - Test: log in with correct id & password combination
+    Outcome: login successful.
+  - Test: log in with incorrect id & password combination.
+    Outcome: operation not allowed, user is asked to enter details again.
+  - Test: log in without password.
+    Outcome: operation not allowed, user is informed password is missing.
+  - Test: log in without username.
+    Outcome: operation not allowed, user is informed username is missing.
 Priority: MUST HAVE
 Status: NOT STARTED
 ***************************************************************************
@@ -51,11 +80,16 @@ Status: NOT STARTED
 
 ***************************************************************************
 User can register on the website.
-  - attempt to register with unique username & password combination (PASS)
-  - attempt to register with a username that already exists in the database (FAIL)
-  - attempt to register with a password that already exists in the database (FAIL)
-  - attempt to register without a username (FAIL)
-  - attempt to register without a password (FAIL)
+  - Test: register with unique username & password combination.
+    Outcome: registration successful.
+  - Test: register with a username that already exists in the database.
+    Outcome: user is informed that the username is taken.
+  - Test: register with a password that already exists in the database.
+    Outcome: registration successful.
+  - Test: register without a username.
+    Outcome: user is informed that username is missing.
+  - Test: register without a password.
+    Outcome: user is informed that username is missing.
 Priority: MUST HAVE
 Status: NOT STARTED
 ***************************************************************************
@@ -63,8 +97,10 @@ Status: NOT STARTED
 
 ***************************************************************************
 User can edit the recipes he/she has uploaded.
-  - attempt to edit his/her own recipe (PASS)
-  - attempt to edit others' recipes (FAIL)
+  - Test: edit his/her own recipe.
+    Outcome: recipe is edited.
+  - Test: edit others' recipes.
+    Outcome: operation not allowed.
 Priority: SHOULD HAVE
 Status: NOT STARTED
 ***************************************************************************
@@ -73,7 +109,8 @@ Status: NOT STARTED
 ***************************************************************************
 User can choose from what category he/she should be shown the recipes.
   - attempt to pick a category that has recipes available (PASS)
-  - attempt to pick a category that has no recipes available (should not be shown at all) (FAIL)
+  - attempt to pick a category that has no recipes available (should not be
+  shown at all) (FAIL)
   - attempt to access the non-existent category and suggested recipes (FAIL)
 Priority: COULD HAVE
 Status: NOT STARTED
@@ -81,8 +118,10 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can enter an ingredient in a search bar to see information about it or add it if it is not existent.
-  - entering ingredient's title in a search will bring up information about it (PASS)
+User can enter an ingredient in a search bar to see information about it or
+add it if it is not existent.
+  - entering ingredient's title in a search will bring up information about it
+  (PASS)
   - not entering anything will not do anything (PASS)
   - entering non-existent ingredient will show any results (PASS)
   - entering non-existent ingredient will offer the user to add it (PASS)
@@ -92,7 +131,8 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can enter an ingredient in a search bar to search for the recipes containing that ingredient.
+User can enter an ingredient in a search bar to search for the recipes
+containing that ingredient.
   - searching for ingredient will show recipes containing it (PASS)
   - searching for non-existent ingredient will not show any results (PASS)
 Priority: SHOULD HAVE
@@ -153,7 +193,8 @@ Status: NOT STARTED
 
 ***************************************************************************
 User can share his/her fridge's recipe book (as a list of recipes).
-  - attempt to share his/her fridge's recipe book with others (make it publicly available) (PASS)
+  - attempt to share his/her fridge's recipe book with others (make it
+  publicly available) (PASS)
   - attempt to share other's recipe book (FAIL)
   - attempt to access fridge that was not shared
 Priority: COULD HAVE
@@ -162,7 +203,8 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can access the 5 best rated recipes from the home page (should it be on front page?).
+User can access the 5 best rated recipes from the home page (should it be on
+front page?).
   - attempt to access best rated recipes (PASS)
   - ensure that the recipes shown are really the most popular ones (TRUE)
 Priority: COULD HAVE
@@ -171,18 +213,22 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can see the 5 most popular (global) recipes from the home page (should it be on front page?).
+User can see the 5 most popular (global) recipes from the home page (should
+it be on front page?).
   - attempt to access 5 most popular recipes on the site (PASS)
-  - ensure that the top 5 most popular recipes are the ones that have the most views (PASS)
+  - ensure that the top 5 most popular recipes are the ones that have the
+   most views (PASS)
 Priority: COULD HAVE
 Status: NOT STARTED
 ***************************************************************************
 
 
 ***************************************************************************
-User can access his/her 5 most recently viewed recipes (should it be on front page?)
+User can access his/her 5 most recently viewed recipes (should it be on
+front page?)
   - attempt to access recently viewed recipes (PASS)
-  - ensure that the recipes shown are the ones that were accessed most recently (PASS)
+  - ensure that the recipes shown are the ones that were accessed most
+  recently (PASS)
 Priority: COULD HAVE
 Status: NOT STARTED
 ***************************************************************************
@@ -193,17 +239,6 @@ User can view the recipes that he/she created.
   - there is a separate tab for user to view his/her original recipes (PASS)
   - the tab contains only recipes that the user himself/herself created (PASS)
   - statistics are shown below each recipe (avg rating, times viewed) (PASS)
-Priority: COULD HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
-User can request recipes that can be made from the ingredients in the fridge.
-  - attempt to request possible recipes from the ingredients in a fridge (PASS)
-  - attempt to request recipes with the fridge empty - should not show any recipes (PASS)
-  - attempt to request possible recipes with specific combination of ingredients that should bring up a known recipe (PASS)
-  - attempt to request suggestions with ingredients that are not sufficient to make anything - should not bring any suggestions (but see below) (PASS)
 Priority: COULD HAVE
 Status: NOT STARTED
 ***************************************************************************
