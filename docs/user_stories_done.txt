@@ -1,10 +1,15 @@
 ***************************************************************************
 1. User can access his fridge, which contains his ingredients and recipes.
-  - clicking on a fridge icon/text will bring up user's fridge.
-  - attempt to access some else's fridge should fail.
-  - the fridge should correctly show ingredient count.
-  - the fridge should correctly show recipes saved.
-  - creating a recipe from a fridge should add it both to a fridge and global recipe list.
+  - Test: click on a fridge icon/text.
+    Outcome: clicking on it redirects to user's fridge.
+  - Test: access some else's fridge.
+    Outcome: operation is not allowed.
+  - Test: access the fridge to see ingredient count.
+    Outcome: fridge correctly shows ingredient count.
+  - Test: access the fridge to see recipes saved.
+    Outcome: the fridge correctly shows recipes saved.
+  - Test: create a recipe by clicking 'add recipe' in a fridge's page.
+    Outcome: adds the recipe in both fridge and global recipe list.
 Priority: MUST HAVE
 Status: FINISHED (09/09/2016)
 ***************************************************************************
