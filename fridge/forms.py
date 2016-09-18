@@ -3,6 +3,7 @@ from django.forms import ModelForm, BaseFormSet
 from django.utils.translation import gettext as _
 
 from recipes.models import Recipe, RecipeIngredient
+from ingredients.models import Ingredient, Unit
 
 
 class AddRecipeFridgeForm(ModelForm):
@@ -40,6 +41,13 @@ class RecipeIngredientForm(ModelForm):
     Also note that recipe is excluded: this is done so because recipe is not
     yet created, as the form is shown on the same page.
     """
+
+    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(), 
+        widget=forms.Select(attrs={'required': 'true'}))
+    unit = forms.ModelChoiceField(queryset=Unit.objects.all(),
+        widget=forms.Select(attrs={'required': 'true'}))
+    quantity = forms.FloatField(required=True,
+        widget=forms.NumberInput(attrs={'required': 'true'}))
 
     class Meta:
         model = RecipeIngredient
