@@ -29,7 +29,7 @@ def recipe_detail(request, slug):
     """
 
     recipe = get_object_or_404(Recipe, slug=slug)
-
+    ingredients = RecipeIngredient.objects.filter(recipe=recipe)
     recipe.views += 1
     recipe.save()
 
@@ -39,7 +39,8 @@ def recipe_detail(request, slug):
         'description': recipe.description,
         'date': recipe.date,
         'views': recipe.views,
-        'image': recipe.image
+        'image': recipe.image,
+        'ingredients': ingredients,
 
     }
 

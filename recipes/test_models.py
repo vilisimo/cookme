@@ -74,7 +74,7 @@ class RecipeTestCase(TestCase):
         self.assertNotEquals(self.r.slug, slugify(self.r.title))
 
     def test_unique_slug_creation(self):
-        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title, 1))
+        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title, 2))
 
     def test_slug_field_is_unique(self):
         self.assertNotEquals(self.a.slug, self.r.slug)
