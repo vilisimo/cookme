@@ -42,16 +42,15 @@ class RecipeIngredientForm(ModelForm):
     yet created, as the form is shown on the same page.
     """
 
-    ingredient = forms.ModelChoiceField(queryset=Ingredient.objects.all(), 
-        widget=forms.Select(attrs={'required': 'true'}))
-    unit = forms.ModelChoiceField(queryset=Unit.objects.all(),
-        widget=forms.Select(attrs={'required': 'true'}))
-    quantity = forms.FloatField(required=True,
-        widget=forms.NumberInput(attrs={'required': 'true'}))
-
     class Meta:
         model = RecipeIngredient
         exclude = ("recipe",)
+
+        widgets = {
+        'ingredient': forms.Select(attrs={'required': 'true'}),
+        'unit': forms.Select(attrs={'required': 'true'}),
+        'quantity': forms.NumberInput(attrs={'required': 'true'}),
+        }
 
 
 class BaseRecipeIngredientFormSet(BaseFormSet):
