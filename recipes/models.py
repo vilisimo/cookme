@@ -49,10 +49,7 @@ class Recipe(models.Model):
         return reverse('recipes:recipe_detail', kwargs={'slug': self.slug})
 
     def __str__(self):
-        if len(Recipe.objects.filter(title=self.title)) > 1:
-            return "{0}-{1}".format(self.title, self.pk)
-        else:
-            return self.title
+        return self.title
 
 
 # Note: there are rating packages for Django, but more fun to create it from 0.

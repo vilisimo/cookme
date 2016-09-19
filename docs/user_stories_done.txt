@@ -13,3 +13,20 @@
 Priority: MUST HAVE
 Status: FINISHED (09/09/2016)
 ***************************************************************************
+
+
+***************************************************************************
+2. User can add a recipe to his/her fridge.
+  - Test: add a recipe with title, description and ingredients.
+    Outcome: recipe is added both to a fridge and a global recipe book.
+  - Test: add a recipe without title.
+    Outcome: operation not allowed.
+  - Test: add a recipe without description.
+    Outcome: operation not allowed.
+  - Test: add recipe without ingredients.
+    Outcome: operation not allowed.
+  - Test: access fridge's page without logging in.
+    Outcome: operation not allowed, user is redirected.
+Priority: MUST HAVE
+Status: FINISHED (18/09/2016)
+***************************************************************************

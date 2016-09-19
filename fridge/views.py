@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms import formset_factory
 
-from .forms import AddRecipeFridgeForm, RecipeIngredientForm
-from .forms import BaseRecipeIngredientFormSet
+from .forms import AddRecipeFridgeForm
+from recipes.forms import BaseRecipeIngredientFormSet, RecipeIngredientForm
 from .models import FridgeIngredient, Fridge
 
 

@@ -13,8 +13,7 @@ me).
 (added: 13-09-2016).
 5. Figure out settings stuff (added: 14-09-2016).
 6. Add ingredients to a recipe (added 15-09-2016).
-7. Try adding a form for recipe ingredient and overriding required. (added 
-15-09-2016).
-8. Figure out what the jquery.formset.js script does and create another one 
+7. Figure out what the jquery.formset.js script does and create another one 
 with relevant functionality only (added 16-09-2016).
-9. Recipe detail: add ingredients! (added 16-09-2016).
+8. Recipe detail: add ingredients! (added 16-09-2016).
+9. Recipe model: add steps field (added 19-09-2016).  
