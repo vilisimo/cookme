@@ -5,8 +5,7 @@ Test suite for views, urls & templates.
 
 from django.test import TestCase
 
-from django.core.urlresolvers import reverse, resolve
-from django.contrib.auth.models import User
+from django.core.urlresolvers import resolve
 from django.test.client import Client
 
 from .models import *
@@ -38,7 +37,7 @@ class URLTests(TestCase):
 
 
 class RecipeViewTests(TestCase):
-    """ Test suite to ensure that Recipes view works correctly """
+    """ Test suite to ensure that Recipes view works correctly. """
 
     def setUp(self):
         self.client = Client()
@@ -67,12 +66,12 @@ class RecipeDetailTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_recipe_detail_view_context(self):
-        """ Test to ensure that the context is passed correct arguments """
+        """ Test to ensure that the context is passed correct arguments. """
 
         ingredient = Ingredient.objects.create(name='apple', type='Fruit')
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
         RecipeIngredient.objects.create(recipe=self.r, ingredient= ingredient,
-                                       unit=unit, quantity=0.5)
+                                        unit=unit, quantity=0.5)
 
         url = reverse('recipes:recipe_detail', kwargs={'slug': self.r.slug})
         response = self.client.get(url)
@@ -83,26 +82,12 @@ class RecipeDetailTests(TestCase):
         self.assertEqual(list(response.context['ingredients']),
                          list(ingredients))
 
-    def non_existent_recipe(self):
-        """ Ensures  that non-existent recipe throws 404 """
+    def test_non_existent_recipe(self):
+        """ Ensures that non-existent recipe throws 404. """
 
         Recipe.objects.all().delete()
 
-        url = reverse('recipes:recipe_detail', kwargs=self.r)
+        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r.slug})
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 404)
-
-""" Testing helper functions """
-
-
-# Function that is currently not used.
-class UserDirectoryPathTests(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username='test')
-        self.r = Recipe.objects.create(author=self.user, title='test')
-        self.path = user_directory_path(self.r, 'burbt')
-
-    def test_path(self):
-        self.assertEqual(self.path, "user_{0}/{1}".format(self.user.id,
-                                                          'burbt'))

@@ -11,6 +11,8 @@ from .models import Ingredient, Unit
 
 
 class IngredientTests(TestCase):
+    """ Test suite for Ingredient model. """
+
     def setUp(self):
         self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
         self.ingredient2 = Ingredient.objects.create(name='test test',
@@ -37,6 +39,8 @@ class IngredientTests(TestCase):
 
 
 class UnitsTests(TestCase):
+    """ Test suite for Unit model. """
+
     def setUp(self):
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
 

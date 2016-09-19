@@ -116,6 +116,8 @@ class AddRecipeTests(TestCase):
         data = {
             'title': 'test',
             'description': 'test',
+            'steps': 'test',
+            'cuisine': 'ot',
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
@@ -144,6 +146,8 @@ class AddRecipeTests(TestCase):
         data = {
             'title': 'test',
             'description': 'test',
+            'steps': 'test',
+            'cuisine': 'ot',
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
@@ -174,6 +178,8 @@ class AddRecipeTests(TestCase):
         data = {
             'title': 'test',
             'description': 'test',
+            'steps': 'test',
+            'cuisine': 'ot',
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
@@ -200,6 +206,8 @@ class AddRecipeTests(TestCase):
         data = {
             'title': 'test',
             'description': 'test',
+            'steps': 'test',
+            'cuisine': 'ot',
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
@@ -211,9 +219,7 @@ class AddRecipeTests(TestCase):
             'form-1-quantity': '1',
         }
 
-
-        url = reverse('fridge:fridge_detail')
-        response = self.client.post(reverse('fridge:add_recipe'), data)
+        self.client.post(reverse('fridge:add_recipe'), data)
 
         recipe = Recipe.objects.get(title='test')
         ingredients = recipe.ingredients.all()
@@ -222,8 +228,8 @@ class AddRecipeTests(TestCase):
         self.assertIn(potato, ingredients)
         self.assertIn(tomato, ingredients)
 
-    def test_add_ingredient_form_is_sent(self):
-        """ Ensures that a correct form is sent to a template """
+    def test_add_ingredient_form_is_shown(self):
+        """ Ensures that a correct form is sent to a template. """
 
         response = self.client.get(reverse('fridge:add_recipe'))
 

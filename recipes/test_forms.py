@@ -1,12 +1,74 @@
+"""
+Test suite for custom form functionality.
+"""
+
 from django.test import TestCase
 from django.forms import formset_factory
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.contrib.auth.models import User
 
 from ingredients.models import Ingredient, Unit
-from .forms import BaseRecipeIngredientFormSet, RecipeIngredientForm
+from .forms import (
+    BaseRecipeIngredientFormSet,
+    RecipeIngredientForm,
+    AddRecipeForm,
+)
+
+
+class AddRecipeFormTests(TestCase):
+    """ Test suite to test the AddRecipeForm. """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+
+    def test_add_recipe_form_valid(self):
+        """ Ensure that information is entered into the fields. """
+
+        data = {'author': self.user, 'title': 'test', 'description': 'test',
+                'cuisine': 'ot', 'steps': 'step'}
+        form = AddRecipeForm(data=data)
+
+        self.assertTrue(form.is_valid())
+
+    def test_add_recipe_form_missing_values(self):
+        """ Ensure that empty data cannot be passed. """
+
+        data = {'title': '   ', 'description': 'test'}
+        form = AddRecipeForm(data=data)
+
+        self.assertFalse(form.is_valid())
+
+        data = {'title': 'test', 'description': ' '}
+        form = AddRecipeForm(data=data)
+
+        self.assertFalse(form.is_valid())
+
+        data = {'title': 'test', 'description': 'test', 'cuisine': '  ',
+                'steps': 'step'}
+        form = AddRecipeForm(data=data)
+
+        self.assertFalse(form.is_valid())
+
+        data = {'title': 'test', 'description': 'test', 'cuisine': 'test',
+                'steps': '  '}
+        form = AddRecipeForm(data=data)
+
+        self.assertFalse(form.is_valid())
+
+    def test_image_field(self):
+        """ Ensure that the form can take image field. """
+
+        with open('static/test/test.png', 'rb') as image:
+            data = {'title': 'test', 'description': 'testing', 'cuisine': 'ot',
+                    'steps': 'step'}
+            image_data = {'image': SimpleUploadedFile(image.name, image.read())}
+            form = AddRecipeForm(data=data, files=image_data)
+
+            self.assertTrue(form.is_valid())
 
 
 class RecipeIngredientFormSetTests(TestCase):
-    """ Test suite to ensure that custom formset functions work properly """
+    """ Test suite to ensure that custom formset functions work properly. """
 
     def setUp(self):
         self.potato = Ingredient.objects.create(name='Potato', type='Vegetable')
@@ -16,7 +78,7 @@ class RecipeIngredientFormSetTests(TestCase):
     def test_formset_empty(self):
         """
         Ensure that a formset cannot be empty (by default it can, even if all
-        fields are required)
+        fields are required).
         """
 
         RecInFormSet = formset_factory(RecipeIngredientForm,
@@ -32,7 +94,7 @@ class RecipeIngredientFormSetTests(TestCase):
 
     def test_formset_same_ingredients(self):
         """
-        Ensure that an error is shown when the same ingredients are selected
+        Ensure that an error is shown when the same ingredients are selected.
         """
 
         RecInFormSet = formset_factory(RecipeIngredientForm,
@@ -56,7 +118,7 @@ class RecipeIngredientFormSetTests(TestCase):
                       formset.non_form_errors())
 
     def test_formset_different_ingredients(self):
-        """ Ensure that a user can select different ingredients """
+        """ Ensure that a user can select different ingredients. """
 
         RecInFormSet = formset_factory(RecipeIngredientForm,
                                        formset=BaseRecipeIngredientFormSet)
@@ -78,7 +140,7 @@ class RecipeIngredientFormSetTests(TestCase):
 
 
 class RecipeIngredientFormTests(TestCase):
-    """ Test suite to ensure that RecipeIngredient creation form is ok """
+    """ Test suite to ensure that RecipeIngredient creation form is ok. """
 
     def setUp(self):
         self.potato = Ingredient.objects.create(name='Potato', type='Vegetable')
@@ -86,7 +148,7 @@ class RecipeIngredientFormTests(TestCase):
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
 
     def test_fields_empty(self):
-        """ Ensure that information is entered into the fields """
+        """ Ensure that information is entered into the fields. """
 
         data = dict()
         form = RecipeIngredientForm(data=data)
@@ -102,7 +164,7 @@ class RecipeIngredientFormTests(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_fields_filled_in(self):
-        """ Ensures that filled in form is considered to be valid """
+        """ Ensures that filled in form is considered to be valid. """
 
         data = {'ingredient': self.potato.pk, 'unit': self.unit.pk, 'quantity':
                 1.0}

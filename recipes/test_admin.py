@@ -38,3 +38,13 @@ class RecipeAdminTests(TestCase):
         ma = RecipeAdmin(Recipe, self.site)
 
         self.assertEqual(ma.ingredient_list(self.recipe), expected)
+
+    def test_step_list(self):
+        """ Test to ensure that steps are shown properly. """
+
+        steps = "; ".join(['step1', 'step2'])
+        recipe = Recipe.objects.create(author=self.user, title='test',
+                                       steps='step1\n\nstep2')
+        ma = RecipeAdmin(Recipe, self.site)
+
+        self.assertEqual(ma.steps_display(recipe), steps)

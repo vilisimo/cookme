@@ -30,7 +30,7 @@ INGREDIENTS = sorted(INGREDIENTS, key=lambda x: x[1])
 
 
 class Ingredient(models.Model):
-    """    Model that represents ingredients of recipes.    """
+    """ Model that represents ingredients of recipes. """
 
     name = models.CharField(max_length=250, null=False, unique=True)
     type = models.CharField(max_length=250, null=False, choices=INGREDIENTS)

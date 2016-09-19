@@ -13,6 +13,8 @@ from .views import ingredient_detail
 
 
 class IngredientDetailViewsURLsTests(TestCase):
+    """ Test suite to ensure that ingredient_detail view works correctly. """
+
     def setUp(self):
         self.client = Client()
         self.logged = logged_in_client()
@@ -38,7 +40,9 @@ class IngredientDetailViewsURLsTests(TestCase):
         self.assertEqual(response2.status_code, 200)
 
     def test_no_ingredient_404(self):
-        """ Ensures that a user is shown 404 error when there are no ingr. """
+        """
+        Ensures that a user is shown 404 error when there is no ingredient.
+        """
 
         Ingredient.objects.all().delete()
 

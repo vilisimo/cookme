@@ -7,11 +7,13 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
-from .models import Recipe, Rating, RecipeIngredient
+from .models import Recipe, Rating, RecipeIngredient, user_directory_path
 from ingredients.models import Ingredient, Unit
 
 
 class RecipeTestCase(TestCase):
+    """ Test suite for Recipe model. """
+
     def setUp(self):
         self.user = User.objects.create(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test',
@@ -20,49 +22,54 @@ class RecipeTestCase(TestCase):
                                        description='')
         self.time = timezone.now()
 
+    def test_description_default(self):
+        """
+        Ensures that when description is not provided, a default value is given.
+        """
+
+        test_recipe = Recipe.objects.create(author=self.user, title='test')
+        self.assertTrue(test_recipe.description)
+        self.assertTrue(test_recipe.description == "No description provided.")
+
+    def test_steps_default(self):
+        """
+        Ensures that when steps are not provided, a default value is given.
+        """
+
+        test_recipe = Recipe.objects.create(author=self.user, title='test')
+
+        self.assertTrue(test_recipe.steps)
+        self.assertTrue(test_recipe.steps ==
+                        "No steps provided. Time to get creative!")
+
+    def test_steps_newlines(self):
+        """
+        Ensures that a steps are split when one or more newlines are
+        encountered.
+        """
+
+        steps_split = ['step1', 'step2']
+        recipe = Recipe.objects.create(author=self.user, title='test',
+                                       steps='step1\n\nstep2')
+
+        self.assertEqual(recipe.step_list(), steps_split)
+
     def test_str_representation_one_name(self):
-        """
-        Ensure that string representation does not contain numbers when
-        recipe name is more or less unique.
-        """
+        """ Ensures that string representation is correct. """
+
         recipe = Recipe.objects.create(author=self.user, title='another',
                                        description='')
-
-        self.assertEqual(str(recipe), recipe.title)
-
-    def test_str_representation_one_name_other_similar(self):
-        """
-        Ensure that string representation does not have numbers when recipe
-        names contain the same (part of the) string
-        """
-
-        recipe = Recipe.objects.create(author=self.user, title='one',
-                                       description='')
-        Recipe.objects.create(author=self.user, title='phone',
-                              description='')
-
-        self.assertEqual(str(recipe), recipe.title)
-
-    def test_str_representation_one_name_other_similar_in_part(self):
-        """
-        Ensure that string representation does not have numbers when recipe
-        name is in another recipe's name (e.g.: 'test' vs 'test recipe'.)
-        """
-
-        recipe = Recipe.objects.create(author=self.user, title='one',
-                                       description='')
-        Recipe.objects.create(author=self.user, title='one one',
-                              description='')
 
         self.assertEqual(str(recipe), recipe.title)
 
     def test_str_representation_two_same_names(self):
         """
         Test recipe string representation when there are two recipes with the
-        same name.
+        same name. Should be the same (as str repr. is established at run-time,
+        it makes little sense to make them different - it's just confusing).
         """
 
-        self.assertEqual(str(self.r), "{0}-{1}".format(self.r.title, self.r.pk))
+        self.assertEqual(str(self.r), self.r.title)
 
     def test_date_field(self):
         """ Pretty lame test! """
@@ -70,17 +77,30 @@ class RecipeTestCase(TestCase):
         self.assertNotEquals(self.r.date, self.time)
 
     def test_slug_field_remains_the_same(self):
+        """
+        Ensures that even when the title changes, the slug remains the same
+        to avoid broken links.
+        """
+
         self.r.title = 'test2'
         self.assertNotEquals(self.r.slug, slugify(self.r.title))
 
     def test_unique_slug_creation(self):
-        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title, 2))
+        """ Ensures that a unique slug is created for every recipe. """
+
+        count = len(Recipe.objects.all())
+
+        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title, count))
 
     def test_slug_field_is_unique(self):
+        """ Ensures that a unique slug is created for every recipe. """
+
         self.assertNotEquals(self.a.slug, self.r.slug)
 
 
 class RatingTestCase(TestCase):
+    """ Test suite for Rating model. """
+
     def setUp(self):
         self.user = User.objects.create(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test',
@@ -89,11 +109,15 @@ class RatingTestCase(TestCase):
                                             stars=1)
 
     def test_str_representation(self):
+        """ Ensures that rating's string representation is correct. """
+
         self.assertEqual(str(self.rating), "{0}\'s {1} rating: {2}".format(
             self.user.username, self.r, self.rating.stars))
 
 
 class RecipeIngredientTestCase(TestCase):
+    """ Test suite for RecipeIngredient model. """
+
     def setUp(self):
         self.user = User.objects.create(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test')
@@ -104,5 +128,23 @@ class RecipeIngredientTestCase(TestCase):
                                                   unit=self.unit, quantity=1)
 
     def test_str_representation(self):
+        """ Ensures that RecipeIngredient string representation is correct. """
+
         self.assertEqual(str(self.ri), "{0} in {1}".format(self.ingredient,
                                                            self.r))
+
+
+""" Testing helper functions """
+
+
+# Function is currently not used.
+class UserDirectoryPathTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create(username='test')
+        self.r = Recipe.objects.create(author=self.user, title='test')
+        self.path = user_directory_path(self.r, 'burbt')
+
+    def test_path(self):
+        """ Ensure that a constructed path is correct. """
+        self.assertEqual(self.path, "user_{0}/{1}".format(self.user.id,
+                                                          'burbt'))

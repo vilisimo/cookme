@@ -36,12 +36,13 @@ def recipe_detail(request, slug):
     context = {
         'author': recipe.author,
         'title': recipe.title,
+        'cuisine': recipe.get_cuisine_display(),
         'description': recipe.description,
         'date': recipe.date,
         'views': recipe.views,
         'image': recipe.image,
+        'steps': recipe.step_list(),
         'ingredients': ingredients,
-
     }
 
     return render(request, 'recipes/recipe_detail.html', context)

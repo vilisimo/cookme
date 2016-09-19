@@ -17,13 +17,13 @@ class FridgeTests(TestCase):
         self.fridge = Fridge.objects.create(user=self.user)
 
     def test_str_representation(self):
-        """ Ensures that a correct string represent. is constructed """
+        """ Ensures that a correct string represent. is constructed. """
 
         self.assertEqual(str(self.fridge), "{0}'s fridge".format(
             self.user.username))
 
     def test_absolute_url(self):
-        """ Ensures that the absolute URL routes to correct view """
+        """ Ensures that the absolute URL routes to correct view. """
 
         resolver = resolve(self.fridge.get_absolute_url())
 
@@ -39,7 +39,7 @@ class FridgeIngredientTests(TestCase):
                                                   ingredient=self.ingredient)
 
     def test_str_representation(self):
-        """ Ensures that a correct string represent. is constructed """
+        """ Ensures that a correct string represent. is constructed. """
 
         self.assertEquals(str(self.fi), "{0} in {1}".format(self.ingredient,
                                                             self.fridge))

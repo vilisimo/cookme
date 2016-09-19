@@ -7,7 +7,7 @@ from .models import Recipe, RecipeIngredient
 
 
 class RecipeTemplateTests(TestCase):
-    """ Test suite to ensure that recipe template shows what it should """
+    """ Test suite to ensure that recipe template shows what it should. """
 
     def setUp(self):
         self.client = Client()
@@ -18,7 +18,7 @@ class RecipeTemplateTests(TestCase):
                                         description='test2')
 
     def test_recipes_template_recipes(self):
-        """ Ensures that the template shows all recipes """
+        """ Ensures that the template shows all recipes. """
 
         url = reverse('recipes:recipes')
         response = self.client.get(url)
@@ -28,7 +28,7 @@ class RecipeTemplateTests(TestCase):
         self.assertContains(response, self.r2.title)
 
     def test_recipes_template_author(self):
-        """ Ensures that the author is shown """
+        """ Ensures that the author is shown. """
 
         url = reverse('recipes:recipes')
         response = self.client.get(url)
@@ -38,34 +38,34 @@ class RecipeTemplateTests(TestCase):
 
 
 class RecipeDetailTemplateTests(TestCase):
-    """ Test suite to ensure that recipe detail template is correct"""
+    """ Test suite to ensure that recipe detail template is correct. """
 
     def setUp(self):
         self.client = Client()
-        self.u = User.objects.create_user(username='test', password='test')
-        self.r1 = Recipe.objects.create(author=self.u, title='test1',
+        self.user = User.objects.create_user(username='test', password='test')
+        self.r1 = Recipe.objects.create(author=self.user, title='test1',
                                         description='test1')
 
-        self.i = Ingredient.objects.create(name='apple', type='Fruit')
+        self.i1 = Ingredient.objects.create(name='apple', type='Fruit')
         self.i2 = Ingredient.objects.create(name='orange', type='Orange')
-        self.u = Unit.objects.create(name='kilogram', abbrev='kg')
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
 
-        RecipeIngredient.objects.create(recipe=self.r1, ingredient=self.i,
-                                        unit=self.u, quantity=0.5)
+        RecipeIngredient.objects.create(recipe=self.r1, ingredient=self.i1,
+                                        unit=self.unit, quantity=0.5)
         RecipeIngredient.objects.create(recipe=self.r1, ingredient=self.i2,
-                                        unit=self.u, quantity=0.5)
+                                        unit=self.unit, quantity=0.5)
 
     def test_recipe_detail_ingredients(self):
-        """ Ensures that all ingredients are listed """
+        """ Ensures that all ingredients are listed. """
 
         url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
         response = self.client.get(url)
 
-        self.assertContains(response, self.i)
+        self.assertContains(response, self.i1)
         self.assertContains(response, self.i2)
 
     def test_recipe_detail_ingredient_quantity(self):
-        """ Ensures that quantity is shown """
+        """ Ensures that quantity is shown. """
 
         ingredient = RecipeIngredient.objects.all()
 
@@ -76,9 +76,70 @@ class RecipeDetailTemplateTests(TestCase):
         self.assertContains(response, ingredient[1].quantity)
 
     def test_recipe_detail_unit(self):
-        """ Ensures that units are shown """
+        """ Ensures that units are shown. """
 
         url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
         response = self.client.get(url)
 
-        self.assertContains(response, self.u.abbrev)
+        self.assertContains(response, self.unit.abbrev)
+
+    def test_recipe_detail_one_step(self):
+        """ Ensures that default value is shown correctly in the template. """
+
+        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
+        response = self.client.get(url)
+
+        self.assertEqual(response.context['steps'], self.r1.step_list())
+        self.assertContains(response, "<p>{0}</p>".format(self.r1.steps),
+                            html=True)
+
+    def test_recipe_detail_one_step_non_default(self):
+        """ Ensures that non-default value is shown in the template. """
+
+        recipe = Recipe.objects.create(author=self.user, title='test',
+                                       description='test', steps='step1')
+        url = reverse('recipes:recipe_detail', kwargs={'slug': recipe.slug})
+        response = self.client.get(url)
+
+        self.assertEqual(response.context['steps'], recipe.step_list())
+        self.assertContains(response, "<p>{0}</p>".format(recipe.steps),
+                            html=True)
+
+    def test_recipe_detail_two_steps(self):
+        """
+        Ensures that when two or more steps are given, they are correctly
+        labeled as "step [n]".
+        """
+
+        recipe = Recipe.objects.create(author=self.user, title='test',
+                                       description='test',
+                                       steps='step1\n\nstep2')
+        steps = recipe.step_list()
+        url = reverse('recipes:recipe_detail', kwargs={'slug': recipe.slug})
+        response = self.client.get(url)
+
+        self.assertEqual(response.context['steps'], steps)
+        self.assertContains(response, "<p>{0}</p>".format(steps[1]), html=True)
+
+    def test_recipe_cuisine(self):
+        """
+        Ensures recipe_detail template shows cuisine the recipe comes form.
+        """
+
+        r = Recipe.objects.create(author=self.user, title='test',
+                                  description='test')
+        url = reverse('recipes:recipe_detail', kwargs={'slug': r.slug})
+        response = self.client.get(url)
+
+        self.assertEqual(response.context['cuisine'], r.get_cuisine_display())
+        self.assertContains(response, r.get_cuisine_display())
+
+        r = Recipe.objects.create(author=self.user, title='test',
+                                  description='test', cuisine='fr')
+        url = reverse('recipes:recipe_detail', kwargs={'slug': r.slug})
+        response = self.client.get(url)
+
+        self.assertContains(response, r.get_cuisine_display())
+
+
+

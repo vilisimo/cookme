@@ -13,14 +13,14 @@ from .models import Fridge, FridgeIngredient
 
 
 class AddRecipeTests(TestCase):
-    """ Test suite to check whether add_recipe template is correct """
+    """ Test suite to check whether add_recipe template is correct. """
 
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
 
     def test_add_recipe_form_is_sent(self):
-        """ Ensures that a form & formset is sent to a template """
+        """ Ensures that a form & formset is sent to a template. """
 
         response = self.client.get(reverse('fridge:add_recipe'))
         self.assertIn('form', response.context)
@@ -44,13 +44,25 @@ class AddRecipeTests(TestCase):
         }
         response = self.client.post(reverse('fridge:add_recipe'), data)
 
-        self.assertContains(response, 'This field is required')
+        self.assertContains(response, 'This field is required.')
 
         data['title'] = 'test'
-        data['description'] = ''
+        data['description'] = '   '
         response = self.client.post(reverse('fridge:add_recipe'), data)
 
-        self.assertContains(response, 'This field is required')
+        self.assertContains(response, 'This field is required.')
+
+        data['description'] = 'test'
+        data['cuisine'] = ''
+        response = self.client.post(reverse('fridge:add_recipe'), data)
+
+        self.assertContains(response, 'This field is required.')
+
+        data['cuisine'] = 'ot'
+        data['steps'] = '   '
+        response = self.client.post(reverse('fridge:add_recipe'), data)
+
+        self.assertContains(response, 'This field is required.')
 
     def test_form_invalid_same_ingredients(self):
         """
@@ -78,30 +90,33 @@ class AddRecipeTests(TestCase):
 
     def test_form_invalid_missing_ingredient(self):
         """
-        Ensures that missing fields are caught and an error message is shown.
+        Ensures that ingredients are required and skipping them is not allowed.
+        Error message should be shown, in case HTML validation fails.
         """
 
         data = {
             'title': 'test',
             'description': 'test',
+            'cuisine': 'ot',
+            'steps': 'step1',
             'form-TOTAL_FORMS': '1',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
         }
         response = self.client.post(reverse('fridge:add_recipe'), data)
 
-        self.assertContains(response, 'This field is required')
+        self.assertContains(response, 'This field is required.')
 
 
 class FridgeDetailTests(TestCase):
-    """ Test suite to ensure that fridge_detail template is correct """
+    """ Test suite to ensure that fridge_detail template is correct. """
 
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
 
     def test_fridge_has_add_recipe_link(self):
-        """ Ensures a user sees link to add_recipe view """
+        """ Ensures a user sees link to add_recipe view. """
 
         response = self.client.get(reverse('fridge:fridge_detail'))
 

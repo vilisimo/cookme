@@ -4,13 +4,19 @@ from .models import Recipe, Rating, RecipeIngredient
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('author', 'title', 'description', 'ingredient_list', 'date',
-                    'views', 'slug', 'image')
+    list_display = ('title', 'author', 'description', 'steps_display',
+                    'ingredient_list', 'cuisine', 'views', 'slug', 'image',
+                    'date',)
+    list_display_links = ('title',)
     prepopulated_fields = {"slug": ("title",)}
 
     def ingredient_list(self, obj):
         return ", ".join([ingredient.name for ingredient in \
                           obj.ingredients.all()])
+
+    def steps_display(self, obj):
+        st_list = obj.step_list()
+        return "; ".join([step for step in st_list])
 
 
 class RatingAdmin(admin.ModelAdmin):

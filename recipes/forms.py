@@ -2,7 +2,43 @@ from django import forms
 from django.forms import ModelForm, BaseFormSet
 from django.utils.translation import gettext as _
 
-from .models import RecipeIngredient
+from .models import RecipeIngredient, Recipe
+
+
+class AddRecipeForm(ModelForm):
+    """
+    The form to create a recipe instance. That is, create a recipe and add it
+    to a fridge. If user wants to add an exiting recipe to a fridge, he/she
+    has to navigate to that fridge and click appropriate button.
+    """
+
+    class Meta:
+        model = Recipe
+        fields = ("title", "description", "steps", "cuisine", "image",)
+
+        widgets = {
+            'title': forms.TextInput(
+                attrs={'placeholder': 'Recipe\'s title'}
+            ),
+            'description': forms.Textarea(
+                attrs={'placeholder': 'Please provide a short description of '
+                                      'the recipe.'}
+            ),
+            'steps': forms.Textarea(
+                attrs={'placeholder': 'Please explain how to prepare a dish. '
+                                      'Provide each step on a new line. '
+                                      'Multiple new lines can be used.'}
+            ),
+            'cuisine': forms.Select(
+                attrs={'required': 'true'}
+            ),
+        }
+
+        labels = {
+            'title': '',
+            'description': '',
+            'steps': '',
+        }
 
 
 class RecipeIngredientForm(ModelForm):

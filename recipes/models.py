@@ -1,3 +1,5 @@
+import re
+
 from django.db import models
 from django.utils import timezone
 from django.urls import reverse
@@ -17,9 +19,36 @@ def user_directory_path(instance, filename):
 class Recipe(models.Model):
     """    Model that represents recipes.    """
 
+    CUISINES = (
+        ('us', 'American'),
+        ('au', 'Australian'),
+        ('br', 'Brazilian'),
+        ('cr', 'Caribbean'),
+        ('cn', 'Chinese'),
+        ('ph', 'Filipino'),
+        ('fr', 'French'),
+        ('de', 'German'),
+        ('gr', 'Greek'),
+        ('in', 'Indian'),
+        ('id', 'Indonesian'),
+        ('it', 'Italian'),
+        ('jp', 'Japanese'),
+        ('kr', 'Korean'),
+        ('lb', 'Lebanese'),
+        ('mx', 'Mexican'),
+        ('th', 'Thai'),
+        ('sc', 'Scotland'),
+        ('za', 'South African'),
+        ('es', 'Spanish'),
+        ('ot', 'Other'),
+    )
+
     author = models.ForeignKey(User)
     title = models.CharField(max_length=250, null=False)
-    description = models.TextField()
+    description = models.TextField(null=False, blank=False)
+    steps = models.TextField(null=False, blank=False)
+    cuisine = models.CharField(max_length=2, choices=CUISINES, default='ot',
+                               blank=False, null=False)
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
     date = models.DateTimeField(editable=False)
     views = models.PositiveIntegerField(default=0)
@@ -30,11 +59,22 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         """
         Date is updated only when model is saved.
+
         Unique (user-friendly, hence 2) slug is assigned upon creation.
+
+        Steps/description is populated if no values are provided.
         """
 
         if not self.id:
             self.date = timezone.now()
+
+            # Could be done in templates. However, perhaps better to save
+            # once, rather than evaluating it over and over again upon
+            # accessing the template?
+            if not self.steps:
+                self.steps = "No steps provided. Time to get creative!"
+            if not self.description:
+                self.description = "No description provided."
 
             i = 2  # user-friendly; if we find something, there are 2 instances
             slug = slugify(self.title)
@@ -44,6 +84,9 @@ class Recipe(models.Model):
             self.slug = slug
 
         return super(Recipe, self).save(*args, **kwargs)
+
+    def step_list(self):
+        return re.split(r'[\n\r]+', self.steps)
 
     def get_absolute_url(self):
         return reverse('recipes:recipe_detail', kwargs={'slug': self.slug})

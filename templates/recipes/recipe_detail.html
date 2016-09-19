@@ -5,13 +5,26 @@
     <h2>{{ title }}</h2>
     Uploaded by: {{ author }} on {{ date }}
 
+    <h3>Cuisine</h3>
+    <!-- Should this be with in a separate paragraph? -->
+    {{ cuisine }}
+
     <h3>Description:</h3>
-    <p>{{ description }}</p>
+    <!-- Two new lines become <p>. Do not forget to apply styles.-->
+    {{ description|linebreaks }}
+
+    <h3>Process</h3>
+    <!-- Style paragraphs with CSS, so that there is some space between. -->
+    {% for step in steps %}
+        <p>{{ step }}</p>
+    {% endfor %}
 
     <h4>Views</h4>
+    <!-- Should this be with in a separate paragraph? -->
     {{ views }}
 
-    <br />surround with img tag: {{ image.url }}
+    <h4>Image</h4>
+    Surround with img tag: {{ image.url }}
 
     <h2>Ingredients</h2>
     {% if ingredients %}

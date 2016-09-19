@@ -11,6 +11,10 @@ from .models import Ingredient
 
 
 class IngredientDetailTemplateTests(TestCase):
+    """
+    Test suite to ensure that ingredient_detail template renders correctly.
+    """
+
     def setUp(self):
         self.client = Client()
         self.logged = logged_in_client()
@@ -19,8 +23,7 @@ class IngredientDetailTemplateTests(TestCase):
 
     def test_template_shows_correct_info(self):
         """
-        Ensures that the ingredient_detail template shows all required
-        info.
+        Ensures that the ingredient_detail template shows all required info.
         """
 
         response = self.client.get(reverse('ingredients:ingredient_detail',

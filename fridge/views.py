@@ -3,8 +3,11 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms import formset_factory
 
-from .forms import AddRecipeFridgeForm
-from recipes.forms import BaseRecipeIngredientFormSet, RecipeIngredientForm
+from recipes.forms import (
+    BaseRecipeIngredientFormSet,
+    RecipeIngredientForm,
+    AddRecipeForm,
+)
 from .models import FridgeIngredient, Fridge
 
 
@@ -35,7 +38,7 @@ def add_recipe(request):
                                    formset=BaseRecipeIngredientFormSet)
 
     if request.method == 'POST':
-        form = AddRecipeFridgeForm(request.POST, request.FILES)
+        form = AddRecipeForm(request.POST, request.FILES)
         formset = RecInFormset(request.POST)
         if all([form.is_valid(), formset.is_valid()]):
             # Author field cannot be null. Hence, assign authorship to the user.
@@ -55,7 +58,7 @@ def add_recipe(request):
             return HttpResponseRedirect(url)
 
     else:
-        form = AddRecipeFridgeForm()
+        form = AddRecipeForm()
         formset = RecInFormset()
 
     content = {
