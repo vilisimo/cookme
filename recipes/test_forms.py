@@ -171,6 +171,15 @@ class RecipeIngredientFormTests(TestCase):
         form = RecipeIngredientForm(data=data)
         self.assertTrue(form.is_valid())
 
+    def test_quantity_negative(self):
+        """ Ensures that quantity of an ingredient is always positive. """
+
+        data = {'ingredient': self.potato.pk, 'unit': self.unit.pk, 'quantity':
+                -0.01}
+        form = RecipeIngredientForm(data=data)
+
+        self.assertFalse(form.is_valid())
+
     def test_fields_non_existent_pks(self):
         """
         Ensures that an error is thrown if non-existent PKs are selected.

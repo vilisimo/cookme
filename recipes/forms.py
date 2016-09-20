@@ -57,7 +57,8 @@ class RecipeIngredientForm(ModelForm):
         widgets = {
             'ingredient': forms.Select(attrs={'required': 'true'}),
             'unit': forms.Select(attrs={'required': 'true'}),
-            'quantity': forms.NumberInput(attrs={'required': 'true'}),
+            'quantity': forms.NumberInput(attrs={'required': 'true',
+                                                 'min': "0"}),
         }
 
 

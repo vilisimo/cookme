@@ -121,17 +121,16 @@ class RecipeIngredientTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test')
-        self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
+        self.i = Ingredient.objects.create(name='Meat', type='Meat')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
         self.ri = RecipeIngredient.objects.create(recipe=self.r,
-                                                  ingredient=self.ingredient,
+                                                  ingredient=self.i,
                                                   unit=self.unit, quantity=1)
 
     def test_str_representation(self):
         """ Ensures that RecipeIngredient string representation is correct. """
 
-        self.assertEqual(str(self.ri), "{0} in {1}".format(self.ingredient,
-                                                           self.r))
+        self.assertEqual(str(self.ri), "{0} in {1}".format(self.i, self.r))
 
 
 """ Testing helper functions """

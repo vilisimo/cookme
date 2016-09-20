@@ -123,7 +123,8 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     ingredient = models.ForeignKey(Ingredient)
     unit = models.ForeignKey(Unit, blank=False, null=False)
-    quantity = models.FloatField(blank=False, null=False)
+    quantity = models.FloatField(validators=[MinValueValidator(0)],
+                                 blank=False, null=False)
 
     class Meta:
         unique_together = ('recipe', 'ingredient')
