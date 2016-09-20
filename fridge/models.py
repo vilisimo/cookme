@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator
 
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
@@ -26,14 +27,18 @@ class Fridge(models.Model):
 
 class FridgeIngredient(models.Model):
     """
-    Model representing ingredients in the fridge. Note on quantity: users may
-    not necessarily know how much of an ingredient they have.
+    Model representing ingredients in the fridge.
+
+    To make calculations easier, user is required to enter quantities and
+    units. Alternative: could offer several search options: exact (with
+    quantities), not exact (without, match only on ingredients).
     """
 
     fridge = models.ForeignKey(Fridge)
     ingredient = models.ForeignKey(Ingredient)
-    unit = models.ForeignKey(Unit, blank=True, null=True)
-    quantity = models.FloatField(blank=True, null=True)
+    unit = models.ForeignKey(Unit, blank=False, null=False)
+    quantity = models.FloatField(validators=[MinValueValidator(0)],
+                                 blank=False, null=False)
 
     class Meta:
         unique_together = ('fridge', 'ingredient')

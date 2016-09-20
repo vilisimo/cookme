@@ -8,7 +8,7 @@ from django.core.urlresolvers import resolve
 from django.contrib.auth.models import User
 
 from .models import Fridge, FridgeIngredient
-from ingredients.models import Ingredient
+from ingredients.models import Ingredient, Unit
 
 
 class FridgeTests(TestCase):
@@ -34,9 +34,11 @@ class FridgeIngredientTests(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
         self.fridge = Fridge.objects.create(user=self.user)
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
         self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
         self.fi = FridgeIngredient.objects.create(fridge=self.fridge,
-                                                  ingredient=self.ingredient)
+                                                  ingredient=self.ingredient,
+                                                  unit=self.unit, quantity=1)
 
     def test_str_representation(self):
         """ Ensures that a correct string represent. is constructed. """

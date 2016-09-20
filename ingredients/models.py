@@ -51,7 +51,11 @@ class Ingredient(models.Model):
 
 
 class Unit(models.Model):
-    """ Model representing quantities, such as oz, kg, ml, etc. """
+    """
+    Model representing quantities, such as oz, kg, ml, etc.
+
+    Note that it should also allow inputting blank units, e.g. 5 apples.
+    """
 
     name = models.CharField(max_length=30, blank=False, null=False, unique=True)
     abbrev = models.CharField(max_length=5, blank=True, null=True)

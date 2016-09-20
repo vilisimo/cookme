@@ -1,11 +1,10 @@
 from django import forms
-from django.forms import ModelForm, BaseFormSet
 from django.utils.translation import gettext as _
 
 from .models import RecipeIngredient, Recipe
 
 
-class AddRecipeForm(ModelForm):
+class AddRecipeForm(forms.ModelForm):
     """
     The form to create a recipe instance. That is, create a recipe and add it
     to a fridge. If user wants to add an exiting recipe to a fridge, he/she
@@ -41,13 +40,19 @@ class AddRecipeForm(ModelForm):
         }
 
 
-class RecipeIngredientForm(ModelForm):
+class RecipeIngredientForm(forms.ModelForm):
     """
-    The form that is used to add associate an ingredient with a given recipe.
+    A form that is used to add associate an ingredient with a given recipe.
+
     Note that several of these forms must be used in order to add more than one
     ingredient. For this, JavaScript can be employed to create them on the fly.
+
     Also note that recipe is excluded: this is done so because recipe is not
     yet created, as the form is shown on the same page.
+
+    Note that even though HTML5 validation for minimum numbers is employed,
+    there is also a MinValueValidator in the RecipeIngredient model, to ensure
+    that there is no situation where <0 value is provided.
     """
 
     class Meta:
@@ -58,11 +63,11 @@ class RecipeIngredientForm(ModelForm):
             'ingredient': forms.Select(attrs={'required': 'true'}),
             'unit': forms.Select(attrs={'required': 'true'}),
             'quantity': forms.NumberInput(attrs={'required': 'true',
-                                                 'min': "0"}),
+                                                 'min': '0'}),
         }
 
 
-class BaseRecipeIngredientFormSet(BaseFormSet):
+class BaseRecipeIngredientFormSet(forms.BaseFormSet):
     def __init__(self, *args, **kwargs):
         """
         Avoids the problem where the user may try to add a recipe & a formset

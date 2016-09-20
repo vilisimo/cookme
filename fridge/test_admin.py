@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.contrib.admin.sites import AdminSite
 
-from ingredients.models import Ingredient
+from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
 from .models import Fridge, FridgeIngredient
 from .admin import FridgeAdmin
@@ -27,10 +27,13 @@ class FridgeAdminTests(TestCase):
     def test_ingredient_list(self):
         """ Test to ensure that ingredient list shows up properly. """
 
+        u = Unit.objects.create(name='kilogram', abbrev='kg')
         i1 = Ingredient.objects.create(name='Apple', type='Fruit')
         i2 = Ingredient.objects.create(name='Orange', type='Fruit')
-        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i1)
-        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i2)
+        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i1,
+                                        unit=u, quantity=1)
+        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i2,
+                                        unit=u, quantity=1)
 
         expected = ", ".join([i1.name, i2.name])
         fa = FridgeAdmin(Fridge, self.site)
