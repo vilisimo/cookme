@@ -9,6 +9,7 @@ from recipes.forms import (
     AddRecipeForm,
 )
 from .models import FridgeIngredient, Fridge
+from .forms import FridgeIngredientForm
 
 
 @login_required
@@ -75,6 +76,16 @@ def fridge_detail(request):
     """
     Responsible for displaying the user's fridge.
 
+    Note that form to add an ingredient is also shown here, as there is no
+    need for a separate page for such a small form.
+
+    Form logic: if we try to add something that already exists, we do not
+    want to create a separate FridgeIngredient instance. We want to update
+    the existing one. The only thing that changes is quantity, thus we
+    increment it. Alternatively, a new value could be used instead. On the
+    other hand, if a FridgeIngredient instance does not exists, we create it,
+    by passing in a fridge, which is not supplied with a form (but is required).
+
     :param  request: default request object
     :return:         default render object
     """
@@ -84,12 +95,31 @@ def fridge_detail(request):
     ingredients = FridgeIngredient.objects.filter(fridge=fridge)
     recipes = fridge.recipes.all()
 
+    if request.method == 'POST':
+        form = FridgeIngredientForm(request.POST)
+        if form.is_valid():
+            fi = form.save(commit=False)
+            try:
+                # If F.I. exists, we do not need to create it, only update it.
+                fi = FridgeIngredient.objects.get(fridge=fridge,
+                                                  ingredient=fi.ingredient)
+                fi.quantity += float(form.cleaned_data['quantity'])
+            except FridgeIngredient.DoesNotExist:
+                # If it does not, we need to supply fridge in order to save it.
+                fi.fridge = fridge
+            fi.save()
+
+            url = reverse('fridge:fridge_detail')
+
+            return HttpResponseRedirect(url)
+    else:
+        form = FridgeIngredientForm()
+
     content = {
         'fridge': fridge,
         'ingredients': ingredients,
         'recipes': recipes,
+        'form': form,
     }
 
     return render(request, 'fridge/fridge_detail.html', content)
-
-

@@ -108,6 +108,56 @@ class AddRecipeTests(TestCase):
         self.assertContains(response, 'This field is required.')
 
 
+class FridgeDetailFridgeIngredientFormTests(TestCase):
+    """ Test suite to ensure that FridgeIngredient form performs well. """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        self.client = logged_in_client()
+
+    def test_form_no_ingredient(self):
+        """ Ensure that when no ingredient is given, error is shown. """
+
+        url = reverse('fridge:fridge_detail')
+        data = {'ingredient': '', 'unit': self.unit, 'quantity': 1}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'This field is required.')
+
+    def test_form_no_unit(self):
+        """ Ensure that when no unit is given, error is shown. """
+
+        url = reverse('fridge:fridge_detail')
+        data = {'ingredient': 'test', 'unit': '', 'quantity': 1}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'This field is required.')
+
+    def test_form_no_quantity(self):
+        """ Ensure that when no quantity is given, error is shown. """
+
+        url = reverse('fridge:fridge_detail')
+        data = {'ingredient': 'test', 'unit': self.unit.pk}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+        # why is 'ingredient': None allowed? Different error than required?
+        self.assertContains(response, 'This field is required.')
+
+    def test_form_is_shown(self):
+        """
+        Ensures that a form is shown to a user. Dubious value: string may
+        change.
+        """
+
+        url = reverse('fridge:fridge_detail')
+        response = self.client.get(url)
+
+        self.assertContains(response, 'Add Ingredient')
+
 class FridgeDetailTests(TestCase):
     """ Test suite to ensure that fridge_detail template is correct. """
 

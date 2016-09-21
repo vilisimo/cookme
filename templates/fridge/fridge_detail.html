@@ -6,8 +6,8 @@
         <!-- Take care of spacing with CSS -->
         <br/><br/>
         <div class="fridge-recipes">
+            <h3>Recipes</h3>
             {% if recipes %}
-                <h3>Favorite recipes</h3>
                 {% for recipe in recipes %}
                     <ul>
                         <li>
@@ -32,10 +32,10 @@
 
         <!-- Take care of spacing with CSS -->
         <br/><br/>
+        <h3>Ingredients</h3>
         <div class="fridge-ingredients">
             {% if ingredients %}
                 <!-- Should this div cover else statement as well? -->
-                    <h3>Ingredients in the fridge:</h3>
                     <ul>
                         {% for ingredient in ingredients %}
                             <li>
@@ -53,6 +53,32 @@
                     time to do some shopping..?
                 </p>
             {% endif %}
+        </div>
+
+        <div id="add-ingredient">
+        <h3>Add Ingredient</h3>
+            <form action="{% url 'fridge:fridge_detail' %}" method="post"
+                  id="fridge-ingredient-form">
+                {% csrf_token %}
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>{{ form.ingredient }}</td>
+                            <td>{{ form.quantity }}</td>
+                            <td>{{ form.unit }}</td>
+                            <!-- Is it ok to put input in TD element? -->
+                            <td><input type="submit" value="Add" /></td>
+                        </tr>
+                        <tr>
+                            <td>{{ form.ingredient.errors }}</td>
+                            <td>{{ form.quantity.errors }}</td>
+                            <td>{{ form.unit.errors }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- Where would this fit best? -->
+                {{ form.non_field_errors }}
+            </form>
         </div>
     {% else %}
         No fridge was found. That is strange!

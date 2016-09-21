@@ -14,7 +14,7 @@ class FridgeIngredientFormTests(TestCase):
     def test_fields_non_existent_pks(self):
         """ Ensures that form with non-existent primary keys is not valid. """
 
-        data = {'ingredient': 999, 'unit': 999, 'quantity': 1}
+        data = {'ingredient': 'test', 'unit': 999, 'quantity': 1}
         form = FridgeIngredientForm(data=data)
 
         self.assertFalse(form.is_valid(), "Form with non-existent PKs was "
@@ -28,7 +28,7 @@ class FridgeIngredientFormTests(TestCase):
 
         self.assertFalse(form.is_valid(), "Form with no data was valid.")
 
-        data['ingredient'] = self.p.pk
+        data['ingredient'] = 'test'
         form = FridgeIngredientForm(data=data)
 
         self.assertFalse(form.is_valid(), "Form without units and quantity "
@@ -42,7 +42,7 @@ class FridgeIngredientFormTests(TestCase):
     def test_all_correct(self):
         """ Ensure that correct input is considered to be valid. """
 
-        data = {'ingredient': self.p.pk, 'unit': self.u.pk, 'quantity': 1.1}
+        data = {'ingredient': 'test', 'unit': self.u.pk, 'quantity': 1.1}
         form = FridgeIngredientForm(data=data)
 
         self.assertTrue(form.is_valid(), "Correct data threw an error.")
@@ -50,7 +50,7 @@ class FridgeIngredientFormTests(TestCase):
     def test_negative_value(self):
         """ Ensure that negative value for quantity is not allowed. """
 
-        data = {'ingredient': self.p.pk, 'unit': self.u.pk, 'quantity': -0.1}
+        data = {'ingredient': 'test', 'unit': self.u.pk, 'quantity': -0.1}
         form = FridgeIngredientForm(data=data)
 
         self.assertFalse(form.is_valid(), "Negative value was allowed.")

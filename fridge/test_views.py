@@ -10,7 +10,7 @@ from django.test.client import Client
 
 from recipes.models import Recipe
 from ingredients.models import Ingredient, Unit
-from .models import Fridge
+from .models import Fridge, FridgeIngredient
 from .views import fridge_detail, add_recipe
 
 
@@ -245,7 +245,93 @@ class FridgeDetailViewURLsTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.fridge = Fridge.objects.create(user=self.user)
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
         self.client = logged_in_client()
+
+    def test_form_present(self):
+        """ Ensures that the form is passed to the template. """
+
+        url = reverse('fridge:fridge_detail')
+        response = self.client.get(url)
+
+        self.assertTrue(response.context['form'])
+
+    def test_form_valid(self):
+        """ Ensure that filled in form is valid. """
+
+        url = reverse('fridge:fridge_detail')
+        data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': 1}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, url)
+
+    def test_form_invalid_no_redirect(self):
+        """ Ensure that if form is invalid, user is not redirected. """
+
+        url = reverse('fridge:fridge_detail')
+        data = dict()
+        data['ingredient'] = ''
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+
+        data['ingredient'] = 'test'
+        data['unit'] = ''
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+
+        data['unit'] = self.unit.pk
+        data['quantity'] = None
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_form_valid_ingredient_created(self):
+        """ Ensure that when form is valid, ingredient is created. """
+
+        name = 'test'
+        url = reverse('fridge:fridge_detail')
+        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
+        response = self.client.post(url, data)
+
+        self.assertTrue(response.status_code, 302)
+
+        ingredient = Ingredient.objects.get(name=name.capitalize())
+
+        self.assertTrue(ingredient)
+
+    def test_form_valid_ingredient_updated(self):
+        """ Ensure that when ingredient already exists, quantity is updated. """
+
+        name = 'Test'
+        quantity = 1
+        i = Ingredient.objects.create(name=name, description='test',
+                                      type='Fruit')
+        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i,
+                                        unit=self.unit, quantity=quantity)
+        url = reverse('fridge:fridge_detail')
+        d = {'ingredient': name, 'unit': self.unit.pk, 'quantity': quantity}
+        self.client.post(url, d)
+        fi = FridgeIngredient.objects.get(ingredient=i)
+
+        self.assertEqual(fi.quantity, quantity*2)
+
+    def test_form_valid_fridge_ingredient_created(self):
+        """ Ensure that when form is valid, FridgeIngredient is created. """
+
+        name = 'Test'
+        url = reverse('fridge:fridge_detail')
+        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 302)
+
+        fi = FridgeIngredient.objects.get(fridge=Fridge.objects.get(
+            user=self.user), ingredient=Ingredient.objects.get(name=name))
+
+        self.assertTrue(fi)
 
     def test_url_resolves_to_detail_fridge(self):
         """ Ensures that URL resolves to a correct view function. """
