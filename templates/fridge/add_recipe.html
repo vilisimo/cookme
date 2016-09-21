@@ -29,22 +29,22 @@
                             <th>Unit</th>
                             <th>Quantity</th>
                         </tr>
-                    {% for form in formset.forms %}
-                        <tr>
-                            <td>{{ form.ingredient }}</td>
-                            <td>{{ form.unit }}</td>
-                            <td>{{ form.quantity }}</td>
-                        </tr>
-                        <tr>
-                        {% for field in form %}
-                            <td>
-                            {% if field.errors %}
-                                {{ field.errors.as_text|slice:"1:" }}<br/>
-                            {% endif %}
-                            </td>
+                        {% for form in formset.forms %}
+                            <tr>
+                                <td>{{ form.ingredient }}</td>
+                                <td>{{ form.unit }}</td>
+                                <td>{{ form.quantity }}</td>
+                            </tr>
+                            <tr>
+                            {% for field in form %}
+                                <td>
+                                {% if field.errors %}
+                                    {{ field.errors.as_text|slice:"1:" }}<br/>
+                                {% endif %}
+                                </td>
+                            {% endfor %}
+                            </tr>
                         {% endfor %}
-                        </tr>
-                    {% endfor %}
                 </tbody>
             </table>
         </div>

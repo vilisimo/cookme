@@ -24,6 +24,7 @@ INGREDIENTS = [
     ('Spices', 'Spices'),
     ('Sugars', 'Sugars'),
     ('Vegetables', 'Vegetables'),
+    ('Unspecified', 'Unspecified')
 ]
 
 INGREDIENTS = sorted(INGREDIENTS, key=lambda x: x[1])
@@ -33,8 +34,9 @@ class Ingredient(models.Model):
     """ Model that represents ingredients of recipes. """
 
     name = models.CharField(max_length=250, null=False, unique=True)
-    type = models.CharField(max_length=250, null=False, choices=INGREDIENTS)
-    description = models.CharField(max_length=500, blank=True, null=True)
+    type = models.CharField(max_length=250, blank=True, null=False,
+                            default='Unspecified', choices=INGREDIENTS)
+    description = models.TextField(max_length=500, blank=True, null=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):

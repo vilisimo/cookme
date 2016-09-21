@@ -14,3 +14,6 @@ me).
 5. Figure out settings stuff (added: 14-09-2016).
 6. Figure out what the jquery.formset.js script does and create another one 
 with relevant functionality only (added 16-09-2016).
+7. Add FridgeIngredientForm to fridge_detail view (added 20-09-2016).
+8. Test ListView (added 20-09-2016).
+http://stackoverflow.com/documentation/django/1220/class-based-views#t=201609191926080087478
