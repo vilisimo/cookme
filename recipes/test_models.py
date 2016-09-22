@@ -2,6 +2,8 @@
 Tests suite for custom model functionality.
 """
 
+from string import capwords
+
 from django.utils import timezone
 from django.test import TestCase
 from django.contrib.auth.models import User
@@ -90,7 +92,17 @@ class RecipeTestCase(TestCase):
 
         count = len(Recipe.objects.all())
 
-        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title, count))
+        # Need to turn chars into lower form, as title is capitalized.
+        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title.lower(),
+                                                       count))
+
+    def test_capitalisation(self):
+        """ Ensures that ingredient names are capitalized. """
+
+        title = 'test test test'
+        r = Recipe.objects.create(author=self.user, title=title)
+
+        self.assertEqual(r.title, capwords(title))
 
     def test_slug_field_is_unique(self):
         """ Ensures that a unique slug is created for every recipe. """

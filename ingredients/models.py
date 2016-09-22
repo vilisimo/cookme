@@ -1,3 +1,5 @@
+from string import capwords
+
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
@@ -40,9 +42,20 @@ class Ingredient(models.Model):
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
+        """
+        Even though name is unique, slug may be not unique. For example,
+        if model 1 has name ';a;' and model 2 has name ';a:'. In such a case,
+        slug would be 'a' for both.
+        """
+
         if not self.id:
             slug = slugify(self.name)
+            i = 2
+            while Ingredient.objects.filter(slug=slug):
+                slug = "{0}-{1}".format(slug, i)
+                i += 1
             self.slug = slug
+            self.name = capwords(self.name)
         return super(Ingredient, self).save(*args, **kwargs)
 
     def get_absolute_url(self):

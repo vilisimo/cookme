@@ -1,4 +1,5 @@
 import re
+from string import capwords
 
 from django.db import models
 from django.utils import timezone
@@ -82,6 +83,7 @@ class Recipe(models.Model):
                 slug = "{0}-{1}".format(slug, i)
                 i += 1
             self.slug = slug
+            self.title = capwords(self.title)
 
         return super(Recipe, self).save(*args, **kwargs)
 
