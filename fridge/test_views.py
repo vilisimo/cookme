@@ -31,13 +31,14 @@ class AddRecipeTests(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
+        self.r_name = 'Test'
 
         self.test1 = Ingredient.objects.create(name='Potato', type='Vegetable')
         self.test2 = Ingredient.objects.create(name='Tomato', type='Fruit')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
         self.valid_data = {
             'title': 'test',
-            'description': 'test',
+            'description': self.r_name,
             'steps': 'test',
             'cuisine': 'ot',
             'form-TOTAL_FORMS': '2',
@@ -130,7 +131,7 @@ class AddRecipeTests(TestCase):
         """
 
         self.client.post(reverse('fridge:add_recipe'), self.valid_data)
-        recipe = Recipe.objects.get(title='test')
+        recipe = Recipe.objects.get(title=self.r_name)
 
         self.assertTrue(recipe)
 
@@ -142,7 +143,7 @@ class AddRecipeTests(TestCase):
 
         self.client.post(reverse('fridge:add_recipe'), self.valid_data)
         fridge = Fridge.objects.get(user=self.user)
-        recipe = Recipe.objects.get(title='test')
+        recipe = Recipe.objects.get(title=self.r_name)
         recipes = fridge.recipes.all()
 
         self.assertIn(recipe, recipes)
@@ -165,7 +166,7 @@ class AddRecipeTests(TestCase):
 
         self.client.post(reverse('fridge:add_recipe'), self.valid_data)
 
-        recipe = Recipe.objects.get(title='test')
+        recipe = Recipe.objects.get(title=self.r_name)
         ingredients = recipe.ingredients.all()
 
         self.assertEqual(len(ingredients), 2)
