@@ -32,6 +32,25 @@ class AddRecipeTests(TestCase):
         self.user = User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
 
+        self.test1 = Ingredient.objects.create(name='Potato', type='Vegetable')
+        self.test2 = Ingredient.objects.create(name='Tomato', type='Fruit')
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        self.valid_data = {
+            'title': 'test',
+            'description': 'test',
+            'steps': 'test',
+            'cuisine': 'ot',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MAX_NUM_FORMS': '',
+            'form-0-ingredient': 'Potato',
+            'form-0-unit': str(self.unit.pk),
+            'form-0-quantity': '1',
+            'form-1-ingredient': 'Tomato',
+            'form-1-unit': str(self.unit.pk),
+            'form-1-quantity': '1',
+        }
+
     def test_correct_url_is_used(self):
         """ Ensures the user is routed to correct url. """
 
@@ -110,26 +129,7 @@ class AddRecipeTests(TestCase):
         that a test for invalid forms is provided in forms & templates tests.
         """
 
-        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
-        unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        data = {
-            'title': 'test',
-            'description': 'test',
-            'steps': 'test',
-            'cuisine': 'ot',
-            'form-TOTAL_FORMS': '2',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(potato.pk),
-            'form-0-unit': str(unit.pk),
-            'form-0-quantity': '1',
-            'form-1-ingredient': str(tomato.pk),
-            'form-1-unit': str(unit.pk),
-            'form-1-quantity': '1',
-        }
-
-        self.client.post(reverse('fridge:add_recipe'), data)
+        self.client.post(reverse('fridge:add_recipe'), self.valid_data)
         recipe = Recipe.objects.get(title='test')
 
         self.assertTrue(recipe)
@@ -140,26 +140,7 @@ class AddRecipeTests(TestCase):
         belongs to a user that added the recipe.
         """
 
-        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
-        unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        data = {
-            'title': 'test',
-            'description': 'test',
-            'steps': 'test',
-            'cuisine': 'ot',
-            'form-TOTAL_FORMS': '2',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(potato.pk),
-            'form-0-unit': str(unit.pk),
-            'form-0-quantity': '1',
-            'form-1-ingredient': str(tomato.pk),
-            'form-1-unit': str(unit.pk),
-            'form-1-quantity': '1',
-        }
-
-        self.client.post(reverse('fridge:add_recipe'), data)
+        self.client.post(reverse('fridge:add_recipe'), self.valid_data)
         fridge = Fridge.objects.get(user=self.user)
         recipe = Recipe.objects.get(title='test')
         recipes = fridge.recipes.all()
@@ -172,27 +153,9 @@ class AddRecipeTests(TestCase):
         fridge.
         """
 
-        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
-        unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        data = {
-            'title': 'test',
-            'description': 'test',
-            'steps': 'test',
-            'cuisine': 'ot',
-            'form-TOTAL_FORMS': '2',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(potato.pk),
-            'form-0-unit': str(unit.pk),
-            'form-0-quantity': '1',
-            'form-1-ingredient': str(tomato.pk),
-            'form-1-unit': str(unit.pk),
-            'form-1-quantity': '1',
-        }
-
         url = reverse('fridge:fridge_detail')
-        response = self.client.post(reverse('fridge:add_recipe'), data)
+        response = self.client.post(reverse('fridge:add_recipe'),
+                                    self.valid_data)
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, url)
@@ -200,33 +163,14 @@ class AddRecipeTests(TestCase):
     def test_ingredients_added_to_recipe(self):
         """ Test to ensure that ingredients are added to the recipe """
 
-        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
-        unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        data = {
-            'title': 'test',
-            'description': 'test',
-            'steps': 'test',
-            'cuisine': 'ot',
-            'form-TOTAL_FORMS': '2',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(potato.pk),
-            'form-0-unit': str(unit.pk),
-            'form-0-quantity': '1',
-            'form-1-ingredient': str(tomato.pk),
-            'form-1-unit': str(unit.pk),
-            'form-1-quantity': '1',
-        }
-
-        self.client.post(reverse('fridge:add_recipe'), data)
+        self.client.post(reverse('fridge:add_recipe'), self.valid_data)
 
         recipe = Recipe.objects.get(title='test')
         ingredients = recipe.ingredients.all()
 
         self.assertEqual(len(ingredients), 2)
-        self.assertIn(potato, ingredients)
-        self.assertIn(tomato, ingredients)
+        self.assertIn(self.test1, ingredients)
+        self.assertIn(self.test2, ingredients)
 
     def test_add_ingredient_form_is_shown(self):
         """ Ensures that a correct form is sent to a template. """

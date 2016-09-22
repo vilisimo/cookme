@@ -22,18 +22,14 @@
         developed, along with a new way of adding ingredients. Best would be
         to show tooltips for errors, if possible. -->
         <div id="fridge_add_ingredients">
+            <h3>Ingredients</h3>
             <table class="add_ingredients">
                 <tbody>
-                        <tr>
-                            <th>Ingredient</th>
-                            <th>Unit</th>
-                            <th>Quantity</th>
-                        </tr>
                         {% for form in formset.forms %}
                             <tr>
                                 <td>{{ form.ingredient }}</td>
-                                <td>{{ form.unit }}</td>
                                 <td>{{ form.quantity }}</td>
+                                <td>{{ form.unit }}</td>
                             </tr>
                             <tr>
                             {% for field in form %}

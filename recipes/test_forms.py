@@ -2,12 +2,15 @@
 Test suite for custom form functionality.
 """
 
+from string import capwords
+
 from django.test import TestCase
 from django.forms import formset_factory
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 
 from ingredients.models import Ingredient, Unit
+from .models import Recipe
 from .forms import (
     BaseRecipeIngredientFormSet,
     RecipeIngredientForm,
@@ -94,7 +97,7 @@ class RecipeIngredientFormSetTests(TestCase):
 
     def test_formset_same_ingredients(self):
         """
-        Ensure that an error is shown when the same ingredients are selected.
+        Ensure that an error is shown when the same ingredients are typed in.
         """
 
         RecInFormSet = formset_factory(RecipeIngredientForm,
@@ -104,11 +107,11 @@ class RecipeIngredientFormSetTests(TestCase):
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(self.potato.pk),  # is str needed?
-            'form-0-unit': str(self.unit.pk),  # same?
+            'form-0-ingredient': 'test',
+            'form-0-unit': str(self.unit.pk),
             'form-0-quantity': '1',
-            'form-1-ingredient': str(self.potato.pk),  # is str needed?
-            'form-1-unit': str(self.unit.pk),  # same?
+            'form-1-ingredient': 'test',
+            'form-1-unit': str(self.unit.pk),
             'form-1-quantity': '1',
         }
 
@@ -127,10 +130,10 @@ class RecipeIngredientFormSetTests(TestCase):
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(self.potato.pk),
+            'form-0-ingredient': 'test',
             'form-0-unit': str(self.unit.pk),
             'form-0-quantity': '1',
-            'form-1-ingredient': str(self.tomato.pk),
+            'form-1-ingredient': 'test2',
             'form-1-unit': str(self.unit.pk),
             'form-1-quantity': '1',
         }
@@ -143,9 +146,11 @@ class RecipeIngredientFormTests(TestCase):
     """ Test suite to ensure that RecipeIngredient creation form is ok. """
 
     def setUp(self):
-        self.potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        self.tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
+        self.user = User.objects.create_user(username='test')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        self.recipe = Recipe.objects.create(author=self.user, title='test',
+                                            description='test', steps='test',
+                                            cuisine='ot')
 
     def test_fields_empty(self):
         """ Ensure that information is entered into the fields. """
@@ -155,27 +160,67 @@ class RecipeIngredientFormTests(TestCase):
 
         self.assertFalse(form.is_valid())
 
-        data['ingredient'] = self.potato.pk
+        data['ingredient'] = 'test'
         form = RecipeIngredientForm(data=data)
+
         self.assertFalse(form.is_valid())
 
         data['unit'] = self.unit.pk
         form = RecipeIngredientForm(data=data)
+
         self.assertFalse(form.is_valid())
 
     def test_fields_filled_in(self):
         """ Ensures that filled in form is considered to be valid. """
 
-        data = {'ingredient': self.potato.pk, 'unit': self.unit.pk, 'quantity':
-                1.0}
+        data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': 1.0}
         form = RecipeIngredientForm(data=data)
+
+        self.assertTrue(form.is_valid(), "Correct data threw an error.")
+
+    def test_fields_valid_create_ingredient_entry(self):
+        """
+        Ensures that when the form is filled in properly, an Ingredient
+        entry is created in the database.
+
+        Note: name is capitalized, since save method capitalizes all words in
+        ingredient title.
+        """
+
+        name = 'Test'
+        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1.0}
+        form = RecipeIngredientForm(data=data)
+
         self.assertTrue(form.is_valid())
+
+        instance = form.save(commit=False)
+        instance.recipe = self.recipe
+        ingredient = Ingredient.objects.get(name=name)
+
+        self.assertTrue(ingredient)
+
+    def test_fields_ingredient_entry_capitalized(self):
+        """
+        Ensures that title is correctly capitalized by searching for ingredient
+        with capitalized title.
+        """
+
+        name = 'test test test'
+        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1.0}
+        form = RecipeIngredientForm(data=data)
+
+        self.assertTrue(form.is_valid())
+
+        instance = form.save(commit=False)
+        instance.recipe = self.recipe
+        ingredient = Ingredient.objects.get(name=capwords(name))
+
+        self.assertTrue(ingredient)
 
     def test_quantity_negative(self):
         """ Ensures that quantity of an ingredient is always positive. """
 
-        data = {'ingredient': self.potato.pk, 'unit': self.unit.pk, 'quantity':
-                -0.01}
+        data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': -0.01}
         form = RecipeIngredientForm(data=data)
 
         self.assertFalse(form.is_valid())
@@ -186,7 +231,15 @@ class RecipeIngredientFormTests(TestCase):
         Should not be possible to do - but good to check nevertheless.
         """
 
-        data = {'ingredient': 9999, 'unit': 9999, 'quantity': 1}
+        data = {'ingredient': 'test', 'unit': 9999, 'quantity': 1}
         form = RecipeIngredientForm(data=data)
 
         self.assertFalse(form.is_valid())
+
+    def test_negative_value(self):
+        """ Ensure that negative value for quantity is not allowed. """
+
+        data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': -0.1}
+        form = RecipeIngredientForm(data=data)
+
+        self.assertFalse(form.is_valid(), "Negative value was allowed.")

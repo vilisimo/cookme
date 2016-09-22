@@ -1,10 +1,23 @@
-from django import forms
-from django.utils.translation import gettext as _
+from string import capwords
 
+from django.utils.translation import gettext as _
+from django.forms import (
+    TextInput,
+    NumberInput,
+    Textarea,
+    Select,
+    ModelForm,
+    BaseFormSet,
+    ModelChoiceField,
+    ValidationError,
+    CharField,
+)
+
+from ingredients.models import Ingredient, Unit
 from .models import RecipeIngredient, Recipe
 
 
-class AddRecipeForm(forms.ModelForm):
+class AddRecipeForm(ModelForm):
     """
     The form to create a recipe instance. That is, create a recipe and add it
     to a fridge. If user wants to add an exiting recipe to a fridge, he/she
@@ -16,19 +29,19 @@ class AddRecipeForm(forms.ModelForm):
         fields = ("title", "description", "steps", "cuisine", "image",)
 
         widgets = {
-            'title': forms.TextInput(
+            'title': TextInput(
                 attrs={'placeholder': 'Recipe\'s title'}
             ),
-            'description': forms.Textarea(
+            'description': Textarea(
                 attrs={'placeholder': 'Please provide a short description of '
                                       'the recipe.'}
             ),
-            'steps': forms.Textarea(
+            'steps': Textarea(
                 attrs={'placeholder': 'Please explain how to prepare a dish. '
                                       'Provide each step on a new line. '
                                       'Multiple new lines can be used.'}
             ),
-            'cuisine': forms.Select(
+            'cuisine': Select(
                 attrs={'required': 'true'}
             ),
         }
@@ -40,7 +53,7 @@ class AddRecipeForm(forms.ModelForm):
         }
 
 
-class RecipeIngredientForm(forms.ModelForm):
+class RecipeIngredientForm(ModelForm):
     """
     A form that is used to add associate an ingredient with a given recipe.
 
@@ -55,19 +68,39 @@ class RecipeIngredientForm(forms.ModelForm):
     that there is no situation where <0 value is provided.
     """
 
+    unit = ModelChoiceField(queryset=Unit.objects.all(), empty_label=None)
+    ingredient = CharField(widget=TextInput(
+        attrs={'required': 'true', 'placeholder': 'Enter ingredient'})
+    )
+
     class Meta:
         model = RecipeIngredient
-        exclude = ("recipe",)
+        exclude = ("recipe", "ingredient")
 
         widgets = {
-            'ingredient': forms.Select(attrs={'required': 'true'}),
-            'unit': forms.Select(attrs={'required': 'true'}),
-            'quantity': forms.NumberInput(attrs={'required': 'true',
-                                                 'min': '0'}),
+            'unit': Select(attrs={'required': 'true'}),
+            'quantity': NumberInput(attrs={'required': 'true', 'min': '0',
+                                    'placeholder': 'Enter quantity'}),
         }
 
+    def save(self, commit=True):
+        """
+        Allows the user to enter an ingredient instead of selecting it.
 
-class BaseRecipeIngredientFormSet(forms.BaseFormSet):
+        Unfortunately, copy-paste from fridge/forms, since ModelForm
+        inheritance is slightly tricky and I need more time to figure it out
+        properly.
+        """
+
+        # Take the input string, create ingredient that has the same name.
+        ingredient_name = capwords(self.cleaned_data['ingredient'])
+        ing = Ingredient.objects.get_or_create(name=ingredient_name)[0]
+        self.instance.ingredient = ing
+
+        return super(RecipeIngredientForm, self).save(commit)
+
+
+class BaseRecipeIngredientFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
         """
         Avoids the problem where the user may try to add a recipe & a formset
@@ -86,12 +119,11 @@ class BaseRecipeIngredientFormSet(forms.BaseFormSet):
             return
 
         if not self.forms[0].has_changed():
-            raise forms.ValidationError(_('Please add at least one field.'))
+            raise ValidationError(_('Please add at least one field.'))
 
         ingredients = []
         for form in self.forms:
             ingredient = form.cleaned_data['ingredient']
             if ingredient in ingredients:
-                raise forms.ValidationError(_("Ingredients should be "
-                                              "distinct."))
+                raise ValidationError(_("Ingredients should be distinct."))
             ingredients.append(ingredient)
