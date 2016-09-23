@@ -5,40 +5,39 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 
-INGREDIENTS = [
-    ('Additives', 'Food additives'),
-    ('Condiments', 'Condiments'),
-    ('Oils', 'Cooking oils'),
-    ('Eggs', 'Eggs'),
-    ('Dairy', 'Dairy'),
-    ('Flour', 'Flour'),
-    ('Fruits', 'Fruits'),
-    ('Grains', 'Grains'),
-    ('Herbs', 'Herbs'),
-    ('Meat', 'Meat'),
-    ('Nuts', 'Nuts'),
-    ('Pasta', 'Pasta'),
-    ('Poultry', 'Poultry'),
-    ('Salts', 'Salts'),
-    ('Sauces', 'Sauces'),
-    ('Seafood', 'Seafood'),
-    ('Seeds', 'Seeds'),
-    ('Spices', 'Spices'),
-    ('Sugars', 'Sugars'),
-    ('Vegetables', 'Vegetables'),
-    ('Unspecified', 'Unspecified')
-]
-
-INGREDIENTS = sorted(INGREDIENTS, key=lambda x: x[1])
-
-
 class Ingredient(models.Model):
     """ Model that represents ingredients of recipes. """
+
+    INGREDIENTS = [
+        ('Additives', 'Food additives'),
+        ('Condiments', 'Condiments'),
+        ('Oils', 'Cooking oils'),
+        ('Eggs', 'Eggs'),
+        ('Dairy', 'Dairy'),
+        ('Flour', 'Flour'),
+        ('Fruits', 'Fruits'),
+        ('Grains', 'Grains'),
+        ('Herbs', 'Herbs'),
+        ('Meat', 'Meat'),
+        ('Nuts', 'Nuts'),
+        ('Pasta', 'Pasta'),
+        ('Paste', 'Paste'),
+        ('Poultry', 'Poultry'),
+        ('Salts', 'Salts'),
+        ('Sauces', 'Sauces'),
+        ('Seafood', 'Seafood'),
+        ('Seeds', 'Seeds'),
+        ('Spices', 'Spices'),
+        ('Sugars', 'Sugars'),
+        ('Vegetables', 'Vegetables'),
+        ('Unspecified', 'Unspecified'),
+    ]
+    INGREDIENTS = sorted(INGREDIENTS, key=lambda x: x[1])
 
     name = models.CharField(max_length=250, null=False, unique=True)
     type = models.CharField(max_length=250, blank=True, null=False,
                             default='Unspecified', choices=INGREDIENTS)
-    description = models.TextField(max_length=500, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
     slug = models.SlugField()
 
     def save(self, *args, **kwargs):
@@ -73,8 +72,8 @@ class Unit(models.Model):
     """
 
     name = models.CharField(max_length=30, blank=False, null=False, unique=True)
-    abbrev = models.CharField(max_length=5, blank=True, null=True)
+    abbrev = models.CharField(max_length=10, blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):
-        return "{0} ({1})".format(self.name, self.abbrev)
+        return self.abbrev
