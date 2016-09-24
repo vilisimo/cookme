@@ -16,3 +16,4 @@ with relevant functionality only.
 http://stackoverflow.com/documentation/django/1220/class-based-views#t=201609191926080087478
 - RecipeIngredientForm: how to inherit the form from Fridge and change 
 exclude, etc., so that I do not have to repeat almost all of the code in it?
+- Somehow deal with plurals? Have two values for each unit?
