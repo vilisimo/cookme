@@ -6,15 +6,13 @@ that should eventually be done (and that are likely to be forgotten by
 me).
 
 ###Tasks
-1. Create population script for units (added: 18-08-2016).
-2. Create population script for test data (added: 21-08-2016).
-3. Test login required for fridge (added: 26-08-2016).
-4. Make sure that a user can delete a recipe from his/her fridge 
-(added: 13-09-2016).
-5. Figure out settings stuff (added: 14-09-2016).
-6. Figure out what the jquery.formset.js script does and create another one 
-with relevant functionality only (added 16-09-2016).
-7. Test ListView (added 20-09-2016).
+- Create population script for recipes.
+- Test login required for fridge.
+- Make sure that a user can delete a recipe from his/her fridge.
+- Figure out settings stuff.
+- Figure out what the jquery.formset.js script does and create another one 
+with relevant functionality only.
+- Test ListView.
 http://stackoverflow.com/documentation/django/1220/class-based-views#t=201609191926080087478
-8. RecipeIngredientForm: how to inherit the form from Fridge and change 
+- RecipeIngredientForm: how to inherit the form from Fridge and change 
 exclude, etc., so that I do not have to repeat almost all of the code in it?

@@ -68,5 +68,5 @@ class UnitsTests(TestCase):
     def test_str_representation(self):
         """ Ensures that a string representation of unit is correct. """
 
-        unit_str = "{0} ({1})".format(self.unit.name, self.unit.abbrev)
+        unit_str = self.unit.abbrev
         self.assertEqual(str(self.unit), unit_str)

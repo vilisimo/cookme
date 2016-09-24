@@ -30,3 +30,14 @@ Status: FINISHED (09/09/2016)
 Priority: MUST HAVE
 Status: FINISHED (18/09/2016)
 ***************************************************************************
+
+
+***************************************************************************
+3. User can add ingredients to his/her fridge.
+  - Test: add existent ingredient to the fridge.
+    Outcome: ingredient is added to the fridge.
+  - Test: add non-existent ingredient to the fridge.
+    Outcome: an ingredient is created and added to the fridge.
+Priority: MUST HAVE
+Status: FINISHED (22/09/2016)
+***************************************************************************
