@@ -158,6 +158,7 @@ class FridgeDetailFridgeIngredientFormTests(TestCase):
 
         self.assertContains(response, 'Add Ingredient')
 
+
 class FridgeDetailTests(TestCase):
     """ Test suite to ensure that fridge_detail template is correct. """
 
@@ -209,3 +210,20 @@ class FridgeDetailTests(TestCase):
 
         self.assertContains(response, r1.title)
         self.assertContains(response, r2.title)
+
+    def test_shows_remove(self):
+        """ Ensures that a template has shows a remove function. """
+
+        i1 = Ingredient.objects.create(name='test1', type='Fruit')
+        unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        fridge = Fridge.objects.create(user=self.user)
+        fi1 = FridgeIngredient.objects.create(fridge=fridge,
+                                              ingredient=i1,
+                                              unit=unit,
+                                              quantity=1)
+
+        url = reverse('fridge:fridge_detail')
+        response = self.client.get(url)
+
+        self.assertContains(response, '<a href="{0}">Remove</a>'.format(reverse(
+            'fridge:remove_ingredient', kwargs={'pk': fi1.pk})), html=True)

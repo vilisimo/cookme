@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms import formset_factory
@@ -123,3 +123,24 @@ def fridge_detail(request):
     }
 
     return render(request, 'fridge/fridge_detail.html', content)
+
+
+@login_required
+def remove_ingredient(request, pk):
+    """
+    View used to remove an ingredient from a fridge.
+
+    Note that in case the user is not the same as the one that owns the
+    fridge with a given FridgeIngredient, he/she is redirected to home page.
+    """
+
+    url = reverse('fridge:fridge_detail')
+    ingredient = get_object_or_404(FridgeIngredient, pk=pk)
+    if request.user != ingredient.fridge.user:
+        return HttpResponseRedirect(reverse('home'))
+    ingredient.delete()
+
+    return HttpResponseRedirect(url)
+
+
+

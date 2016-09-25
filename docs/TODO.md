@@ -6,7 +6,6 @@ that should eventually be done (and that are likely to be forgotten by
 me).
 
 ###Tasks
-- Create population script for recipes.
 - Test login required for fridge.
 - Make sure that a user can delete a recipe from his/her fridge.
 - Figure out settings stuff.

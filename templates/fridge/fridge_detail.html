@@ -44,6 +44,9 @@
                                 <a href="{{ ingredient.ingredient.get_absolute_url }}">
                                     {{ ingredient.ingredient }}
                                 </a>
+                                <a href="{% url 'fridge:remove_ingredient' ingredient.pk %}">
+                                    Remove
+                                </a>
                             </li>
                         {% endfor %}
                     </ul>

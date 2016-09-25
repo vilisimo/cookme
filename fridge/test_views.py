@@ -22,6 +22,84 @@ def logged_in_client():
     return client
 
 
+class RemoveIngredientTests(TestCase):
+    """ 
+    Test suite to ensure that a view for ingredient removal works corectly. 
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.client = logged_in_client()
+        self.fridge = Fridge.objects.create(user=self.user)
+        self.unit = Unit.objects.create(name='kg', abbrev='kg')
+        self.i1 = Ingredient.objects.create(name='test1', type='Fruit')
+        self.i2 = Ingredient.objects.create(name='test2', type='Fruit')
+        self.fi1 = FridgeIngredient.objects.create(fridge=self.fridge,
+                                                   ingredient=self.i1,
+                                                   unit=self.unit,
+                                                   quantity=1)
+        self.fi2 = FridgeIngredient.objects.create(fridge=self.fridge,
+                                                   ingredient=self.i2,
+                                                   unit=self.unit,
+                                                   quantity=1)
+
+    def test_access_view_successful(self):
+        """ Ensure that upon accessing a view, user is redirected. """
+
+        url = reverse('fridge:remove_ingredient', kwargs={'pk': self.fi1.pk})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_access_view_ingredient_removed(self):
+        """ Ensure that ingredient is removed after accessing the view. """
+
+        url = reverse('fridge:remove_ingredient', kwargs={'pk': self.fi1.pk})
+        self.client.get(url)
+        ingredients = FridgeIngredient.objects.all()
+
+        self.assertEqual(len(ingredients), 1)
+
+    def test_remove_ingredient_from_other_fridge(self):
+        """ Ensure that ingredients from other fridges cannot be removed. """
+
+        other_user = User.objects.create_user(username='other')
+        other_fridge = Fridge.objects.create(user=other_user)
+        fi3 = FridgeIngredient.objects.create(fridge=other_fridge,
+                                              unit=self.unit,
+                                              quantity=1, ingredient=self.i1)
+
+        url = reverse('fridge:remove_ingredient', kwargs={'pk': fi3.pk})
+        response = self.client.get(url)
+
+        self.assertRedirects(response, reverse('home'), status_code=302)
+
+        ingredient = FridgeIngredient.objects.get(fridge=other_fridge)
+
+        self.assertTrue(ingredient)
+
+    def test_access_view_anonymous(self):
+        """ Test to ensure that non-logged in people cannot access the view. """
+
+        client = Client()
+        url = reverse('fridge:remove_ingredient', kwargs={'pk': self.fi1.pk})
+        response = client.get(url)
+
+        self.assertEqual(response.status_code, 302)
+
+    # # Needs login page first, otherwise 404?
+    # def test_anonymous_remove_access(self):
+    #     """ Test to ensure that the anonymous user is not shown a fridge """
+    #
+    #     cl = Client()
+    #
+    #     r = reverse('fridge:remove_ingredient')
+    #     redirect_string = 'accounts/login/?next='
+    #     response = cl.get(reverse('fridge:remove_ingredient'))
+    #
+    #     self.assertRedirects(response, redirect_string + r)
+
+
 class AddRecipeTests(TestCase):
     """
     Test suite to ensure that add_recipe view works correctly. This includes
