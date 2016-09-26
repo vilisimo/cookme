@@ -21,11 +21,14 @@
     <header>
 
         <nav>
+            <a href="{% url 'home' %}">Home</a>
             <!-- Here should be a link to user's fridge (on the right side). -->
             {% if user.is_authenticated %}
-                <div id="fridge">
-                    <a href="{% url 'fridge:fridge_detail' %}">Fridge</a>
-                </div>
+                <a href="{% url 'fridge:fridge_detail' %}">Fridge</a>
+                <a href="{% url 'logout' %}">Logout</a>
+                Welcome, {{ user.username }}
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
             {% endif %}
         </nav>
 

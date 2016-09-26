@@ -97,17 +97,17 @@ class RemoveIngredientTests(TestCase):
 
         self.assertEqual(response.status_code, 302)
 
-    # # Needs login page first, otherwise 404?
-    # def test_anonymous_remove_access(self):
-    #     """ Test to ensure that the anonymous user is not shown a fridge """
-    #
-    #     cl = Client()
-    #
-    #     r = reverse('fridge:remove_ingredient')
-    #     redirect_string = 'accounts/login/?next='
-    #     response = cl.get(reverse('fridge:remove_ingredient'))
-    #
-    #     self.assertRedirects(response, redirect_string + r)
+    # Needs login page first, otherwise 404?
+    def test_anonymous_remove_access(self):
+        """ Test to ensure that the anonymous user is not shown a fridge """
+
+        cl = Client()
+
+        url = reverse('fridge:remove_ingredient', kwargs={'pk': self.i1.pk})
+        redirect_string = '/accounts/login/?next='
+        response = cl.get(url)
+
+        self.assertRedirects(response, redirect_string + url)
 
 
 class AddRecipeTests(TestCase):
@@ -268,6 +268,19 @@ class AddRecipeTests(TestCase):
 
         self.assertNotEquals(response.context['formset'], None)
 
+    def test_anonymous_post_valid_data(self):
+        """
+        Ensures that anonymous users cannot post data without logging in.
+        """
+
+        client = Client()
+        url = reverse('fridge:add_recipe')
+        redirect_url = '/accounts/login/?next='
+        response = client.post(url, self.valid_data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, redirect_url + url)
+
 
 class FridgeDetailViewURLsTests(TestCase):
     """
@@ -409,17 +422,15 @@ class FridgeDetailViewURLsTests(TestCase):
         response = self.client.get(reverse('fridge:fridge_detail'))
         self.assertEqual(response.status_code, 200)
 
-    """ Needs a test with anonymous user: once logging in is implemented """
-    # # Needs login page first, otherwise 404?
-    # def test_anonymous_access(self):
-    #     """ Test to ensure that the anonymous user is not shown a fridge """
-    #
-    #     cl = Client()
-    #
-    #     r = reverse('fridge:fridge_detail')
-    #     redirect_string = 'accounts/login/?next='
-    #     response = cl.get(reverse('fridge:fridge_detail'))
-    #
-    #     self.assertRedirects(response, redirect_string + r)
+    def test_anonymous_access(self):
+        """ Test to ensure that the anonymous user is not shown a fridge """
+
+        cl = Client()
+
+        url = reverse('fridge:fridge_detail')
+        redirect_string = '/accounts/login/?next='
+        response = cl.get(url)
+
+        self.assertRedirects(response, redirect_string + url)
 
 
