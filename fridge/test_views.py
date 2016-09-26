@@ -78,6 +78,16 @@ class RemoveIngredientTests(TestCase):
 
         self.assertTrue(ingredient)
 
+    def test_remove_non_existent(self):
+        """
+        Ensures that trying to remove non-existent ingredient throws 404.
+        """
+
+        url = reverse('fridge:remove_ingredient', kwargs={'pk': 9999})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 404)
+
     def test_access_view_anonymous(self):
         """ Test to ensure that non-logged in people cannot access the view. """
 

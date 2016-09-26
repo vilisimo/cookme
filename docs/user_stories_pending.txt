@@ -2,17 +2,6 @@ USER STORIES
 
 
 ***************************************************************************
-User can remove ingredient from his/her fridge.
-  - Test: remove an ingredient from the fridge.
-    Outcome: ingredient is removed from the fridge.
-  - Test: remove non-existent ingredient from the fridge.
-    Outcome: user is informed that the ingredient does not exist.
-Priority: MUST HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 User can change the quantity of an ingredient.
   - Test: change the quantity of an ingredient.
     Outcome: quantity of the ingredient is updated.

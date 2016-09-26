@@ -41,3 +41,14 @@ Status: FINISHED (18/09/2016)
 Priority: MUST HAVE
 Status: FINISHED (22/09/2016)
 ***************************************************************************
+
+
+***************************************************************************
+User can remove ingredient from his/her fridge.
+  - Test: remove an ingredient from the fridge.
+    Outcome: ingredient is removed from the fridge.
+  - Test: remove non-existent ingredient from the fridge.
+    Outcome: user is informed that the ingredient does not exist.
+Priority: MUST HAVE
+Status: FINISHED (26/09/2016)
+***************************************************************************
