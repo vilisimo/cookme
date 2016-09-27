@@ -29,6 +29,7 @@
                 Welcome, {{ user.username }}
             {% else %}
                 <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+                <a href="{% url 'register' %}?next={{ request.path }}">Register</a>
             {% endif %}
         </nav>
 
