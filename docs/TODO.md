@@ -6,7 +6,6 @@ that should eventually be done (and that are likely to be forgotten by
 me).
 
 ###Tasks
-- Test login required for fridge.
 - Make sure that a user can delete a recipe from his/her fridge.
 - Figure out settings stuff.
 - Figure out what the jquery.formset.js script does and create another one 
@@ -16,8 +15,7 @@ http://stackoverflow.com/documentation/django/1220/class-based-views#t=201609191
 - RecipeIngredientForm: how to inherit the form from Fridge and change 
 exclude, etc., so that I do not have to repeat almost all of the code in it?
 - Somehow deal with plurals? Have two values for each unit?
-- Refactor tests cases: almost all use the same URLs, etc. Can be put in setUp.
+- Refactor tests cases: almost all use the same URLs, etc. Can be put in 
+setUp. Last: test_forms in recipes
 - Refactor tests to use RequestFactory for quicker tests. Relevant link:
 http://matthewdaly.co.uk/blog/2015/08/02/testing-django-views-in-isolation/
-- Finish up with register view.
-- Test templates for registering.

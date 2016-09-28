@@ -77,6 +77,8 @@ class RecipeIngredientFormSetTests(TestCase):
         self.potato = Ingredient.objects.create(name='Potato', type='Vegetable')
         self.tomato = Ingredient.objects.create(name='Tomato', type='Fruit')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        self.rec_formset = formset_factory(RecipeIngredientForm,
+                                           formset=BaseRecipeIngredientFormSet)
 
     def test_formset_empty(self):
         """
@@ -84,24 +86,19 @@ class RecipeIngredientFormSetTests(TestCase):
         fields are required).
         """
 
-        RecInFormSet = formset_factory(RecipeIngredientForm,
-                                       formset=BaseRecipeIngredientFormSet)
         data = {
             'form-TOTAL_FORMS': '1',
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
         }
 
-        formset = RecInFormSet(data)
+        formset = self.rec_formset(data)
         self.assertFalse(formset.is_valid())
 
     def test_formset_same_ingredients(self):
         """
         Ensure that an error is shown when the same ingredients are typed in.
         """
-
-        RecInFormSet = formset_factory(RecipeIngredientForm,
-                                       formset=BaseRecipeIngredientFormSet)
 
         data = {
             'form-TOTAL_FORMS': '2',
@@ -115,16 +112,13 @@ class RecipeIngredientFormSetTests(TestCase):
             'form-1-quantity': '1',
         }
 
-        formset = RecInFormSet(data)
+        formset = self.rec_formset(data)
         self.assertFalse(formset.is_valid())
         self.assertIn('Ingredients should be distinct.',
                       formset.non_form_errors())
 
     def test_formset_different_ingredients(self):
         """ Ensure that a user can select different ingredients. """
-
-        RecInFormSet = formset_factory(RecipeIngredientForm,
-                                       formset=BaseRecipeIngredientFormSet)
 
         data = {
             'form-TOTAL_FORMS': '2',
@@ -138,7 +132,7 @@ class RecipeIngredientFormSetTests(TestCase):
             'form-1-quantity': '1',
         }
 
-        formset = RecInFormSet(data)
+        formset = self.rec_formset(data)
         self.assertTrue(formset.is_valid())
 
 

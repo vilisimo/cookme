@@ -1,3 +1,7 @@
+"""
+Tests to ensure everything in cookme.views works correctly.
+"""
+
 from django.test import TestCase
 from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
@@ -6,15 +10,11 @@ from django.test.client import Client
 from .views import home, register
 
 
-###################################
-""" Test Views, URLS & Templates"""
-###################################
-
-
 class HomePageTests(TestCase):
     """ Test suite to ensure that home page functions properly. """
 
     def setUp(self):
+        self.url = reverse('home')
         self.user = User.objects.create_user(username='test', password='test')
         self.logged = Client()
         self.logged.login(username='test', password='test')
@@ -32,7 +32,7 @@ class HomePageTests(TestCase):
     def test_anonymous_visit(self):
         """ Test to ensure anonymous users do not see link to a fridge. """
 
-        response = Client().get(reverse('home'))
+        response = Client().get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, 'Fridge')
@@ -40,7 +40,7 @@ class HomePageTests(TestCase):
     def test_logged_visit(self):
         """ Test to ensure that logged in user sees the fridge. """
 
-        response = self.logged.get(reverse('home'))
+        response = self.logged.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Fridge')
@@ -55,6 +55,7 @@ class RegisterViewTests(TestCase):
 
     def test_correct_url(self):
         """ Ensures that a correct URL is mapped to a view. """
+        
         view = resolve('/accounts/register/')
 
         self.assertEqual(view.view_name, 'register')
@@ -83,30 +84,6 @@ class RegisterViewTests(TestCase):
         response = client.get(self.url)
 
         self.assertRedirects(response, reverse('home'), status_code=302)
-
-    def test_registered_user_invalid_data(self):
-        """ Ensures invalid data cannot be posted. """
-
-        data = {'username': 'test', 'password1': 'test', 'password2': 'test'}
-        response = self.client.post(self.url, data=data)
-
-        self.assertContains(
-            response, 'The password is too similar to the username.')
-        self.assertContains(
-            response, 'This password is too short. It must contain at least 8 '
-                      'characters.')
-        self.assertContains(
-            response, 'This password is too common.')
-
-    def test_register_user_already_exists(self):
-        """ Ensures duplicate accounts cannot be created. """
-
-        User.objects.create_user(username='test', password='test')
-        data = {'username': 'test', 'password1': 'test', 'password2': 'test'}
-        response = self.client.post(self.url, data=data)
-
-        self.assertContains(
-            response, 'A user with that username already exists.')
 
     def test_valid_data_redirect(self):
         """ Ensures that upon valid data submission user is redirected. """

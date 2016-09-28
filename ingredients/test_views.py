@@ -20,6 +20,8 @@ class IngredientDetailViewsURLsTests(TestCase):
         self.logged = logged_in_client()
         self.i = Ingredient.objects.create(name='test', type='Fruit',
                                            description='test')
+        self.url = reverse('ingredients:ingredient_detail',
+                           kwargs={'slug':self.i.slug})
 
     def test_URL_resolves_to_correct_view(self):
         """ Ensures that ingredient's URL resolves to correct view. """
@@ -31,10 +33,8 @@ class IngredientDetailViewsURLsTests(TestCase):
     def test_user_access(self):
         """ Ensures that all users can access ingredient details. """
 
-        response = self.client.get(reverse('ingredients:ingredient_detail',
-                                   args=[self.i.slug]))
-        response2 = self.logged.get(reverse('ingredients:ingredient_detail',
-                                    args=[self.i.slug]))
+        response = self.client.get(self.url)
+        response2 = self.logged.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response2.status_code, 200)
@@ -46,8 +46,7 @@ class IngredientDetailViewsURLsTests(TestCase):
 
         Ingredient.objects.all().delete()
 
-        response = self.logged.get(reverse('ingredients:ingredient_detail',
-                                   args=[self.i.slug]))
+        response = self.logged.get(self.url)
 
         self.assertEqual(response.status_code, 404)
 

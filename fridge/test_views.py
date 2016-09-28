@@ -117,10 +117,10 @@ class AddRecipeTests(TestCase):
     """
 
     def setUp(self):
+        self.url = reverse('fridge:add_recipe')
         self.user = User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
         self.r_name = 'Test'
-
         self.test1 = Ingredient.objects.create(name='Potato', type='Vegetable')
         self.test2 = Ingredient.objects.create(name='Tomato', type='Fruit')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
@@ -151,14 +151,14 @@ class AddRecipeTests(TestCase):
     def test_add_detail_view(self):
         """ Ensures that a user can access the view. """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
 
     def test_add_detail_view_anon(self):
         """ Ensures that anonymous user cannot access the view. """
 
-        response = Client().get(reverse('fridge:add_recipe'))
+        response = Client().get(self.url)
 
         self.assertEqual(response.status_code, 302)
 
@@ -170,7 +170,7 @@ class AddRecipeTests(TestCase):
         """
 
         Fridge.objects.create(user=self.user)
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
 
@@ -181,7 +181,7 @@ class AddRecipeTests(TestCase):
         not exist before). However, user can only ever have 1 fridge.
         """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
         fridges = Fridge.objects.get(user=self.user)
 
         self.assertEqual(response.status_code, 200)
@@ -190,7 +190,7 @@ class AddRecipeTests(TestCase):
     def test_correct_template_used(self):
         """ Ensures that a correct template is used. """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
 
         self.assertTemplateUsed(response, 'fridge/add_recipe.html')
 
@@ -201,14 +201,14 @@ class AddRecipeTests(TestCase):
         ownership).
         """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
 
         self.assertEqual(response.context['user'], self.user)
 
     def test_add_recipe_form_is_sent(self):
         """ Ensures that a correct form is sent to a template """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
 
         self.assertNotEquals(response.context['form'], None)
 
@@ -218,7 +218,7 @@ class AddRecipeTests(TestCase):
         that a test for invalid forms is provided in forms & templates tests.
         """
 
-        self.client.post(reverse('fridge:add_recipe'), self.valid_data)
+        self.client.post(self.url, self.valid_data)
         recipe = Recipe.objects.get(title=self.r_name)
 
         self.assertTrue(recipe)
@@ -229,7 +229,7 @@ class AddRecipeTests(TestCase):
         belongs to a user that added the recipe.
         """
 
-        self.client.post(reverse('fridge:add_recipe'), self.valid_data)
+        self.client.post(self.url, self.valid_data)
         fridge = Fridge.objects.get(user=self.user)
         recipe = Recipe.objects.get(title=self.r_name)
         recipes = fridge.recipes.all()
@@ -243,8 +243,7 @@ class AddRecipeTests(TestCase):
         """
 
         url = reverse('fridge:fridge_detail')
-        response = self.client.post(reverse('fridge:add_recipe'),
-                                    self.valid_data)
+        response = self.client.post(self.url, self.valid_data)
 
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, url)
@@ -252,7 +251,7 @@ class AddRecipeTests(TestCase):
     def test_ingredients_added_to_recipe(self):
         """ Test to ensure that ingredients are added to the recipe """
 
-        self.client.post(reverse('fridge:add_recipe'), self.valid_data)
+        self.client.post(self.url, self.valid_data)
 
         recipe = Recipe.objects.get(title=self.r_name)
         ingredients = recipe.ingredients.all()
@@ -264,7 +263,7 @@ class AddRecipeTests(TestCase):
     def test_add_ingredient_form_is_shown(self):
         """ Ensures that a correct form is sent to a template. """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        response = self.client.get(self.url)
 
         self.assertNotEquals(response.context['formset'], None)
 
@@ -274,12 +273,11 @@ class AddRecipeTests(TestCase):
         """
 
         client = Client()
-        url = reverse('fridge:add_recipe')
         redirect_url = '/accounts/login/?next='
-        response = client.post(url, self.valid_data)
+        response = client.post(self.url, self.valid_data)
 
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, redirect_url + url)
+        self.assertRedirects(response, redirect_url + self.url)
 
 
 class FridgeDetailViewURLsTests(TestCase):
@@ -289,48 +287,55 @@ class FridgeDetailViewURLsTests(TestCase):
     """
 
     def setUp(self):
+        self.url = reverse('fridge:fridge_detail')
         self.user = User.objects.create_user(username='test', password='test')
         self.fridge = Fridge.objects.create(user=self.user)
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
         self.client = logged_in_client()
 
+    def test_correct_view(self):
+        """ Ensures that url is connected to a correct view. """
+
+        url = '/fridge/'
+        path = resolve(url)
+
+        self.assertEqual(path.view_name, 'fridge:fridge_detail')
+        self.assertEqual(path.func, fridge_detail)
+
     def test_form_present(self):
         """ Ensures that the form is passed to the template. """
 
-        url = reverse('fridge:fridge_detail')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertTrue(response.context['form'])
 
     def test_form_valid(self):
         """ Ensure that filled in form is valid. """
 
-        url = reverse('fridge:fridge_detail')
         data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': 1}
-        response = self.client.post(url, data)
+        response = self.client.post(self.url, data)
 
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, url)
+        self.assertRedirects(response, self.url)
 
     def test_form_invalid_no_redirect(self):
         """ Ensure that if form is invalid, user is not redirected. """
 
-        url = reverse('fridge:fridge_detail')
         data = dict()
         data['ingredient'] = ''
-        response = self.client.post(url, data)
+        response = self.client.post(self.url, data)
 
         self.assertEqual(response.status_code, 200)
 
         data['ingredient'] = 'test'
         data['unit'] = ''
-        response = self.client.post(url, data)
+        response = self.client.post(self.url, data)
 
         self.assertEqual(response.status_code, 200)
 
         data['unit'] = self.unit.pk
         data['quantity'] = None
-        response = self.client.post(url, data)
+        response = self.client.post(self.url, data)
 
         self.assertEqual(response.status_code, 200)
 
@@ -338,9 +343,8 @@ class FridgeDetailViewURLsTests(TestCase):
         """ Ensure that when form is valid, ingredient is created. """
 
         name = 'test'
-        url = reverse('fridge:fridge_detail')
         data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
-        response = self.client.post(url, data)
+        response = self.client.post(self.url, data)
 
         self.assertTrue(response.status_code, 302)
 
@@ -357,9 +361,8 @@ class FridgeDetailViewURLsTests(TestCase):
                                       type='Fruit')
         FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i,
                                         unit=self.unit, quantity=quantity)
-        url = reverse('fridge:fridge_detail')
         d = {'ingredient': name, 'unit': self.unit.pk, 'quantity': quantity}
-        self.client.post(url, d)
+        self.client.post(self.url, d)
         fi = FridgeIngredient.objects.get(ingredient=i)
 
         self.assertEqual(fi.quantity, quantity*2)
@@ -368,9 +371,8 @@ class FridgeDetailViewURLsTests(TestCase):
         """ Ensure that when form is valid, FridgeIngredient is created. """
 
         name = 'Test'
-        url = reverse('fridge:fridge_detail')
         data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
-        response = self.client.post(url, data)
+        response = self.client.post(self.url, data)
 
         self.assertEqual(response.status_code, 302)
 
@@ -379,17 +381,10 @@ class FridgeDetailViewURLsTests(TestCase):
 
         self.assertTrue(fi)
 
-    def test_url_resolves_to_detail_fridge(self):
-        """ Ensures that URL resolves to a correct view function. """
-
-        view = resolve('/fridge/')
-
-        self.assertEqual(view.func, fridge_detail)
-
     def test_user_access(self):
         """ Ensures that a user is allowed to access the fridge. """
 
-        response = self.client.get(reverse('fridge:fridge_detail'))
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
 
@@ -402,7 +397,7 @@ class FridgeDetailViewURLsTests(TestCase):
 
         Fridge.objects.all().delete()
 
-        response = self.client.get(reverse('fridge:fridge_detail'))
+        response = self.client.get(self.url)
         fridge = Fridge.objects.get(user=self.user)
 
         self.assertEqual(response.status_code, 200)
@@ -427,10 +422,9 @@ class FridgeDetailViewURLsTests(TestCase):
 
         cl = Client()
 
-        url = reverse('fridge:fridge_detail')
         redirect_string = '/accounts/login/?next='
-        response = cl.get(url)
+        response = cl.get(self.url)
 
-        self.assertRedirects(response, redirect_string + url)
+        self.assertRedirects(response, redirect_string + self.url)
 
 

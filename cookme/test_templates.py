@@ -1,0 +1,40 @@
+"""
+Test to ensure that templates show essential information. Not supposed to
+test every little bit of it, but just the essential parts which would be
+present no matter what.
+"""
+
+from django.test import TestCase, Client
+from django.core.urlresolvers import reverse
+
+
+class RegisterTests(TestCase):
+    """ Test suite to ensure register template shows essential infomration. """
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse('register')
+
+    def test_registered_user_invalid_data(self):
+        """ Ensures invalid data cannot be posted. """
+
+        data = {'username': 'test', 'password1': 'test', 'password2': 'test'}
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(
+            response, 'The password is too similar to the username.')
+        self.assertContains(
+            response, 'This password is too short. It must contain at least 8 '
+                      'characters.')
+        self.assertContains(
+            response, 'This password is too common.')
+
+    def test_register_user_already_exists(self):
+        """ Ensures duplicate accounts cannot be created. """
+
+        User.objects.create_user(username='test', password='test')
+        data = {'username': 'test', 'password1': 'test', 'password2': 'test'}
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(
+            response, 'A user with that username already exists.')
