@@ -11,6 +11,7 @@ class RecipeTemplateTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.url = reverse('recipes:recipes')
         self.u = User.objects.create_user(username='test', password='test')
         self.r1 = Recipe.objects.create(author=self.u, title='test1',
                                         description='test1')
@@ -20,8 +21,7 @@ class RecipeTemplateTests(TestCase):
     def test_recipes_template_recipes(self):
         """ Ensures that the template shows all recipes. """
 
-        url = reverse('recipes:recipes')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.r1.title)
@@ -30,8 +30,7 @@ class RecipeTemplateTests(TestCase):
     def test_recipes_template_author(self):
         """ Ensures that the author is shown. """
 
-        url = reverse('recipes:recipes')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertContains(response, self.r1.author)
         self.assertContains(response, self.r2.author)
@@ -54,12 +53,13 @@ class RecipeDetailTemplateTests(TestCase):
                                         unit=self.unit, quantity=0.5)
         RecipeIngredient.objects.create(recipe=self.r1, ingredient=self.i2,
                                         unit=self.unit, quantity=0.5)
+        self.url = reverse('recipes:recipe_detail', kwargs={'slug':
+                                                            self.r1.slug})
 
     def test_recipe_detail_ingredients(self):
         """ Ensures that all ingredients are listed. """
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertContains(response, self.i1)
         self.assertContains(response, self.i2)
@@ -69,8 +69,7 @@ class RecipeDetailTemplateTests(TestCase):
 
         ingredient = RecipeIngredient.objects.all()
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertContains(response, ingredient[0].quantity)
         self.assertContains(response, ingredient[1].quantity)
@@ -78,16 +77,14 @@ class RecipeDetailTemplateTests(TestCase):
     def test_recipe_detail_unit(self):
         """ Ensures that units are shown. """
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertContains(response, self.unit.abbrev)
 
     def test_recipe_detail_one_step(self):
         """ Ensures that default value is shown correctly in the template. """
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.context['steps'], self.r1.step_list())
         self.assertContains(response, "<p>{0}</p>".format(self.r1.steps),

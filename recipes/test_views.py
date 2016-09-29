@@ -41,12 +41,12 @@ class RecipeViewTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.url = reverse('recipes:recipes')
 
     def test_recipes_view(self):
         """ Ensures that the recipes view renders correctly. """
 
-        url = reverse('recipes:recipes')
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
 
@@ -56,12 +56,13 @@ class RecipeDetailTests(TestCase):
         self.user = User.objects.create(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test',
                                        description='')
+        self.url = reverse('recipes:recipe_detail',
+                           kwargs={'slug': self.r.slug})
 
     def test_recipe_detail_view(self):
         """ Ensures that recipe detail view renders correctly. """
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
 
@@ -70,11 +71,10 @@ class RecipeDetailTests(TestCase):
 
         ingredient = Ingredient.objects.create(name='apple', type='Fruit')
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        RecipeIngredient.objects.create(recipe=self.r, ingredient= ingredient,
+        RecipeIngredient.objects.create(recipe=self.r, ingredient=ingredient,
                                         unit=unit, quantity=0.5)
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         ingredients = RecipeIngredient.objects.filter(recipe=self.r)
 
         # QuerySets are not equal even if they contain the same values,
@@ -87,7 +87,6 @@ class RecipeDetailTests(TestCase):
 
         Recipe.objects.all().delete()
 
-        url = reverse('recipes:recipe_detail', kwargs={'slug': self.r.slug})
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 404)
