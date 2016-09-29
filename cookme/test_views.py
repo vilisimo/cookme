@@ -3,6 +3,7 @@ Tests to ensure everything in cookme.views works correctly.
 """
 
 from django.test import TestCase
+from django.contrib import auth
 from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
 from django.test.client import Client
@@ -76,7 +77,7 @@ class RegisterViewTests(TestCase):
         self.assertTrue(response.context['form'])
 
     def test_registered_user_redirected(self):
-        """ Ensures a registered user is redirected from a view. """
+        """ Ensures a registered user is redirected from a register view. """
 
         User.objects.create_user(username='test', password='test')
         client = Client()
@@ -113,18 +114,91 @@ class RegisterViewTests(TestCase):
     def test_valid_data_user_logged_in(self):
         """ Ensures that upon submission of valid data, user is logged in. """
 
-        from django.contrib import auth
-
         data = {
             'username': 'ElaborateUsername',
             'password1': 'VerySecretPassword',
-            'password2': 'VerySecretPassword'
+            'password2': 'VerySecretPassword',
         }
-        client = Client()
-        client.post(self.url, data=data)
-        user = auth.get_user(client)
+        self.client.post(self.url, data=data)
+        user = auth.get_user(self.client)
 
         assert user.is_authenticated()
         # Just to make sure we are really logged in.
-        response = client.get(reverse('fridge:fridge_detail'))
+        response = self.client.get(reverse('fridge:fridge_detail'))
+
         self.assertEqual(response.status_code, 200)
+
+    def test_username_exists(self):
+        """ Ensures that no duplicate accounts can be created. """
+
+        User.objects.create_user(username='ElaborateUsername',
+                                 password='VerySecretPassword')
+        data = {
+            'username': 'ElaborateUsername',
+            'password1': 'VerySecretPassword',
+            'password2': 'VerySecretPassword',
+        }
+        response = self.client.post(self.url, data=data)
+
+        self.assertTrue(response.status_code != 302)
+
+
+class LoginTests(TestCase):
+    """
+    Test suite to ensure login works correctly. Although at the moment
+    Django's login functionality is used, it may change in the future,
+    and thus it is a good idea to write basic tests to ensure it works.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.url = reverse('login')
+        self.client = Client()
+
+    def test_invalid_data(self):
+        """
+        Ensures that upon submission of invalid data, user is not logged in.
+        """
+
+        data = {
+            'username': 'test',
+            'password': 'testing',
+        }
+
+        response = self.client.post(self.url, data=data)
+        user = auth.get_user(self.client)
+
+        self.assertNotEqual(response.status_code, 302)
+        assert (not user.is_authenticated())
+
+    def test_valid_data(self):
+        """ Ensures that upon submitting valid data, user can log in. """
+
+        data = {
+            'username': 'test',
+            'password': 'test',
+        }
+
+        response = self.client.post(self.url, data=data)
+        user = auth.get_user(self.client)
+
+        self.assertEqual(response.status_code, 302)
+        assert user.is_authenticated()
+
+    def test_missing_data(self):
+        """ Ensure that not filling in some fields is not allowed. """
+
+        data = {'username': 'test',}
+        response = self.client.post(self.url, data=data)
+        user = auth.get_user(self.client)
+
+        self.assertNotEqual(response.status_code, 302)
+        assert (not user.is_authenticated())
+
+        data = {'password': 'test', }
+        response = self.client.post(self.url, data=data)
+        user = auth.get_user(self.client)
+
+        self.assertNotEqual(response.status_code, 302)
+        assert (not user.is_authenticated())
+

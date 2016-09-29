@@ -30,6 +30,29 @@ class RegisterTests(TestCase):
         self.assertContains(
             response, 'This password is too common.')
 
+    def test_fields_missing(self):
+        """ Ensures missing fields are caught. """
+
+        data = dict()
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(response, 'This field is required.')
+
+        data['username'] = 'test'
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(response, 'This field is required.')
+
+        data['password1'] = 'test'
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(response, 'This field is required.')
+
+        data = {'username': 'test', 'password2': 'test'}
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(response, 'This field is required.')
+
     def test_register_user_already_exists(self):
         """ Ensures duplicate accounts cannot be created. """
 
@@ -39,3 +62,34 @@ class RegisterTests(TestCase):
 
         self.assertContains(
             response, 'A user with that username already exists.')
+
+
+class LoginTests(TestCase):
+    """ Test suite to ensure that login templates show correct info. """
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse('login')
+
+    # # Does not work even when template has error tags?..
+    # def test_missing_info(self):
+    #     """ Ensure empty fields are not allowed. """
+    #
+    #     data = dict()
+    #     response = self.client.post(self.url, data=data)
+    #
+    #     from django.contrib.auth.forms import AuthenticationForm
+    #     form = AuthenticationForm(data=data)
+    #     print(form.errors)  # Prints errors, but no erros in template?..
+    #
+    #     self.assertContains(response, 'This field is required.')
+    #
+    #     data['username'] = 'test'
+    #     response = self.client.post(self.url, data=data)
+    #
+    #     self.assertContains(response, 'This field is required.')
+    #
+    #     data = {'password': 'test'}
+    #     response = self.client.post(self.url, data=data)
+    #
+    #     self.assertContains(response, 'This field is required.')

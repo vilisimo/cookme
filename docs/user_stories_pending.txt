@@ -55,38 +55,6 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can log in to the website using his/her ID and password combination.
-  - Test: log in with correct id & password combination
-    Outcome: login successful.
-  - Test: log in with incorrect id & password combination.
-    Outcome: operation not allowed, user is asked to enter details again.
-  - Test: log in without password.
-    Outcome: operation not allowed, user is informed password is missing.
-  - Test: log in without username.
-    Outcome: operation not allowed, user is informed username is missing.
-Priority: MUST HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
-User can register on the website.
-  - Test: register with unique username & password combination.
-    Outcome: registration successful.
-  - Test: register with a username that already exists in the database.
-    Outcome: user is informed that the username is taken.
-  - Test: register with a password that already exists in the database.
-    Outcome: registration successful.
-  - Test: register without a username.
-    Outcome: user is informed that username is missing.
-  - Test: register without a password.
-    Outcome: user is informed that username is missing.
-Priority: MUST HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 User can edit the recipes he/she has uploaded.
   - Test: edit his/her own recipe.
     Outcome: recipe is edited.

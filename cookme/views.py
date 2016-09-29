@@ -54,7 +54,8 @@ def register(request):
             user = authenticate(username=form.cleaned_data['username'],
                                 password=form.cleaned_data['password1'])
             login(request, user)
-            return HttpResponseRedirect(reverse('home'))
+            redirect = request.POST.get('next', '/')
+            return HttpResponseRedirect(redirect)
     else:
         form = UserCreationForm()
 

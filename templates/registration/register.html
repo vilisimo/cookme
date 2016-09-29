@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <form method="post" action="{% url 'register' %}?next={{ next_url }}">
+    <form method="post" action="{% url 'register' %}">
         {% csrf_token %}
         {% if form.errors %}
             {% for field in form %}
@@ -24,6 +24,7 @@
                 <td>{{ form.password2 }}</td>
             </tr>
         </table>
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
         <input type="submit" value="Register" />
     </form>
 {% endblock %}
