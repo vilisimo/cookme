@@ -8,6 +8,11 @@
                     <a href="{{ recipe.get_absolute_url }}">
                         {{ recipe.title }} by <span id="author">{{ recipe.author }}</span>
                     </a>
+                    <!-- Remove when working on CSS-->
+                    &nbsp
+                    <a href="{% url 'recipes:add_to_fridge' recipe.pk %}">
+                        Add
+                    </a>
                 </li>
             {% endfor %}
         </ul>

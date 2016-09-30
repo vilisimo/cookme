@@ -8,8 +8,9 @@ from django.test import TestCase
 from django.core.urlresolvers import resolve
 from django.test.client import Client
 
+from fridge.models import Fridge
 from .models import *
-from .views import recipes, recipe_detail
+from .views import recipes, recipe_detail, add_to_fridge
 
 
 class URLTests(TestCase):
@@ -90,3 +91,87 @@ class RecipeDetailTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 404)
+
+
+class AddRecipeToFridgeTests(TestCase):
+    """
+    Test suite to ensure that a user can add a recipe to his/her fridge
+    without any major issues.
+    """
+
+    def setUp(self):
+        tmp = User.objects.create_user(username='tmp', password='test')
+        self.user = User.objects.create_user(username='test', password='test')
+        self.client = Client()
+        self.client.login(username='test', password='test')
+        self.fridge = Fridge.objects.create(user=self.user)
+        self.recipe = Recipe.objects.create(author=tmp, title='test',
+                                            description='')
+        self.url = reverse('recipes:add_to_fridge',
+                           kwargs={'pk': self.recipe.pk})
+
+    def test_correct_view(self):
+        """ Ensures URL routes to correct view. """
+
+        r = resolve('/recipes/add_to_fridge/' + str(self.recipe.pk) + '/')
+
+        self.assertEqual(r.view_name, 'recipes:add_to_fridge')
+        self.assertEqual(r.func, add_to_fridge)
+
+    def test_access(self):
+        """ Ensures that logged in user can access the view. """
+
+        response = self.client.get(self.url)
+        redirect = reverse('fridge:fridge_detail')
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, redirect)
+
+    def test_anonymous_access(self):
+        """ Ensures non-logged in user cannot access the view. """
+
+        anon = Client()
+        response = anon.get(self.url)
+        redirect = reverse('login') + '?next=' + self.url
+
+        self.assertRedirects(response, redirect)
+
+    def test_adds_recipe(self):
+        """ Ensures that the view adds recipe to a correct fridge. """
+
+        self.client.get(self.url)
+        recipes = self.fridge.recipes.all()
+
+        self.assertEqual(len(recipes), 1)
+        self.assertTrue(self.recipe in recipes)
+
+    def test_add_same_recipe(self):
+        """
+        Ensure that adding the same recipe does not duplicate it in user's
+        fridge.
+        """
+
+        self.client.get(self.url)
+        self.client.get(self.url)
+        recipes = self.fridge.recipes.all()
+
+        self.assertEqual(len(recipes), 1)
+
+    def test_diff_user(self):
+        """
+        Ensures that if a different user adds recipe to his/her fridge,
+        this is not reflected in other users' fridges.
+        """
+
+        u = User.objects.create_user(username='test2', password='test2')
+        f = Fridge.objects.create(user=u)
+        c = Client()
+        c.login(username='test2', password='test2')
+
+        c.get(self.url)
+        test2recipes = f.recipes.all()
+        self.assertEqual(len(test2recipes), 1)
+
+        recipes = self.fridge.recipes.all()
+        self.assertFalse(recipes)
+

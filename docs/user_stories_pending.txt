@@ -27,17 +27,6 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can save recipes from global recipe book to his fridge.
-  - Test: save a recipe from global recipe book.
-    Outcome: recipe is added to a fridge.
-  - Test: save a recipe that is already saved.
-    Outcome: recipe is not duplicated.
-Priority: MUST HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 User can add a recipe to a global recipe book.
   - Test: add a recipe with title, description and ingredients.
     Outcome: recipe is added.

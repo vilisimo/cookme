@@ -227,3 +227,4 @@ class FridgeDetailTests(TestCase):
 
         self.assertContains(response, '<a href="{0}">Remove</a>'.format(reverse(
             'fridge:remove_ingredient', kwargs={'pk': fi1.pk})), html=True)
+

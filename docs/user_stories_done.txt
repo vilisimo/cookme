@@ -84,3 +84,14 @@ Status: FINISHED (29/09/2016)
 Priority: MUST HAVE
 Status: FINISHED (29/09/2016)
 ***************************************************************************
+
+
+***************************************************************************
+7. User can save recipes from global recipe book to his fridge.
+  - Test: save a recipe from global recipe book.
+    Outcome: recipe is added to a fridge.
+  - Test: save a recipe that is already saved.
+    Outcome: recipe is not duplicated.
+Priority: MUST HAVE
+Status: FINISHED (30/09/2016)
+***************************************************************************

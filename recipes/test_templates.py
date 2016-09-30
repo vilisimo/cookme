@@ -7,7 +7,7 @@ from .models import Recipe, RecipeIngredient
 
 
 class RecipeTemplateTests(TestCase):
-    """ Test suite to ensure that recipe template shows what it should. """
+    """ Test suite to ensure that recipe list template shows what it should. """
 
     def setUp(self):
         self.client = Client()
@@ -34,6 +34,21 @@ class RecipeTemplateTests(TestCase):
 
         self.assertContains(response, self.r1.author)
         self.assertContains(response, self.r2.author)
+
+    def test_has_add_recipe_to_fridge(self):
+        """
+        Ensures that the template has a link to add a recipe to a fridge.
+
+        Note that there is small hardcoded part (Add), which may be removed
+        when the project moves to jQuery.
+        """
+
+        add_to_fridge = reverse('recipes:add_to_fridge',
+                                kwargs={'pk': self.r1.pk})
+        ahref = '<a href="{}">Add</a>'.format(add_to_fridge)
+        response = self.client.get(self.url)
+
+        self.assertContains(response, ahref, html=True)
 
 
 class RecipeDetailTemplateTests(TestCase):
