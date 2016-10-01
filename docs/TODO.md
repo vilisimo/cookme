@@ -15,3 +15,4 @@ exclude, etc., so that I do not have to repeat almost all of the code in it?
 - Somehow deal with plurals? Have two values for each unit?
 - Refactor tests to use RequestFactory for quicker tests. Relevant link:
 http://matthewdaly.co.uk/blog/2015/08/02/testing-django-views-in-isolation/
+- Change ingredient 'type' to something else.

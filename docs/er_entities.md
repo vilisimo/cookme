@@ -8,6 +8,7 @@ models/entities.
 | *name* | Name of the ingredient |
 | *type* | Type of the ingredient |
 | *description* | Description of the ingredient. |
+| *slug* | Ingredient's slug, derived from its name. |
 
 ###Unit
 | Field | Description |
@@ -21,7 +22,9 @@ models/entities.
 | --- | --- |
 | *author (FK)* | User that has created the recipe. |
 | *title* | Name of the recipe. |
-| *description* | Description of the recipe (instructions). |
+| *description* | Short description of the recipe. |
+| *steps* | Steps detailing how to cook the dish. |
+| *cuisine* | Cuisine the dish belongs to.
 | *ingredients* | Ingredients that make up a recipe. |
 | *date* | When the recipe was added. |
 | *views* | How many times the recipe has been viewed. |
