@@ -33,7 +33,18 @@ Status: FINISHED (18/09/2016)
 
 
 ***************************************************************************
-3. User can add ingredients to his/her fridge.
+3. User can see recipes added by others.
+  - Test: access the global recipes.
+    Outcome: global recipes are shown.
+  - Access a recipe that does not exist.
+    Outcome: user is redirected or shown a 404 error.
+Priority: SHOULD HAVE
+Status: FINISHED (18/09/2016)
+***************************************************************************
+
+
+***************************************************************************
+4. User can add ingredients to his/her fridge.
   - Test: add existent ingredient to the fridge.
     Outcome: ingredient is added to the fridge.
   - Test: add non-existent ingredient to the fridge.
@@ -44,7 +55,7 @@ Status: FINISHED (22/09/2016)
 
 
 ***************************************************************************
-4. User can remove ingredient from his/her fridge.
+5. User can remove ingredient from his/her fridge.
   - Test: remove an ingredient from the fridge.
     Outcome: ingredient is removed from the fridge.
   - Test: remove non-existent ingredient from the fridge.
@@ -55,7 +66,7 @@ Status: FINISHED (26/09/2016)
 
 
 ***************************************************************************
-5. User can log in to the website using his/her ID and password combination.
+6. User can log in to the website using his/her ID and password combination.
   - Test: log in with correct id & password combination
     Outcome: login successful.
   - Test: log in with incorrect id & password combination.
@@ -70,7 +81,7 @@ Status: FINISHED (29/09/2016)
 
 
 ***************************************************************************
-6. User can register on the website.
+7. User can register on the website.
   - Test: register with unique username & password combination.
     Outcome: registration successful.
   - Test: register with a username that already exists in the database.
@@ -87,7 +98,7 @@ Status: FINISHED (29/09/2016)
 
 
 ***************************************************************************
-7. User can save recipes from global recipe book to his fridge.
+8. User can save recipes from global recipe book to his fridge.
   - Test: save a recipe from global recipe book.
     Outcome: recipe is added to a fridge.
   - Test: save a recipe that is already saved.

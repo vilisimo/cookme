@@ -94,15 +94,7 @@ Status: NOT STARTED
 ***************************************************************************
 
 
-***************************************************************************
-User can see recipes added by others.
-  - Test: access the global recipes.
-    Outcome: global recipes are shown.
-  - Access a recipe that does not exist.
-    Outcome: user is redirected or shown a 404 error.
-Priority: SHOULD HAVE
-Status: NOT STARTED
-***************************************************************************
+
 
 
 ***************************************************************************

@@ -11,7 +11,7 @@ from django.test.client import Client
 from recipes.models import Recipe
 from ingredients.models import Ingredient, Unit
 from .models import Fridge, FridgeIngredient
-from .views import fridge_detail, add_recipe
+from .views import fridge_detail, add_recipe, remove_ingredient, remove_recipe
 
 
 def logged_in_client():
@@ -22,9 +22,95 @@ def logged_in_client():
     return client
 
 
+class RemoveRecipeTests(TestCase):
+    """
+    Test suite to ensure that a recipe in a fridge can be removed properly.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.client = logged_in_client()
+        self.fridge = Fridge.objects.create(user=self.user)
+        self.r = Recipe.objects.create(author=self.user, title='test',
+                                       description='test', steps='test')
+        self.fridge.recipes.add(self.r)
+        self.url = reverse('fridge:remove_recipe', kwargs={'pk': self.r.pk})
+
+    def test_url_route(self):
+        """ Ensures that URL routes to correct view. """
+
+        url = '/fridge/remove_recipe/{}/'.format(self.r.pk)
+        resolver = resolve(url)
+
+        self.assertEqual(resolver.view_name, 'fridge:remove_recipe')
+        self.assertEqual(resolver.func, remove_recipe)
+
+    def test_access_remove_recipe_view(self):
+        """ Ensures that a user can access a view and is redirected. """
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_anonymous_access_remove_recipe_view(self):
+        """ Ensures anonymous users cannot access the view. """
+
+        client2 = Client()
+        response = client2.get(self.url)
+        redirect_url = '{}?next={}'.format(reverse('login'), self.url)
+
+        self.assertRedirects(response, redirect_url)
+
+    def test_recipe_removal(self):
+        """ Ensures a recipe can be removed. """
+
+        recipes = self.fridge.recipes.all()
+
+        self.assertEqual(len(recipes), 1)
+
+        self.client.get(self.url)
+        recipes = self.fridge.recipes.all()
+
+        self.assertFalse(recipes)
+
+    def test_different_user_removal(self):
+        """
+        Ensures that a particular user cannot remove ingredient from other
+        people's fridge.
+        """
+
+        u2 = User.objects.create_user(username='test2', password='test2')
+        c2 = Client()
+        c2.login(username='test2', password='test2')
+        f2 = Fridge.objects.create(user=u2)
+        f2.recipes.add(self.r)
+
+        response = c2.get(self.url)
+
+        self.assertEqual(response.status_code, 302)
+
+        u1recipes = self.fridge.recipes.all()
+
+        self.assertEqual(len(u1recipes), 1)
+
+        u2recipes = f2.recipes.all()
+
+        self.assertFalse(u2recipes)
+
+    def test_remove_non_existent(self):
+        """
+        Ensures non-existent recipes cannot be removed and an error is thrown.
+        """
+
+        url = reverse('fridge:remove_recipe', kwargs={'pk': 9999})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 404)
+
+
 class RemoveIngredientTests(TestCase):
     """ 
-    Test suite to ensure that a view for ingredient removal works corectly. 
+    Test suite to ensure that a view for ingredient removal works correctly.
     """
 
     def setUp(self):
@@ -42,6 +128,15 @@ class RemoveIngredientTests(TestCase):
                                                    ingredient=self.i2,
                                                    unit=self.unit,
                                                    quantity=1)
+
+    def test_url_route_remove_ingredient(self):
+        """ Ensures that URL routes to correct view. """
+
+        url = '/fridge/remove_ingredient/{}/'.format(self.i1.pk)
+        resolver = resolve(url)
+
+        self.assertEqual(resolver.view_name, 'fridge:remove_ingredient')
+        self.assertEqual(resolver.func, remove_ingredient)
 
     def test_access_view_successful(self):
         """ Ensure that upon accessing a view, user is redirected. """

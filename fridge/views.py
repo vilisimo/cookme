@@ -8,6 +8,7 @@ from recipes.forms import (
     RecipeIngredientForm,
     AddRecipeForm,
 )
+from recipes.models import Recipe
 from .models import FridgeIngredient, Fridge
 from .forms import FridgeIngredientForm
 
@@ -142,5 +143,23 @@ def remove_ingredient(request, pk):
 
     return HttpResponseRedirect(url)
 
+
+@login_required
+def remove_recipe(request, pk):
+    """
+    View that is responsible for removing recipes from user's fridge. Note
+    that recipes are not removed from 'global' recipe list.
+
+    :param request: standard request object.
+    :param pk:      to-be-removed recipe's primary key
+    :return:        HttpResponseRedirect object.
+    """
+
+    url = reverse('fridge:fridge_detail')
+    recipe = get_object_or_404(Recipe, pk=pk)
+    fridge = request.user.fridge
+    fridge.recipes.remove(recipe)
+
+    return HttpResponseRedirect(url)
 
 
