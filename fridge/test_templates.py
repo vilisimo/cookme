@@ -205,14 +205,14 @@ class FridgeDetailTests(TestCase):
                                    description='test')
         fridge = Fridge.objects.create(user=self.user)
         fridge.recipes.add(r1)
-
-        response = self.client.get(reverse('fridge:fridge_detail'))
+        url = reverse('fridge:fridge_detail')
+        response = self.client.get(url)
 
         self.assertContains(response, r1.title)
         self.assertContains(response, r2.title)
 
-    def test_shows_remove(self):
-        """ Ensures that a template has shows a remove function. """
+    def test_shows_remove_ingredient(self):
+        """ Ensures that a template has shows a remove ingredient function. """
 
         i1 = Ingredient.objects.create(name='test1', type='Fruit')
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
@@ -221,10 +221,21 @@ class FridgeDetailTests(TestCase):
                                               ingredient=i1,
                                               unit=unit,
                                               quantity=1)
-
         url = reverse('fridge:fridge_detail')
         response = self.client.get(url)
 
         self.assertContains(response, '<a href="{0}">Remove</a>'.format(reverse(
             'fridge:remove_ingredient', kwargs={'pk': fi1.pk})), html=True)
 
+    def test_shows_remove_recipe(self):
+        """ Ensures that a template shows a remove recipe function. """
+
+        r1 = Recipe.objects.create(author=self.user, title='test',
+                                   description='test')
+        fridge = Fridge.objects.create(user=self.user)
+        fridge.recipes.add(r1)
+        url = reverse('fridge:fridge_detail')
+        response = self.client.get(url)
+        remove_url = reverse('fridge:remove_recipe', kwargs={'pk': r1.pk})
+        ahref = '<a href="{0}">Remove</a>'.format(remove_url)
+        self.assertContains(response, ahref, html=True)
