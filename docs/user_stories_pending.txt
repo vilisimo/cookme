@@ -27,23 +27,6 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can add a recipe to a global recipe book.
-  - Test: add a recipe with title, description and ingredients.
-    Outcome: recipe is added.
-  - Test: add a recipe without title.
-    Outcome: operation not allowed.
-  - Test: add a recipe without description.
-    Outcome: operation not allowed.
-  - Test: add recipe without ingredients.
-    Outcome: operation not allowed.
-  - Test: access the page without logging in.
-    Outcome: operation not allowed, user is redirected.
-Priority: MUST HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 User can edit the recipes he/she has uploaded.
   - Test: edit his/her own recipe.
     Outcome: recipe is edited.
@@ -92,9 +75,6 @@ User can add a photo associated with a recipe.
 Priority: SHOULD HAVE
 Status: NOT STARTED
 ***************************************************************************
-
-
-
 
 
 ***************************************************************************

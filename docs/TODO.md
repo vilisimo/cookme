@@ -16,4 +16,3 @@ exclude, etc., so that I do not have to repeat almost all of the code in it?
 - Refactor tests to use RequestFactory for quicker tests. Relevant link:
 http://matthewdaly.co.uk/blog/2015/08/02/testing-django-views-in-isolation/
 - Change ingredient 'type' to something else.
-- Remove recipe: add template tests
