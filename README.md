@@ -6,9 +6,7 @@ has enough ingredients for, favorite interesting recipes and so on.
 
 This is a practice project to get hang of Django, Python, CSS, HTML, 
 JavaScript, jQuery, Ajax, etc. It is not designed to be the innovative 
-app: there are dozens of similar websites and apps. However, the project
-was created from a scratch, without copying other projects. Hence 
-possible weird/'unique'/etc. decisions. 
+app: there are dozens of similar websites and apps. 
 
 ##About the project
 The website was created on OS X (El Capitan) and Ubuntu 16.04. It was 
