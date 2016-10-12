@@ -10,9 +10,12 @@
                     </a>
                     <!-- Remove when working on CSS-->
                     &nbsp
-                    <a href="{% url 'recipes:add_to_fridge' recipe.pk %}">
-                        Add
-                    </a>
+                    <!-- No need to show 'add' if user is anonymous. -->
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'recipes:add_to_fridge' recipe.pk %}">
+                            Add
+                        </a>
+                    {% endif %}
                 </li>
             {% endfor %}
         </ul>

@@ -29,8 +29,16 @@
                 <a href="{% url 'logout' %}">Logout</a>
                 Welcome, {{ user.username }}
             {% else %}
-                <a href="{% url 'login' %}?next={{ request.path|urlencode }}">Login</a>
-                <a href="{% url 'register' %}?next={{ request.path|urlencode }}">Register</a>
+                <!-- Hiding links when clicked on them avoids the problem of
+                redirection to the same page. -->
+                {% url 'login' as login_url %}
+                {% if request.path != login_url %}
+                    <a href="{% url 'login' %}?next={{ request.path|urlencode }}">Login</a>
+                {% endif %}
+                {% url 'register' as register_url %}
+                {% if request.path != register_url %}
+                    <a href="{% url 'register' %}?next={{ request.path|urlencode }}">Register</a>
+                {% endif %}
             {% endif %}
         </nav>
 

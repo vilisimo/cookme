@@ -26,12 +26,14 @@
         </div>
 
         <!-- Take care of spacing with CSS -->
+        <!-- Is this div needed? -->
         <br/><br/>
         <div class="add-recipe">
             <a href="{% url 'fridge:add_recipe' %}">
                 Add recipe
             </a>
         </div>
+        <a href="{% url 'recipes:recipes' %}">Browse existing recipes</a>
 
         <!-- Take care of spacing with CSS -->
         <br/><br/>

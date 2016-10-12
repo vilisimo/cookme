@@ -3,7 +3,12 @@
 {% block main %}
     <!-- Breaks between should be handled with styling -->
     <h2>{{ title }}</h2>
-    Uploaded by: {{ author }} on {{ date }}
+    {% if user.is_authenticated %}
+        <a href="{% url 'recipes:add_to_fridge' pk %}">
+            Add to Fridge
+        </a>
+    {% endif %}
+    <p>Uploaded by: {{ author }} on {{ date }}</p>
 
     <h3>Cuisine</h3>
     <!-- Should this be with in a separate paragraph? -->

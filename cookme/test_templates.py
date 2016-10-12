@@ -63,6 +63,30 @@ class RegisterTests(TestCase):
         self.assertContains(
             response, 'A user with that username already exists.')
 
+    def test_register_not_shown(self):
+        """
+        Ensures url to register view is not shown when user is in register
+        view.
+        """
+
+        response = self.client.get(self.url)
+
+        # Do not forget that login page redirects to the previous page.
+        self.assertNotContains(response,
+                               '<a href={0}?next={0}>Register</a>'.format(
+                                   self.url), html=True)
+
+    def test_register_shown(self):
+        """ Ensures that register link is shown in other views. """
+
+        recipe_url = reverse('recipes:recipes')
+        response = self.client.get(recipe_url)
+
+        # Do not forget that login page redirects to the previous page.
+        self.assertContains(response,
+                            '<a href={}?next={}>Register</a>'.
+                            format(self.url, recipe_url), html=True)
+
 
 class LoginTests(TestCase):
     """ Test suite to ensure that login templates show correct info. """
@@ -70,6 +94,27 @@ class LoginTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = reverse('login')
+
+    def test_login_not_shown(self):
+        """ Ensures that login link is not shown when user is in login view. """
+
+        response = self.client.get(self.url)
+
+        # Do not forget that login page redirects to the previous page.
+        self.assertNotContains(response,
+                               '<a href={0}?next={0}>Login</a>'.format(
+                                   self.url), html=True)
+
+    def test_login_shown(self):
+        """ Ensures that login link is shown in other views. """
+
+        recipe_url = reverse('recipes:recipes')
+        response = self.client.get(recipe_url)
+
+        # Do not forget that login page redirects to the previous page.
+        self.assertContains(response,
+                            '<a href={}?next={}>Login</a>'.
+                            format(self.url, recipe_url), html=True)
 
     # # Does not work even when template has error tags?..
     # def test_missing_info(self):
@@ -80,7 +125,7 @@ class LoginTests(TestCase):
     #
     #     from django.contrib.auth.forms import AuthenticationForm
     #     form = AuthenticationForm(data=data)
-    #     print(form.errors)  # Prints errors, but no erros in template?..
+    #     print(form.errors)  # Prints errors, but no errors in template?..
     #
     #     self.assertContains(response, 'This field is required.')
     #

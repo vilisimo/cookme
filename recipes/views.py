@@ -16,7 +16,8 @@ def recipes(request):
 
     recipe_list = Recipe.objects.all()
     context = {
-        'recipes': recipe_list
+        'recipes': recipe_list,
+        'user': request.user,
     }
 
     return render(request, 'recipes/recipes.html', context)
@@ -46,6 +47,8 @@ def recipe_detail(request, slug):
         'image': recipe.image,
         'steps': recipe.step_list(),
         'ingredients': ingredients,
+        'user': request.user,
+        'pk': recipe.pk,
     }
 
     return render(request, 'recipes/recipe_detail.html', context)

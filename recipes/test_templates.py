@@ -41,14 +41,27 @@ class RecipeTemplateTests(TestCase):
 
         Note that there is small hardcoded part (Add), which may be removed
         when the project moves to jQuery.
+
+        Also note that add should only be shown for a logged in user (see below
+        test).
         """
 
         add_to_fridge = reverse('recipes:add_to_fridge',
                                 kwargs={'pk': self.r1.pk})
+        self.client.login(username='test', password='test')
         ahref = '<a href="{}">Add</a>'.format(add_to_fridge)
         response = self.client.get(self.url)
 
         self.assertContains(response, ahref, html=True)
+
+    def test_add_link_not_shown_to_anonymous(self):
+        """ Ensures add link is not shown for anonymous user. """
+
+        add_url = reverse('recipes:add_to_fridge', kwargs={'pk': self.r1.pk})
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, '<a href={}>Add</a>'.format(add_url),
+                               html=True)
 
 
 class RecipeDetailTemplateTests(TestCase):
