@@ -6,7 +6,6 @@ that should eventually be done (and that are likely to be forgotten by
 me).
 
 ###Tasks
-- Make sure that a user can delete a recipe from his/her fridge.
 - Figure out settings stuff.
 - Figure out what the jquery.formset.js script does and create another one 
 with relevant functionality only.
