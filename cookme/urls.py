@@ -35,6 +35,9 @@ urlpatterns = [
     url(r'^recipes/', include('recipes.urls', namespace='recipes')),
     url(r'^ingredients/', include('ingredients.urls', namespace='ingredients')),
     url(r'^fridge/', include('fridge.urls', namespace='fridge')),
+    url(r'^search/', include('search.urls', namespace='search')),
+
+    # Admin
     url(r'^admin/', admin.site.urls),
     # Should NOT be used in production environment.
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
