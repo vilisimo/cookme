@@ -2,15 +2,15 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse, resolve
 
-from .views import search_results
+from .views import results
 
 
-class SearchResultsViewTests(TestCase):
+class ResultsViewTests(TestCase):
     """ Test suite to ensure main search view performs what it should. """
 
     def setUp(self):
         self.client = Client()
-        self.url = reverse('search:search_results')
+        self.url = reverse('search:results')
 
     def test_url_resolves(self):
         """ Ensures url can be accessed. """
@@ -24,5 +24,5 @@ class SearchResultsViewTests(TestCase):
 
         resolver = resolve(self.url)
 
-        self.assertEqual(resolver.view_name, 'search:search_results')
-        self.assertEqual(resolver.func, search_results)
+        self.assertEqual(resolver.view_name, 'search:results')
+        self.assertEqual(resolver.func, results)

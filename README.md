@@ -32,3 +32,4 @@ So far, these major languages and tools have been used:
 - Python
 - HTML
 - CSS
+- Django
