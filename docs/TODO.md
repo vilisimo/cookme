@@ -1,9 +1,9 @@
 ##About
-Contains tasks that need attention as soon as possible. This is not 
+Contains tasks that need attention sometime in the future. This is not 
 meant to be a document that lists ALL the tasks that need to be done. 
 The purpose of the document is simply to help me keep a track of tasks
 that should eventually be done (and that are likely to be forgotten by
-me).
+me if not documented).
 
 ###Tasks
 - Figure out settings stuff.

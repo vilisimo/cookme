@@ -7,4 +7,4 @@ from django.shortcuts import render
 
 def results(request):
     content = {}
-    return render(request, 'search/search_results.html', content)
+    return render(request, 'search/results.html', content)
