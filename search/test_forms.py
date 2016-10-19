@@ -44,3 +44,11 @@ class SearchFormTests(TestCase):
         self.assertTrue(len(data['q']) > 500)
         self.assertTrue(form.is_valid(), "Form with whitespace length > 500 "
                                          "was valid.")
+
+    def test_multiple_words(self):
+        """ Ensures that entering multiple words do not result in an error. """
+
+        data = {'q': 'multiple words'}
+        form = SearchForm(data=data)
+
+        self.assertTrue(form.is_valid(), "Multiple words were not allowed.")

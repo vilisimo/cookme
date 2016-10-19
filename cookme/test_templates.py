@@ -9,6 +9,29 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 
+class HomePageTests(TestCase):
+    """
+    Test suite to ensure that home page contains all the necessary elements,
+    never mind how they appear (i.e., some elements, e.g. forms or links need
+    to be on front page despite the formatting).
+    """
+
+    def setUp(self):
+        self.client = Client()
+        self.url = reverse('home')
+
+    def test_search_bar_exists(self):
+        """ Ensures that the search bar is on the front page. """
+
+        response = self.client.get(self.url)
+        element = '<form action="{}" method="post" id="search-bar">'.format(
+            reverse('home'))
+
+        # Can't make assertContains recognize the form for some reason,
+        # even when copying directly from html source on chrome...
+        self.assertIn(element, str(response.content))
+
+
 class RegisterTests(TestCase):
     """ Test suite to ensure register template shows essential infomration. """
 

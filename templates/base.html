@@ -48,7 +48,11 @@
 
     <main>
         {% block main %}
-        <!-- Here goes the search form. -->
+            <form action="{% url 'home' %}" method="post" id="search-bar">
+                {% csrf_token %}
+                {{ form.q }}
+                <input type="submit" value="Search" />
+            </form>
         {% endblock %}
         <!-- Find out a cleaner way to have a gap between main body and foot -->
         <div class="push"></div>

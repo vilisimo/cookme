@@ -2,6 +2,8 @@
 Tests to ensure everything in cookme.views works correctly.
 """
 
+import urllib.parse
+
 from django.test import TestCase
 from django.contrib import auth
 from django.core.urlresolvers import reverse, resolve
@@ -31,7 +33,7 @@ class HomePageTests(TestCase):
         self.assertEqual(view.func, home)
 
     def test_anonymous_visit(self):
-        """ Test to ensure anonymous users do not see link to a fridge. """
+        """ Ensures anonymous users do not see link to a fridge. """
 
         response = Client().get(self.url)
 
@@ -39,12 +41,51 @@ class HomePageTests(TestCase):
         self.assertNotContains(response, 'Fridge')
 
     def test_logged_visit(self):
-        """ Test to ensure that logged in user sees the fridge. """
+        """ Ensures that logged in user sees the fridge. """
 
         response = self.logged.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Fridge')
+
+    def test_search_form_response_ok(self):
+        """
+        Ensures that inputting the correct info in search bar search_results in
+        correct response status (302).
+        """
+
+        data = {'q': 'multiple words and then some'}
+        response = self.client.post(path=self.url, data=data)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_search_form_redirection_url_ok(self):
+        """
+        Ensures that inputting the correct info in search bar will
+        redirect to the correct view.
+        """
+
+        query = "secret grandma's ingredient"
+        query_encoded = urllib.parse.quote_plus(query)
+        data = {'q': query}
+        response = self.client.post(self.url, data)
+        url = reverse('search:search_results') + '?q=' + query_encoded
+
+        self.assertRedirects(response, expected_url=url)
+
+    def test_search_form_redirection_url_ok_utf(self):
+        """
+        Ensures that inputting the correct info in search bar will
+        redirect to the correct view, even when UTF-8 char is used.
+        """
+
+        query = "šecret grandma's ingredient"
+        query_encoded = urllib.parse.quote_plus(query)
+        data = {'q': query}
+        response = self.client.post(self.url, data)
+        url = reverse('search:search_results') + '?q=' + query_encoded
+
+        self.assertRedirects(response, expected_url=url)
 
 
 class RegisterViewTests(TestCase):

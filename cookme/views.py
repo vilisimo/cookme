@@ -2,12 +2,15 @@
 Test suite to ensure that views work correctly.
 """
 
+import urllib.parse
+
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, HttpResponseRedirect
 
 from fridge.models import Fridge
+from search.forms import SearchForm
 
 
 def home(request):
@@ -19,7 +22,6 @@ def home(request):
     """
 
     content = dict()
-
     user = request.user
     if user.is_authenticated:
         fridge = Fridge.objects.get_or_create(user=user)[0]
@@ -28,6 +30,23 @@ def home(request):
             'user': user,
             'fridge': fridge,
         }
+
+    if request.method == 'POST':
+        form = SearchForm(request.POST)
+        if form.is_valid():
+            url = reverse('search:search_results')
+            q = form.cleaned_data['q']
+            if q:
+                # Is encoding needed? I think django does it by default? But
+                # when testing, django complains that response does not
+                # redirect to a string one would expect with full encoding.
+                # url += '?q=' + "+".join(term.strip() for term in q.split())
+                url += '?q=' + urllib.parse.quote_plus(q)
+            return HttpResponseRedirect(url)
+    else:
+        form = SearchForm()
+
+    content['form'] = form
 
     return render(request, 'base.html', content)
 

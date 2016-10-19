@@ -2,7 +2,7 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.urlresolvers import reverse, resolve
 
-from .views import results
+from .views import search_results
 
 
 class ResultsViewTests(TestCase):
@@ -10,7 +10,7 @@ class ResultsViewTests(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.url = reverse('search:results')
+        self.url = reverse('search:search_results')
 
     def test_url_resolves(self):
         """ Ensures url can be accessed. """
@@ -24,5 +24,5 @@ class ResultsViewTests(TestCase):
 
         resolver = resolve(self.url)
 
-        self.assertEqual(resolver.view_name, 'search:results')
-        self.assertEqual(resolver.func, results)
+        self.assertEqual(resolver.view_name, 'search:search_results')
+        self.assertEqual(resolver.func, search_results)
