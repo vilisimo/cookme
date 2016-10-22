@@ -27,3 +27,24 @@ def generate_querystring(query):
     formatted = " ".join(dash_separated)
 
     return formatted
+
+
+def decode(query):
+    """
+    Removes dashes from a given query, and adds commas after each term, so that
+    the string is returned to the same form the user has entered. Forgetting
+    to add commas would create the similar problem as above: how to distinguish
+    terms from one another.
+
+    Note: user may leave a blank space after a comma. It is removed here so
+    that the processing later is more straightforward.
+
+    FUTURE NOTE: dashes may not be completely safe option. It is reasonable to
+    expect that some ingredients/recipes may have dashes in their titles.
+    However, for a practice project it is not of immediate importance.
+    """
+
+    split = query.split()
+    decoded = ",".join(term.replace('-', ' ') for term in split)
+
+    return decoded

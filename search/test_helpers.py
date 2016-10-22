@@ -4,7 +4,7 @@ Tests to ensure that helper functions are fully operational.
 
 from django.test import TestCase
 
-from .helper_functions import generate_querystring
+from .helper_functions import generate_querystring, decode
 
 
 class QueryStringGenerationTests(TestCase):
@@ -45,3 +45,41 @@ class QueryStringGenerationTests(TestCase):
 
         self.assertEqual(expected, generated)
 
+
+class DecodingTests(TestCase):
+    """
+    Test suite to ensure that decoding of query strings produces a correct
+    result.
+    """
+
+    def test_one_word(self):
+        """ Ensures that decoding does not mess up one word queries. """
+
+        query = 'oneword'
+        decoded = decode(query)
+
+        self.assertEqual(query, decoded)
+
+    def test_multiple_words(self):
+        """ Ensures that decoding does not mess up multi-word queries. """
+
+        query = 'multiple words'
+        encoded = generate_querystring(query)
+        decoded = decode(encoded)
+
+        self.assertEqual(query, decoded)
+
+    def test_multiple_terms(self):
+        """
+        Ensures that decoding does not mess up queries with multiple terms.
+
+        Note that the space removal after comma is intentional. It is the
+        expected functionality of decode function, as it makes processing
+        later easier.
+        """
+
+        query = "multiple words, ingredient, ingredient 2"
+        encoded = generate_querystring(query)
+        decoded = decode(encoded)
+
+        self.assertEqual(query.replace(', ', ','), decoded)
