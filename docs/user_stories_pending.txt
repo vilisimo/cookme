@@ -38,19 +38,6 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can choose what category he/she should be shown the recipes from.
-  - Test: pick a category that has recipes available.
-    Outcome: appropriate recipes are shown.
-  - Test: pick a category that has no recipes available.
-    Outcome: no recipes are shown (optional: category not shown at all).
-  - Test: access a non-existent category.
-    Outcome: operation not allowed.
-Priority: COULD HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 User can enter an ingredient in a search bar to search for the recipes with
 that ingredient.
   - Test: search for an existing ingredient.
@@ -97,6 +84,19 @@ User can see a recipe rating.
   - Test: access the recipe's rating when there is none.
     Outcome: user is shown an empty rating with 0 votes.
 Priority: SHOULD HAVE
+Status: NOT STARTED
+***************************************************************************
+
+
+***************************************************************************
+User can choose what category he/she should be shown the recipes from.
+  - Test: pick a category that has recipes available.
+    Outcome: appropriate recipes are shown.
+  - Test: pick a category that has no recipes available.
+    Outcome: no recipes are shown (optional: category not shown at all).
+  - Test: access a non-existent category.
+    Outcome: operation not allowed.
+Priority: COULD HAVE
 Status: NOT STARTED
 ***************************************************************************
 
