@@ -16,3 +16,5 @@ exclude, etc., so that I do not have to repeat almost all of the code in it?
 http://matthewdaly.co.uk/blog/2015/08/02/testing-django-views-in-isolation/
 - Change ingredient 'type' to something else.
 - Figure out whether Django encodes url string by default.
+- Figure out a way to separate multi-word ingredients. Dash does not seem
+to be a safe choice. Maybe something else instead of it?

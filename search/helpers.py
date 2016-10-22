@@ -3,7 +3,7 @@ Helper functions to support functionality related to searching the recipes.
 """
 
 
-def generate_querystring(query):
+def encode(query):
     """
     Takes care of proper formatting of the query strings.
 

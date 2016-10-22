@@ -4,10 +4,10 @@ Tests to ensure that helper functions are fully operational.
 
 from django.test import TestCase
 
-from .helper_functions import generate_querystring, decode
+from .helpers import encode, decode
 
 
-class QueryStringGenerationTests(TestCase):
+class EncodingTests(TestCase):
     """
     Test suite to ensure that function producing query string functions
     properly.
@@ -17,7 +17,7 @@ class QueryStringGenerationTests(TestCase):
         """ Ensures that one word query strings are constructed properly. """
 
         query = 'oneword'
-        generated = generate_querystring(query)
+        generated = encode(query)
 
         self.assertEqual(query, generated)
 
@@ -25,7 +25,7 @@ class QueryStringGenerationTests(TestCase):
         """ Ensures that multi-word queries are formatted properly. """
 
         query = "multiple words"
-        generated = generate_querystring(query)
+        generated = encode(query)
         query = query.replace(' ', '-')
 
         self.assertEqual(query, generated)
@@ -41,7 +41,7 @@ class QueryStringGenerationTests(TestCase):
 
         query = "multiple words, ingredient, ingredient 2"
         expected = "multiple-words ingredient ingredient-2"
-        generated = generate_querystring(query)
+        generated = encode(query)
 
         self.assertEqual(expected, generated)
 
@@ -64,7 +64,7 @@ class DecodingTests(TestCase):
         """ Ensures that decoding does not mess up multi-word queries. """
 
         query = 'multiple words'
-        encoded = generate_querystring(query)
+        encoded = encode(query)
         decoded = decode(encoded)
 
         self.assertEqual(query, decoded)
@@ -79,7 +79,7 @@ class DecodingTests(TestCase):
         """
 
         query = "multiple words, ingredient, ingredient 2"
-        encoded = generate_querystring(query)
+        encoded = encode(query)
         decoded = decode(encoded)
 
         self.assertEqual(query.replace(', ', ','), decoded)

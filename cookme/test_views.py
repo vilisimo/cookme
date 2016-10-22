@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from django.test.client import Client
 
 from .views import home, register
+from search.helpers import encode
 
 
 class HomePageTests(TestCase):
@@ -48,6 +49,16 @@ class HomePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Fridge')
 
+
+class SearchFunctionTests(TestCase):
+    """
+    Test suite to ensure that search functionality is performing as expected.
+    """
+
+    def setUp(self):
+        self.url = reverse('home')
+        self.client = Client()
+
     def test_search_form_response_ok(self):
         """
         Ensures that inputting the correct info in search bar search_results in
@@ -66,10 +77,11 @@ class HomePageTests(TestCase):
         """
 
         query = "secret grandma's ingredient"
-        query_encoded = urllib.parse.quote_plus(query)
+        query = encode(query)
+        query_utf_encoded = urllib.parse.quote_plus(query)
         data = {'q': query}
         response = self.client.post(self.url, data)
-        url = reverse('search:search_results') + '?q=' + query_encoded
+        url = reverse('search:search_results') + '?q=' + query_utf_encoded
 
         self.assertRedirects(response, expected_url=url)
 
@@ -80,10 +92,11 @@ class HomePageTests(TestCase):
         """
 
         query = "šecret grandma's ingredient"
-        query_encoded = urllib.parse.quote_plus(query)
+        query = encode(query)
+        query_utf_encoded = urllib.parse.quote_plus(query)
         data = {'q': query}
         response = self.client.post(self.url, data)
-        url = reverse('search:search_results') + '?q=' + query_encoded
+        url = reverse('search:search_results') + '?q=' + query_utf_encoded
 
         self.assertRedirects(response, expected_url=url)
 

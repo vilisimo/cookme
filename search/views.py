@@ -6,10 +6,14 @@ from django.shortcuts import render
 
 
 def search_results(request):
-    # request.GET.get['q'] to get query string
-    ingredients = request.GET.get('q').split()
-    ingredients = [ingredient.strip() for ingredient in ingredients]
+    # Temporary: to pass response 200 and resolving of url tests
+    ingredients = request.GET.get('q')
+    if ingredients:
+        ingredients = request.GET.get('q').split()
+        ingredients = [ingredient.strip() for ingredient in ingredients]
+
     content = {
         'ingredients': ingredients
     }
+    
     return render(request, 'search/search_results.html', content)

@@ -47,6 +47,8 @@
     </header>
 
     <main>
+        <!-- Need to use CSS to make the search bar wider. Placeholder
+        doesn't fit -->
         {% block main %}
             <form action="{% url 'home' %}" method="post" id="search-bar">
                 {% csrf_token %}

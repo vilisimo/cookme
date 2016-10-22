@@ -11,6 +11,7 @@ from django.shortcuts import render, HttpResponseRedirect
 
 from fridge.models import Fridge
 from search.forms import SearchForm
+from search.helpers import encode
 
 
 def home(request):
@@ -37,11 +38,12 @@ def home(request):
             url = reverse('search:search_results')
             q = form.cleaned_data['q']
             if q:
+                query = encode(q)
                 # Is encoding needed? I think django does it by default? But
                 # when testing, django complains that response does not
                 # redirect to a string one would expect with full encoding.
                 # url += '?q=' + "+".join(term.strip() for term in q.split())
-                url += '?q=' + urllib.parse.quote_plus(q)
+                url += '?q=' + urllib.parse.quote_plus(query)
             return HttpResponseRedirect(url)
     else:
         form = SearchForm()
