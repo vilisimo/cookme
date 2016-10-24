@@ -6,7 +6,6 @@ that should eventually be done (and that are likely to be forgotten by
 me if not documented).
 
 ###Tasks
-- Figure out settings stuff.
 - Figure out what the jquery.formset.js script does and create another one 
 with relevant functionality only.
 - RecipeIngredientForm: how to inherit the form from Fridge and change 
