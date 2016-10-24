@@ -15,5 +15,5 @@ def search_results(request):
     content = {
         'ingredients': ingredients
     }
-    
+
     return render(request, 'search/search_results.html', content)

@@ -91,9 +91,6 @@ ENV/
 # Mac's stuff
 .DS_Store
 
-# Change later when not sleepy
-settings.py
-
 # SQLite DB
 db.sqlite3
 
