@@ -2,6 +2,8 @@
 Helper functions to support functionality related to searching the recipes.
 """
 
+from string import capwords
+
 
 def encode(query):
     """
@@ -48,3 +50,16 @@ def decode(query):
     decoded = ",".join(term.replace('-', ' ') for term in split)
 
     return decoded
+
+
+def get_name_set(decoded_query):
+    """
+    Extracts a set of ingredient names from decoded query, capitalizes them,
+    puts them in a set so that it is ready to use.
+
+    :param decoded_query: query that was passed by a search and decoded.
+    :return: a set of ingredient names (capitalized for easier use).
+    """
+
+    names = set([capwords(name) for name in decoded_query.split(',')])
+    return names

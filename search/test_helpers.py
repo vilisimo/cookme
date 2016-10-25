@@ -4,7 +4,7 @@ Tests to ensure that helper functions are fully operational.
 
 from django.test import TestCase
 
-from .helpers import encode, decode
+from .helpers import encode, decode, get_name_set
 
 
 class EncodingTests(TestCase):
@@ -83,3 +83,46 @@ class DecodingTests(TestCase):
         decoded = decode(encoded)
 
         self.assertEqual(query.replace(', ', ','), decoded)
+
+
+class GetNameSetExtractionTests(TestCase):
+    """
+    Test suite to ensure that a set of names extracted from decoding query is
+    correct.
+    """
+
+    def test_one(self):
+        """ Ensures that one word query results in a correct set. """
+
+        query = 'oneword'
+        encoded = encode(query)
+        decoded = decode(encoded)
+        names = get_name_set(decoded)
+        expected = {'Oneword'}
+
+        self.assertEqual(names, expected)
+
+    def test_multiple_words(self):
+        """ Ensures that processing multi-word queries returns a correct set """
+
+        query = 'multi word'
+        encoded = encode(query)
+        decoded = decode(encoded)
+        names = get_name_set(decoded)
+        expected = {'Multi Word'}
+
+        self.assertEqual(names, expected)
+
+    def test_multiple_terms(self):
+        """
+        Ensures that processing a query with multiple terms returns a correct
+        set.
+        """
+
+        query = 'multiple words, ingredient, ingredient 2'
+        encoded = encode(query)
+        decoded = decode(encoded)
+        names = get_name_set(decoded)
+        expected = {'Multiple Words', 'Ingredient', 'Ingredient 2'}
+
+        self.assertEqual(names, expected)
