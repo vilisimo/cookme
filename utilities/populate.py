@@ -1,3 +1,10 @@
+"""
+Population scrip that can be run to create an initial, small test database.
+Still needs a lot of work, as it is quite fragile.
+
+Note: password for the recipe's author is the same as the author's name. Unsafe.
+"""
+
 import os
 import sys
 
@@ -9,6 +16,7 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
 from django.db import transaction
+from django.core.management import execute_from_command_line
 from django.contrib.auth.models import User
 
 from recipes.models import Recipe, RecipeIngredient
@@ -19,6 +27,23 @@ class bcolors:
     OKBLUE = '\033[94m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
+
+
+def get_user(username, password):
+    """ Creates a user with a given username and password. """
+
+    user = None
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        user = User.objects.create_user(username=username, password=password)
+    finally:
+        return user
+
+
+def migrate():
+    """ Prepares database for population by building tables. """
+    execute_from_command_line(["manage.py", "migrate"])
 
 
 @transaction.atomic
@@ -96,8 +121,8 @@ def populate_recipes(recipe_folder=None):
             for step in steps:
                 step_list.append(values['steps'][step].strip())
 
-            admin = User.objects.get(username=author)
-            recipe, c = Recipe.objects.get_or_create(author=admin, title=title,
+            user = get_user(username=author, password=author)
+            recipe, c = Recipe.objects.get_or_create(author=user, title=title,
                                                      cuisine=cuisine,
                                                      description=description,
                                                      steps="\n".join(step_list))
@@ -136,8 +161,8 @@ if __name__ == '__main__':
     units_file = 'data/units.txt'
     ingredients_file = 'data/ingredients.txt'
     recipes_path = 'data/recipes'
+    migrate()
     populate_units(units_txt=units_file)
     populate_ingredients(ingredients_txt=ingredients_file)
-    # Admin should be created before calling this function
     populate_recipes(recipe_folder=recipes_path)
 
