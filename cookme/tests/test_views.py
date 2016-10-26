@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
 from django.test.client import Client
 
-from .views import home, register
+from cookme.views import home, register
 from search.helpers import encode
 
 

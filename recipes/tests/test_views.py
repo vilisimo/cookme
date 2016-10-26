@@ -9,8 +9,8 @@ from django.core.urlresolvers import resolve
 from django.test.client import Client
 
 from fridge.models import Fridge
-from .models import *
-from .views import recipes, recipe_detail, add_to_fridge
+from recipes.models import *
+from recipes.views import recipes, recipe_detail, add_to_fridge
 
 
 class URLTests(TestCase):

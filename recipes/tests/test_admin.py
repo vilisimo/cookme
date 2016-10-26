@@ -8,8 +8,8 @@ from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
 
 from ingredients.models import Ingredient, Unit
-from .models import Recipe, RecipeIngredient
-from .admin import RecipeAdmin
+from recipes.models import Recipe, RecipeIngredient
+from recipes.admin import RecipeAdmin
 
 
 class RecipeAdminTests(TestCase):

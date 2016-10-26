@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from .forms import SearchForm
+from search.forms import SearchForm
 
 
 class SearchFormTests(TestCase):

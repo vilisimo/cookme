@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe
 from .test_views import logged_in_client
-from .models import Fridge, FridgeIngredient
+from fridge.models import Fridge, FridgeIngredient
 
 
 class AddRecipeTests(TestCase):

@@ -10,8 +10,8 @@ from django.test.client import Client
 
 from recipes.models import Recipe
 from ingredients.models import Ingredient, Unit
-from .models import Fridge, FridgeIngredient
-from .views import fridge_detail, add_recipe, remove_ingredient, remove_recipe
+from fridge.models import Fridge, FridgeIngredient
+from fridge.views import fridge_detail, add_recipe, remove_ingredient, remove_recipe
 
 
 def logged_in_client():

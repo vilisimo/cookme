@@ -10,8 +10,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 
 from ingredients.models import Ingredient, Unit
-from .models import Recipe
-from .forms import (
+from recipes.models import Recipe
+from recipes.forms import (
     BaseRecipeIngredientFormSet,
     RecipeIngredientForm,
     AddRecipeForm,

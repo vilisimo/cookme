@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from ingredients.models import Ingredient, Unit
-from .models import Recipe, RecipeIngredient
+from recipes.models import Recipe, RecipeIngredient
 
 
 class RecipeTemplateTests(TestCase):

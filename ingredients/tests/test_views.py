@@ -2,14 +2,13 @@
 Test suite for views, urls.
 """
 
-
-from django.test import TestCase
 from django.core.urlresolvers import resolve, reverse
+from django.test import TestCase
 from django.test.client import Client
 
-from fridge.test_views import logged_in_client
-from .models import Ingredient
-from .views import ingredient_detail
+from fridge.tests.test_views import logged_in_client
+from ingredients.models import Ingredient
+from ingredients.views import ingredient_detail
 
 
 class IngredientDetailViewsURLsTests(TestCase):

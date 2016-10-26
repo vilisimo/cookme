@@ -9,7 +9,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 
-from .models import Recipe, Rating, RecipeIngredient, user_directory_path
+from recipes.models import Recipe, Rating, RecipeIngredient, user_directory_path
 from ingredients.models import Ingredient, Unit
 
 

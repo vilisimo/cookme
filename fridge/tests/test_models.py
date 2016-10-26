@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.core.urlresolvers import resolve
 from django.contrib.auth.models import User
 
-from .models import Fridge, FridgeIngredient
+from fridge.models import Fridge, FridgeIngredient
 from ingredients.models import Ingredient, Unit
 
 

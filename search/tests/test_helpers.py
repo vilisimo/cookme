@@ -4,13 +4,12 @@ Tests to ensure that helper functions are fully operational.
 
 from django.test import TestCase
 
-from .helpers import encode, decode, get_name_set
+from search.helpers import encode, decode, get_name_set
 
 
 class EncodingTests(TestCase):
     """
-    Test suite to ensure that function producing query string functions
-    properly.
+    Test suite to ensure that function producing query string works.
     """
 
     def test_one_word(self):

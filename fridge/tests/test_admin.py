@@ -9,8 +9,8 @@ from django.contrib.admin.sites import AdminSite
 
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
-from .models import Fridge, FridgeIngredient
-from .admin import FridgeAdmin
+from fridge.models import Fridge, FridgeIngredient
+from fridge.admin import FridgeAdmin
 
 
 class FridgeAdminTests(TestCase):

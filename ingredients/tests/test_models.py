@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.utils.text import slugify
 from django.core.urlresolvers import resolve
 
-from .models import Ingredient, Unit
+from ingredients.models import Ingredient, Unit
 
 
 class IngredientTests(TestCase):
