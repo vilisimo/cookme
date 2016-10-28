@@ -63,3 +63,15 @@ def get_name_set(decoded_query):
 
     names = set([capwords(name) for name in decoded_query.split(',')])
     return names
+
+
+def test(ingredients):
+    from django.db.models import Q
+    from recipes.models import Recipe
+    from ingredients.models import Ingredient
+
+    inner_recipes = Ingredient.objects.exclude(name__in=ingredients)
+    recipes = Recipe.objects.exclude(ingredients__in=inner_recipes)
+
+    print(recipes)
+    return recipes
