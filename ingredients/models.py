@@ -10,6 +10,7 @@ class Ingredient(models.Model):
 
     INGREDIENTS = [
         ('Additives', 'Food additives'),
+        ('Bread', 'Bread'),
         ('Condiments', 'Condiments'),
         ('Oils', 'Cooking oils'),
         ('Eggs', 'Eggs'),
