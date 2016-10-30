@@ -4,14 +4,14 @@ Tests to ensure everything in cookme.views works correctly.
 
 import urllib.parse
 
-from django.test import TestCase
 from django.contrib import auth
-from django.core.urlresolvers import reverse, resolve
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse, resolve
+from django.test import TestCase
 from django.test.client import Client
 
 from cookme.views import home, register
-from search.helpers import encode
+from utilities.search_helpers import encode
 
 
 class HomePageTests(TestCase):

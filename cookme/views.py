@@ -4,14 +4,14 @@ Test suite to ensure that views work correctly.
 
 import urllib.parse
 
-from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
+from django.core.urlresolvers import reverse
 from django.shortcuts import render, HttpResponseRedirect
 
 from fridge.models import Fridge
 from search.forms import SearchForm
-from search.helpers import encode
+from utilities.search_helpers import encode
 
 
 def home(request):

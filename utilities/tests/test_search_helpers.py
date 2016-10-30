@@ -4,8 +4,7 @@ Tests to ensure that helper functions are fully operational.
 
 from django.test import TestCase
 
-
-from search.helpers import encode, decode, get_name_set
+from utilities.search_helpers import encode, decode, get_name_set
 
 
 class EncodingTests(TestCase):
