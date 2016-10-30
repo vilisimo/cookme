@@ -8,7 +8,6 @@ from django.test import TestCase
 from search.helpers import encode, decode, get_name_set
 
 
-
 class EncodingTests(TestCase):
     """
     Test suite to ensure that function producing query string works.

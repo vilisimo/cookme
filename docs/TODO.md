@@ -21,3 +21,5 @@ to be a safe choice. Maybe something else instead of it?
 root directory.
 - Would be nice to thoroughly test population script. At the moment, it is 
 quite fragile.
+- Update mock_db.py to have stuff that is used in other tests, so that code 
+duplication can be reduced.  
