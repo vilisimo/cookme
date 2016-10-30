@@ -1,9 +1,8 @@
 from django.test import TestCase
-from django.contrib.auth.models import User
 
-from ingredients.models import Unit, Ingredient
-from recipes.models import Recipe, RecipeIngredient as RecIng
+from recipes.models import Recipe
 from fridge.helpers import get_fridge_recipes
+from utilities.mock_db import populate_recipes
 
 
 class TestGetRecipes(TestCase):
@@ -13,33 +12,11 @@ class TestGetRecipes(TestCase):
     """
 
     def setUp(self):
-        user = User.objects.create(username='get_fridge_recipes')
-
-        # Ingredients
-        i1 = Ingredient.objects.create(name='Meat', type='Meat')
-        i2 = Ingredient.objects.create(name='Lemon', type='Fruit')
-        i3 = Ingredient.objects.create(name='Apple', type='Fruit')
-        i4 = Ingredient.objects.create(name='White Bread', type='Bread')
-        # Units
-        u = Unit.objects.create(name='kilogram', abbrev='kg')
-
-        # Recipes
-        self.r = Recipe.objects.create(author=user, title='MeatRec')
-        RecIng.objects.create(recipe=self.r, ingredient=i1, unit=u, quantity=1)
-
-        self.r2 = Recipe.objects.create(author=user, title='MeatLemonAppleRec')
-        RecIng.objects.create(recipe=self.r2, ingredient=i1, unit=u, quantity=1)
-        RecIng.objects.create(recipe=self.r2, ingredient=i2, unit=u, quantity=1)
-        RecIng.objects.create(recipe=self.r2, ingredient=i3, unit=u, quantity=1)
-
-        self.r3 = Recipe.objects.create(author=user, title="AllIngredientsRec")
-        RecIng.objects.create(recipe=self.r3, ingredient=i1, unit=u, quantity=1)
-        RecIng.objects.create(recipe=self.r3, ingredient=i2, unit=u, quantity=1)
-        RecIng.objects.create(recipe=self.r3, ingredient=i3, unit=u, quantity=1)
-        RecIng.objects.create(recipe=self.r3, ingredient=i4, unit=u, quantity=1)
-
-        self.r4 = Recipe.objects.create(author=user, title="LemonRec")
-        RecIng.objects.create(recipe=self.r4, ingredient=i2, unit=u, quantity=1)
+        recipes = populate_recipes()
+        self.r1 = recipes[0]
+        self.r2 = recipes[1]
+        self.r3 = recipes[2]
+        self.r4 = recipes[3]
 
     def test_get_recipes_one_ingredient(self):
         """
@@ -50,7 +27,7 @@ class TestGetRecipes(TestCase):
         ingredients = {'meat'}
         recipes = get_fridge_recipes(ingredients)
 
-        self.assertIn(self.r, recipes)
+        self.assertIn(self.r1, recipes)
 
     def test_get_recipes_two_ingredients(self):
         """
@@ -60,7 +37,7 @@ class TestGetRecipes(TestCase):
 
         ingredients = {'meat', 'lemon'}
         recipes = get_fridge_recipes(ingredients)
-        expected = [self.r, self.r4]
+        expected = [self.r1, self.r4]
 
         self.assertEquals(expected, list(recipes))
 
