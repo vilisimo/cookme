@@ -4,6 +4,10 @@ Helper functions to support functionality related to searching the recipes.
 
 from string import capwords
 
+from django.db.models import Count
+
+from recipes.models import Recipe
+
 
 def encode(query):
     """
@@ -47,7 +51,7 @@ def decode(query):
     """
 
     split = query.split()
-    decoded = ",".join(term.replace('-', ' ') for term in split)
+    decoded = ",".join(term.strip().replace('-', ' ') for term in split)
 
     return decoded
 
@@ -61,5 +65,32 @@ def get_name_set(decoded_query):
     :return: a set of ingredient names (capitalized for easier use).
     """
 
-    names = set([capwords(name) for name in decoded_query.split(',')])
+    names = set([capwords(name).strip() for name in decoded_query.split(',')])
     return names
+
+
+def match_recipes(ingredients):
+    """
+    Matches given ingredients against recipes to see which recipes contain
+    given ingredients (and possibly more).
+
+    :param ingredients: an set of encoded (see above) ingredient names
+    :return: a list of recipes that have matching ingredients.
+    """
+
+    matched = []
+
+    # Surely there should be a better way to do it. The one below?
+    # recipes = Recipe.objects.filter(ingredients__name__in=ingredients).distinct()
+    # for recipe in recipes:
+    #     recipe_ings = set([ing.name for ing in recipe.ingredients.all()])
+    #     if ingredients.issubset(recipe_ings):
+    #         matched.append(recipe)
+
+    # Pretty hairy SQL query.
+    matched = (Recipe.objects.filter(ingredients__name__in=ingredients)
+               .annotate(num_ings=Count('ingredients__name'))
+               .filter(num_ings=len(ingredients)))
+
+    return matched
+

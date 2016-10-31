@@ -2,11 +2,12 @@
 Logic related to searching fridge & global recipes lives.
 """
 
-from django.shortcuts import render
 from django.db.models import Q
+from django.shortcuts import render
 
 from recipes.models import Recipe
-from .helpers import decode, get_name_set
+from ingredients.models import Ingredient
+from utilities.search_helpers import decode, get_name_set, match_recipes
 
 
 def search_results(request):
@@ -24,14 +25,7 @@ def search_results(request):
     if ingredients:
         ingredients = decode(ingredients)
         ingredients = get_name_set(ingredients)
-
-        # # In case testing reveals something fishy:
-        # recipes = Recipe.objects.all()
-        # for recipe in recipes:
-        #     recipe_ings = set([ing.name for ing in recipe.ingredients.all()])
-        #     if ingredients.issubset(recipe_ings):
-        #         matched.append(recipe)
-        matched = Recipe.objects.exclude(~Q(ingredients__name__in=ingredients))
+        matched = match_recipes(ingredients)
 
     content = {
         'ingredients': ingredients,

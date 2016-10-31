@@ -6,7 +6,10 @@ from search.views import search_results
 
 
 class ResultsViewTests(TestCase):
-    """ Test suite to ensure main search view performs what it should. """
+    """
+    Test suite to ensure main search view can be reached, etc. For search
+    functionality tests see below.
+    """
 
     def setUp(self):
         self.client = Client()
@@ -34,4 +37,3 @@ class ResultsViewTests(TestCase):
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, 200)
-
