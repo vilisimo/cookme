@@ -7,9 +7,9 @@ def ingredient_detail(request, slug):
     """
     View responsible for showing detailed ingredient info.
 
-    :param request: standard request object
-    :param slug: slug of a desired ingredient
-    :return: standard render object
+    :param request: standard request object.
+    :param slug: slug of a desired ingredient.
+    :return: standard HttpResponse object.
     """
 
     ingredient = get_object_or_404(Ingredient, slug=slug)

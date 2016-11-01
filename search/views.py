@@ -2,11 +2,8 @@
 Logic related to searching fridge & global recipes lives.
 """
 
-from django.db.models import Q
 from django.shortcuts import render
 
-from recipes.models import Recipe
-from ingredients.models import Ingredient
 from utilities.search_helpers import decode, get_name_set, match_recipes
 
 
@@ -17,7 +14,7 @@ def search_results(request):
     Note: ingredients entered are a subset of a recipe, not a superset.
 
     :param request: default request object.
-    :return: default render object.
+    :return: standard HttpResponse object.
     """
 
     ingredients = request.GET.get('q')

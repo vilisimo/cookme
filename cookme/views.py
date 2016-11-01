@@ -19,7 +19,7 @@ def home(request):
     Quick and dirty way of implementing a home view that has a fridge.
 
     :param request: default request object.
-    :return:        default render object.
+    :return: default HttpResponse object.
     """
 
     content = dict()
@@ -62,6 +62,9 @@ def register(request):
     Also, registration is only important to get the fridge. Email, social
     accounts, etc does not matter, as the app is not designed to scale or to
     be a serious competitor to proper websites.
+
+    :param request: standard request object.
+    :return: standard HttpResponse object.
     """
 
     # Don't want a registered user accessing the view.

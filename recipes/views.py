@@ -11,7 +11,7 @@ def recipes(request):
     Should show the list of recipes.
 
     :param request: standard request object.
-    :return:        render object.
+    :return: standard HttpResponse object.
     """
 
     recipe_list = Recipe.objects.all()
@@ -28,8 +28,8 @@ def recipe_detail(request, slug):
     View responsible for displaying a particular recipe.
 
     :param request: standard request object.
-    :param slug:    slug passed from urls for identification of recipe.
-    :return:        render object.
+    :param slug: slug passed from urls for identification of recipe.
+    :return: standard HttpResponse object.
     """
 
     recipe = get_object_or_404(Recipe, slug=slug)
@@ -60,8 +60,8 @@ def add_to_fridge(request, pk):
     View responsible for adding recipes to user's fridge.
 
     :param request: standard request object.
-    :param pk:      recipe's primary key.
-    :return:        render object.
+    :param pk: recipe's primary key.
+    :return: standard HttpResponse object.
     """
 
     user = request.user
