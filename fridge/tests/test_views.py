@@ -1,25 +1,171 @@
 """
-Test suite for views, urls.
+Test suite for fridge views, urls.
 """
 
-
-from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse, resolve
+from django.test import TestCase
 from django.test.client import Client
 
-from recipes.models import Recipe
-from ingredients.models import Ingredient, Unit
 from fridge.models import Fridge, FridgeIngredient
-from fridge.views import fridge_detail, add_recipe, remove_ingredient, remove_recipe
+from fridge.views import (
+    fridge_detail,
+    add_recipe,
+    remove_ingredient,
+    remove_recipe,
+    possibilities,
+)
+from ingredients.models import Ingredient, Unit
+from recipes.models import Recipe
+from utilities.mock_db import logged_in_client
 
 
-def logged_in_client():
-    """ Creates logged in user. """
+class FridgeDetailViewURLsTests(TestCase):
+    """
+    Test suite to check whether the views associated with Fridge model are
+    functioning correctly. Includes tests on views and URLs.
+    """
 
-    client = Client()
-    client.login(username='test', password='test')
-    return client
+    def setUp(self):
+        self.url = reverse('fridge:fridge_detail')
+        self.user = User.objects.create_user(username='test', password='test')
+        self.fridge = Fridge.objects.create(user=self.user)
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        self.client = logged_in_client()
+
+    def test_correct_view(self):
+        """ Ensures that url is connected to a correct view. """
+
+        url = '/fridge/'
+        path = resolve(url)
+
+        self.assertEqual(path.view_name, 'fridge:fridge_detail')
+        self.assertEqual(path.func, fridge_detail)
+
+    def test_form_present(self):
+        """ Ensures that the form is passed to the template. """
+
+        response = self.client.get(self.url)
+
+        self.assertTrue(response.context['form'])
+
+    def test_form_valid(self):
+        """ Ensure that filled in form is valid. """
+
+        data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': 1}
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, self.url)
+
+    def test_form_invalid_no_redirect(self):
+        """ Ensure that if form is invalid, user is not redirected. """
+
+        data = dict()
+        data['ingredient'] = ''
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+
+        data['ingredient'] = 'test'
+        data['unit'] = ''
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+
+        data['unit'] = self.unit.pk
+        data['quantity'] = None
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_form_valid_ingredient_created(self):
+        """ Ensure that when form is valid, ingredient is created. """
+
+        name = 'test'
+        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
+        response = self.client.post(self.url, data)
+
+        self.assertTrue(response.status_code, 302)
+
+        ingredient = Ingredient.objects.get(name=name.capitalize())
+
+        self.assertTrue(ingredient)
+
+    def test_form_valid_ingredient_updated(self):
+        """ Ensure that when ingredient already exists, quantity is updated. """
+
+        name = 'Test'
+        quantity = 1
+        i = Ingredient.objects.create(name=name, description='test',
+                                      type='Fruit')
+        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i,
+                                        unit=self.unit, quantity=quantity)
+        d = {'ingredient': name, 'unit': self.unit.pk, 'quantity': quantity}
+        self.client.post(self.url, d)
+        fi = FridgeIngredient.objects.get(ingredient=i)
+
+        self.assertEqual(fi.quantity, quantity*2)
+
+    def test_form_valid_fridge_ingredient_created(self):
+        """ Ensure that when form is valid, FridgeIngredient is created. """
+
+        name = 'Test'
+        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
+        response = self.client.post(self.url, data)
+
+        self.assertEqual(response.status_code, 302)
+
+        fi = FridgeIngredient.objects.get(fridge=Fridge.objects.get(
+            user=self.user), ingredient=Ingredient.objects.get(name=name))
+
+        self.assertTrue(fi)
+
+    def test_user_access(self):
+        """ Ensures that a user is allowed to access the fridge. """
+
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_fridge_created(self):
+        """
+        Ensures that a fridge is created for a user upon accessing the view -
+        in case for one or another reason it was not created on the front
+        page or upon login.
+        """
+
+        Fridge.objects.all().delete()
+
+        response = self.client.get(self.url)
+        fridge = Fridge.objects.get(user=self.user)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertNotEqual(fridge, None)
+
+    def test_user_access_no_fridge_homepage_first(self):
+        """
+        Ensures that if a user does not have a fridge and tries to access
+        home page, a fridge will be created.
+        """
+
+        Fridge.objects.all().delete()
+
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(reverse('fridge:fridge_detail'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_anonymous_access(self):
+        """ Test to ensure that the anonymous user is not shown a fridge """
+
+        cl = Client()
+
+        redirect_string = '/accounts/login/?next='
+        response = cl.get(self.url)
+
+        self.assertRedirects(response, redirect_string + self.url)
 
 
 class RemoveRecipeTests(TestCase):
@@ -375,151 +521,37 @@ class AddRecipeTests(TestCase):
         self.assertRedirects(response, redirect_url + self.url)
 
 
-class FridgeDetailViewURLsTests(TestCase):
+class FridgePossibilitiesTests(TestCase):
     """
-    Test suite to check whether the views associated with Fridge model are
-    functioning correctly. Includes tests on views and URLs.
+    Test suite to ensure that a user can access a view that shows possible
+    recipes that he/she can make from ingredients in the fridge.
     """
 
     def setUp(self):
-        self.url = reverse('fridge:fridge_detail')
-        self.user = User.objects.create_user(username='test', password='test')
-        self.fridge = Fridge.objects.create(user=self.user)
-        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
+        User.objects.create_user(username='test', password='test')
         self.client = logged_in_client()
+        self.url = reverse('fridge:possibilities')
 
     def test_correct_view(self):
         """ Ensures that url is connected to a correct view. """
 
-        url = '/fridge/'
+        url = '/fridge/possibilities/'
         path = resolve(url)
 
-        self.assertEqual(path.view_name, 'fridge:fridge_detail')
-        self.assertEqual(path.func, fridge_detail)
+        self.assertEqual(path.view_name, 'fridge:possibilities')
+        self.assertEqual(path.func, possibilities)
 
-    def test_form_present(self):
-        """ Ensures that the form is passed to the template. """
-
-        response = self.client.get(self.url)
-
-        self.assertTrue(response.context['form'])
-
-    def test_form_valid(self):
-        """ Ensure that filled in form is valid. """
-
-        data = {'ingredient': 'test', 'unit': self.unit.pk, 'quantity': 1}
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, self.url)
-
-    def test_form_invalid_no_redirect(self):
-        """ Ensure that if form is invalid, user is not redirected. """
-
-        data = dict()
-        data['ingredient'] = ''
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, 200)
-
-        data['ingredient'] = 'test'
-        data['unit'] = ''
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, 200)
-
-        data['unit'] = self.unit.pk
-        data['quantity'] = None
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, 200)
-
-    def test_form_valid_ingredient_created(self):
-        """ Ensure that when form is valid, ingredient is created. """
-
-        name = 'test'
-        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
-        response = self.client.post(self.url, data)
-
-        self.assertTrue(response.status_code, 302)
-
-        ingredient = Ingredient.objects.get(name=name.capitalize())
-
-        self.assertTrue(ingredient)
-
-    def test_form_valid_ingredient_updated(self):
-        """ Ensure that when ingredient already exists, quantity is updated. """
-
-        name = 'Test'
-        quantity = 1
-        i = Ingredient.objects.create(name=name, description='test',
-                                      type='Fruit')
-        FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i,
-                                        unit=self.unit, quantity=quantity)
-        d = {'ingredient': name, 'unit': self.unit.pk, 'quantity': quantity}
-        self.client.post(self.url, d)
-        fi = FridgeIngredient.objects.get(ingredient=i)
-
-        self.assertEqual(fi.quantity, quantity*2)
-
-    def test_form_valid_fridge_ingredient_created(self):
-        """ Ensure that when form is valid, FridgeIngredient is created. """
-
-        name = 'Test'
-        data = {'ingredient': name, 'unit': self.unit.pk, 'quantity': 1}
-        response = self.client.post(self.url, data)
-
-        self.assertEqual(response.status_code, 302)
-
-        fi = FridgeIngredient.objects.get(fridge=Fridge.objects.get(
-            user=self.user), ingredient=Ingredient.objects.get(name=name))
-
-        self.assertTrue(fi)
-
-    def test_user_access(self):
-        """ Ensures that a user is allowed to access the fridge. """
+    def test_user_can_access_a_view(self):
+        """ Ensures a view can be accessed by a registered user. """
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
 
-    def test_fridge_created(self):
-        """
-        Ensures that a fridge is created for a user upon accessing the view -
-        in case for one or another reason it was not created on the front
-        page or upon login.
-        """
+    def test_anonymous_user_access(self):
+        """ Ensures anonymous users cannot access this view. """
 
-        Fridge.objects.all().delete()
+        response = Client().get(self.url)
+        redirect_url = '{}?next={}'.format(reverse('login'), self.url)
 
-        response = self.client.get(self.url)
-        fridge = Fridge.objects.get(user=self.user)
-
-        self.assertEqual(response.status_code, 200)
-        self.assertNotEqual(fridge, None)
-
-    def test_user_access_no_fridge_homepage_first(self):
-        """
-        Ensures that if a user does not have a fridge and tries to access
-        home page, a fridge will be created.
-        """
-
-        Fridge.objects.all().delete()
-
-        response = self.client.get(reverse('home'))
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get(reverse('fridge:fridge_detail'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_anonymous_access(self):
-        """ Test to ensure that the anonymous user is not shown a fridge """
-
-        cl = Client()
-
-        redirect_string = '/accounts/login/?next='
-        response = cl.get(self.url)
-
-        self.assertRedirects(response, redirect_string + self.url)
-
-
+        self.assertRedirects(response, redirect_url)

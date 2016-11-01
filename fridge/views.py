@@ -28,14 +28,14 @@ def add_recipe(request):
     user requires more than one ingredient (very likely).
 
 
-    :param request: default request object
-    :return:        default render object (GET); redirect to fridge (POST)
+    :param request: default request object.
+    :return: default HttpResponse object (GET); redirect to fridge (POST).
     """
 
     # Ensure that a user has a fridge to add recipes to, even if non-existent
     # before requesting to add a recipe (should be impossible, but who knows).
     user = request.user
-    fridge, created = Fridge.objects.get_or_create(user=user)
+    fridge = Fridge.objects.get_or_create(user=user)[0]
     RecInFormset = formset_factory(RecipeIngredientForm,
                                    formset=BaseRecipeIngredientFormSet)
 
@@ -87,12 +87,12 @@ def fridge_detail(request):
     other hand, if a FridgeIngredient instance does not exists, we create it,
     by passing in a fridge, which is not supplied with a form (but is required).
 
-    :param  request: default request object
-    :return:         default render object
+    :param request: default request object.
+    :return: default HttpResponse object.
     """
 
     user = request.user
-    fridge, created = Fridge.objects.get_or_create(user=user)
+    fridge = Fridge.objects.get_or_create(user=user)[0]
     ingredients = FridgeIngredient.objects.filter(fridge=fridge)
     recipes = fridge.recipes.all()
 
@@ -133,6 +133,9 @@ def remove_ingredient(request, pk):
 
     Note that in case the user is not the same as the one that owns the
     fridge with a given FridgeIngredient, he/she is redirected to home page.
+
+    :param request: standard request object.
+    :param pk: primary key of the ingredient to be deleted.
     """
 
     url = reverse('fridge:fridge_detail')
@@ -151,8 +154,8 @@ def remove_recipe(request, pk):
     that recipes are not removed from 'global' recipe list.
 
     :param request: standard request object.
-    :param pk:      to-be-removed recipe's primary key
-    :return:        HttpResponseRedirect object.
+    :param pk: to-be-removed recipe's primary key.
+    :return: HttpResponse object.
     """
 
     url = reverse('fridge:fridge_detail')
@@ -163,3 +166,18 @@ def remove_recipe(request, pk):
     return HttpResponseRedirect(url)
 
 
+@login_required
+def possibilities(request):
+    """
+    Responsible for showing recipes that can be made with the ingredients in
+    a fridge.
+
+    :param request: standard request object.
+    :return: standard HttpResponse object.
+    """
+
+    user = request.user
+    fridge = Fridge.objects.get_or_create(user=user)[0]
+    content = dict()
+
+    return render(request, 'fridge/possibilities.html', content)
