@@ -7,6 +7,7 @@ the future.
 """
 
 from django.contrib.auth.models import User
+from django.test import Client
 
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe, RecipeIngredient as RecIng
@@ -18,7 +19,7 @@ def populate_recipes():
     information to test most of the functionality.
     """
 
-    user = User.objects.create(username='test')
+    user = User.objects.create_user(username='test', password='test')
 
     # Ingredients
     i1 = Ingredient.objects.create(name='Meat', type='Meat')
@@ -47,3 +48,11 @@ def populate_recipes():
     RecIng.objects.create(recipe=r3, ingredient=i2, unit=u, quantity=1)
 
     return [r0, r1, r2, r3]
+
+
+def logged_in_client():
+    """ Creates logged in user. """
+
+    client = Client()
+    client.login(username='test', password='test')
+    return client

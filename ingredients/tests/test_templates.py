@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 
-from fridge.tests.test_views import logged_in_client
+from utilities.mock_db import logged_in_client
 from ingredients.models import Ingredient
 
 
