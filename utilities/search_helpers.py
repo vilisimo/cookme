@@ -78,10 +78,9 @@ def match_recipes(ingredients):
     :return: a list of recipes that have matching ingredients.
     """
 
-    matched = []
-
-    # Surely there should be a better way to do it. The one below?
     # recipes = Recipe.objects.filter(ingredients__name__in=ingredients).distinct()
+    # Surely there should be a better way to do it. The one below?
+    # matched = []
     # for recipe in recipes:
     #     recipe_ings = set([ing.name for ing in recipe.ingredients.all()])
     #     if ingredients.issubset(recipe_ings):
