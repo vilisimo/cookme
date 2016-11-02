@@ -4,7 +4,7 @@ Logic related to searching fridge & global recipes lives.
 
 from django.shortcuts import render
 
-from utilities.search_helpers import decode, get_name_set, match_recipes
+from utilities.search_helpers import decode, get_name_set, superset_recipes
 
 
 def search_results(request):
@@ -22,7 +22,7 @@ def search_results(request):
     if ingredients:
         ingredients = decode(ingredients)
         ingredients = get_name_set(ingredients)
-        matched = match_recipes(ingredients)
+        matched = superset_recipes(ingredients)
 
     content = {
         'ingredients': ingredients,
