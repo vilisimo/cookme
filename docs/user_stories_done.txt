@@ -109,7 +109,7 @@ Status: FINISHED (30/09/2016)
 
 
 ***************************************************************************
-User can add a recipe to a global recipe book.
+9. User can add a recipe to a global recipe book.
   - Test: add a recipe with title, description and ingredients.
     Outcome: recipe is added.
   - Test: add a recipe without title.
@@ -122,4 +122,16 @@ User can add a recipe to a global recipe book.
     Outcome: operation not allowed, user is redirected.
 Priority: MUST HAVE
 Status: FINISHED (03/10/2016)
+***************************************************************************
+
+
+***************************************************************************
+10. User can enter an ingredient in a search bar to search for the recipes with
+that ingredient.
+  - Test: search for an existing ingredient.
+    Outcome: shows a page with recipes containing the ingredient.
+  - Test: searching for a non-existent ingredient.
+    Outcome: shows a page with no results.
+Priority: SHOULD HAVE
+Status: FINISHED (~28/10/2016)
 ***************************************************************************

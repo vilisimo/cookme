@@ -27,23 +27,21 @@ Status: NOT STARTED
 
 
 ***************************************************************************
+User can instruct to find recipes that match the ingredients in a fridge
+from a set of recipes that he/she has saved to the fridge.
+    - Test: instruct to find the recipes.
+      Outcome: only matching recipes (FROM THE FRIDGE) are shown.
+    - Test: create an empty fridge, ask to match the ingredients.
+      Outcome: no recipes are shown.
+***************************************************************************
+
+
+***************************************************************************
 User can edit the recipes he/she has uploaded.
   - Test: edit his/her own recipe.
     Outcome: recipe is edited.
   - Test: edit others' recipes.
     Outcome: operation not allowed.
-Priority: SHOULD HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
-User can enter an ingredient in a search bar to search for the recipes with
-that ingredient.
-  - Test: search for an existing ingredient.
-    Outcome: shows a page with recipes containing the ingredient.
-  - Test: searching for a non-existent ingredient.
-    Outcome: shows a page with no results.
 Priority: SHOULD HAVE
 Status: NOT STARTED
 ***************************************************************************
