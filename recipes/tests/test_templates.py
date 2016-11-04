@@ -18,6 +18,14 @@ class RecipeTemplateTests(TestCase):
         self.r2 = Recipe.objects.create(author=self.u, title='test2',
                                         description='test2')
 
+    def test_correct_template_used(self):
+        """ Ensures that a correct template is used for a view. """
+
+        response = self.client.get(self.url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'recipes/recipes.html')
+
     def test_recipes_template_recipes(self):
         """ Ensures that the template shows all recipes. """
 
@@ -83,6 +91,14 @@ class RecipeDetailTemplateTests(TestCase):
                                         unit=self.unit, quantity=0.5)
         self.url = reverse('recipes:recipe_detail', kwargs={'slug':
                                                             self.r1.slug})
+
+    def test_correct_template_used(self):
+        """ Ensures that a correct template is used for a view. """
+
+        response = self.client.get(self.url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'recipes/recipe_detail.html')
 
     def test_recipe_detail_ingredients(self):
         """ Ensures that all ingredients are listed. """

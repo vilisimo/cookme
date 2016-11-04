@@ -3,7 +3,6 @@ from string import capwords
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 
-from search.views import search_results
 from utilities.mock_db import populate_recipes
 
 
