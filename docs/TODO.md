@@ -6,8 +6,8 @@ that should eventually be done (and that are likely to be forgotten by
 me if not documented).
 
 ###Tasks
-- Figure out what the jquery.formset.js script does and create another one 
-with relevant functionality only.
+- Figure out the relevant parts of jquery.formset.js script and create another 
+one with relevant functionality only.
 - RecipeIngredientForm: how to inherit the form from Fridge and change 
 exclude, etc., so that I do not have to repeat almost all of the code in it?
 - Somehow deal with plurals? Have two values for each unit?
@@ -22,4 +22,7 @@ root directory.
 - Would be nice to thoroughly test population script. At the moment, it is 
 quite fragile.
 - Update mock_db.py to have stuff that is used in other tests, so that code 
-duplication can be reduced.  
+duplication can be reduced. 
+- Include some kind of config file in which common HTML phrases (e.g., no 
+recipes found) could be written down. This way, can import them in views, 
+pass on to templates, use in tests, etc., no need to change in multiple places.
