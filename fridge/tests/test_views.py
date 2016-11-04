@@ -16,8 +16,11 @@ from fridge.views import (
     possibilities,
 )
 from ingredients.models import Ingredient, Unit
-from recipes.models import Recipe
-from utilities.mock_db import logged_in_client
+from recipes.models import Recipe, RecipeIngredient as RI
+from utilities.mock_db import (
+    logged_in_client, populate_ingredients, populate_fridge_ingredients,
+    populate_recipes,
+)
 
 
 class FridgeDetailViewURLsTests(TestCase):
@@ -528,7 +531,10 @@ class FridgePossibilitiesTests(TestCase):
     """
 
     def setUp(self):
-        User.objects.create_user(username='test', password='test')
+        self.user = User.objects.create_user(username='test', password='test')
+        self.ingredients = populate_ingredients()
+        populate_fridge_ingredients()
+        self.recipes = populate_recipes()
         self.client = logged_in_client()
         self.url = reverse('fridge:possibilities')
 
@@ -555,3 +561,78 @@ class FridgePossibilitiesTests(TestCase):
         redirect_url = '{}?next={}'.format(reverse('login'), self.url)
 
         self.assertRedirects(response, redirect_url)
+
+    def test_context_has_ingredients(self):
+        """
+        Ensures the ingredients are successfully retrieved from DB.
+        Prerequisite for matching them against recipes.
+        """
+
+        response = self.client.get(self.url)
+
+        self.assertIn(self.ingredients[0].name, response.context['ingredients'])
+
+    def test_context_has_all_recipes(self):
+        """
+        Context should have all 4 recipes, since populate_ingredients()
+        creates all ingredients from which recipes are made.
+        """
+
+        response = self.client.get(self.url)
+        self.assertEquals(list(self.recipes), list(response.context['recipes']))
+
+    def test_context_does_not_have_novel_recipes(self):
+        """
+        Context should not have the fifth, novel recipe with novel ingredients
+        that are not in the fridge.
+        """
+
+        # Create a completely new recipe that has all ingredients and then
+        # one original one. This recipe should never be in a list of returned
+        # recipes, as it has one more ingredient than in there are in fridge.
+        i = Ingredient.objects.create(name='test', type='Fruit')
+        u = Unit.objects.create(name='litre', abbrev='l')
+        r = Recipe.objects.create(author=self.user, title='test',
+                                  description='test', steps='test')
+        RI.objects.create(recipe=r, ingredient=i, unit=u, quantity=1)
+        RI.objects.create(recipe=r, ingredient=self.ingredients[0], unit=u,
+                          quantity=1)
+        RI.objects.create(recipe=r, ingredient=self.ingredients[1], unit=u,
+                          quantity=1)
+        RI.objects.create(recipe=r, ingredient=self.ingredients[2], unit=u,
+                          quantity=1)
+        RI.objects.create(recipe=r, ingredient=self.ingredients[3], unit=u,
+                          quantity=1)
+
+        all_rec = Recipe.objects.all()
+        response = self.client.get(self.url)
+
+        self.assertNotEquals(list(all_rec), list(response.context['recipes']))
+        self.assertEquals(list(self.recipes), list(response.context['recipes']))
+
+    def test_no_ingredients_in_a_fridge(self):
+        """
+        Ensure that when no ingredients are in a fridge, no recipes are
+        returned.
+        """
+
+        FridgeIngredient.objects.all().delete()
+        response = self.client.get(self.url)
+
+        self.assertFalse(response.context['recipes'])
+
+    def test_one_ingredient_missing(self):
+        """
+        Ensures that when one ingredient is missing from a fridge,
+        only recipes without that ingredient are shown.
+
+        Note: if we delete ingredient[0] (meat), only 1 recipe remains possible.
+        """
+
+        ingredient = self.ingredients[0]
+        FridgeIngredient.objects.get(ingredient=ingredient).delete()
+        all_rec = Recipe.objects.all()
+        response = self.client.get(self.url)
+
+        self.assertNotEquals(list(all_rec), list(response.context['recipes']))
+        self.assertTrue(len(response.context['recipes']) == 1)

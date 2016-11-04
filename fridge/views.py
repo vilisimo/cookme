@@ -11,6 +11,7 @@ from recipes.forms import (
 from recipes.models import Recipe
 from .models import FridgeIngredient, Fridge
 from .forms import FridgeIngredientForm
+from utilities.search_helpers import subset_recipes
 
 
 @login_required
@@ -178,6 +179,14 @@ def possibilities(request):
 
     user = request.user
     fridge = Fridge.objects.get_or_create(user=user)[0]
-    content = dict()
+    ingredients = fridge.ingredients.all()
+    ingredients = [ingredient.name for ingredient in ingredients]
+
+    recipes = subset_recipes(ingredients)
+
+    content = {
+        'ingredients': ingredients,
+        'recipes': recipes,
+    }
 
     return render(request, 'fridge/possibilities.html', content)

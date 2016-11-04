@@ -27,12 +27,19 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can instruct to find recipes that match the ingredients in a fridge
-from a set of recipes that he/she has saved to the fridge.
-    - Test: instruct to find the recipes.
-      Outcome: only matching recipes (FROM THE FRIDGE) are shown.
-    - Test: create an empty fridge, ask to match the ingredients.
+In addition to matching ingredients, algorithm also matches their quantity
+with that needed to create a recipe.
+    - Test: instruct to find the recipes with sufficient quantity of
+      ingredients in a fridge.
+      Outcome: only matching recipes are shown.
+    - Test: instruct to find the recipes with insufficient quantity of
+      ingredients in a fridge to make any recipes.
       Outcome: no recipes are shown.
+    - Test: instruct to find the recipes with quantity of ingredients that
+      is sufficient for one recipe, but not the other.
+      Outcome: recipe for which ingredients are sufficient is shown.
+PRIORITY: MUST HAVE
+Status: NOT STARTED
 ***************************************************************************
 
 

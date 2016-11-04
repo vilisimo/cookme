@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.test import Client
 
 from ingredients.models import Unit, Ingredient
-from recipes.models import Recipe, RecipeIngredient as RecIng
+from recipes.models import Recipe, RecipeIngredient as RI
 from fridge.models import Fridge, FridgeIngredient as FI
 
 
@@ -21,10 +21,10 @@ def populate_ingredients():
     :return: a list of ingredients created.
     """
 
-    i1 = Ingredient.objects.create(name='Meat', type='Meat')
-    i2 = Ingredient.objects.create(name='Lemon', type='Fruit')
-    i3 = Ingredient.objects.create(name='Apple', type='Fruit')
-    i4 = Ingredient.objects.create(name='White Bread', type='Bread')
+    i1 = Ingredient.objects.get_or_create(name='Meat', type='Meat')[0]
+    i2 = Ingredient.objects.get_or_create(name='Lemon', type='Fruit')[0]
+    i3 = Ingredient.objects.get_or_create(name='Apple', type='Fruit')[0]
+    i4 = Ingredient.objects.get_or_create(name='White Bread', type='Bread')[0]
 
     return [i1, i2, i3, i4]
 
@@ -48,19 +48,19 @@ def populate_fridge_ingredients():
     :return: a list of fridge ingredients created.
     """
 
-    user = User.objects.get_or_create(username='test', password='test')[0]
+    user = User.objects.get_or_create(username='test')[0]
     fridge = Fridge.objects.get_or_create(user=user)[0]
     ingredients = populate_ingredients()
     units = populate_units()
 
-    fi1 = FI.objects.create(fridge=fridge, ingredient=ingredients[0],
-                            unit=units[0], quantity=1)
-    fi2 = FI.objects.create(fridge=fridge, ingredient=ingredients[1],
-                            unit=units[0], quantity=1)
-    fi3 = FI.objects.create(fridge=fridge, ingredient=ingredients[2],
-                            unit=units[0], quantity=1)
-    fi4 = FI.objects.create(fridge=fridge, ingredient=ingredients[3],
-                            unit=units[0], quantity=1)
+    fi1 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[0],
+                                   unit=units[0], quantity=1)[0]
+    fi2 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[1],
+                                   unit=units[0], quantity=1)[0]
+    fi3 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[2],
+                                   unit=units[0], quantity=1)[0]
+    fi4 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[3],
+                                   unit=units[0], quantity=1)[0]
 
     return [fi1, fi2, fi3, fi4]
 
@@ -73,7 +73,7 @@ def populate_recipes():
     :return: a list of recipes created.
     """
 
-    user = User.objects.get_or_create(username='test', password='test')[0]
+    user = User.objects.get_or_create(username='test')[0]
 
     # Ingredients
     i1, i2, i3, i4 = populate_ingredients()
@@ -81,22 +81,22 @@ def populate_recipes():
     u = populate_units()[0]
 
     # Recipes
-    r0 = Recipe.objects.create(author=user, title='MeatRec')
-    RecIng.objects.create(recipe=r0, ingredient=i1, unit=u, quantity=1)
+    r0 = Recipe.objects.get_or_create(author=user, title='MeatRec')[0]
+    RI.objects.create(recipe=r0, ingredient=i1, unit=u, quantity=1)
 
-    r1 = Recipe.objects.create(author=user, title='MeatLemonAppleRec')
-    RecIng.objects.create(recipe=r1, ingredient=i1, unit=u, quantity=1)
-    RecIng.objects.create(recipe=r1, ingredient=i2, unit=u, quantity=1)
-    RecIng.objects.create(recipe=r1, ingredient=i3, unit=u, quantity=1)
+    r1 = Recipe.objects.get_or_create(author=user, title='MeatLemonAppleRec')[0]
+    RI.objects.get_or_create(recipe=r1, ingredient=i1, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r1, ingredient=i2, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r1, ingredient=i3, unit=u, quantity=1)
 
-    r2 = Recipe.objects.create(author=user, title="AllIngredientsRec")
-    RecIng.objects.create(recipe=r2, ingredient=i1, unit=u, quantity=1)
-    RecIng.objects.create(recipe=r2, ingredient=i2, unit=u, quantity=1)
-    RecIng.objects.create(recipe=r2, ingredient=i3, unit=u, quantity=1)
-    RecIng.objects.create(recipe=r2, ingredient=i4, unit=u, quantity=1)
+    r2 = Recipe.objects.get_or_create(author=user, title="AllIngredientsRec")[0]
+    RI.objects.create(recipe=r2, ingredient=i1, unit=u, quantity=1)
+    RI.objects.create(recipe=r2, ingredient=i2, unit=u, quantity=1)
+    RI.objects.create(recipe=r2, ingredient=i3, unit=u, quantity=1)
+    RI.objects.create(recipe=r2, ingredient=i4, unit=u, quantity=1)
 
-    r3 = Recipe.objects.create(author=user, title="LemonRec")
-    RecIng.objects.create(recipe=r3, ingredient=i2, unit=u, quantity=1)
+    r3 = Recipe.objects.get_or_create(author=user, title="LemonRec")[0]
+    RI.objects.create(recipe=r3, ingredient=i2, unit=u, quantity=1)
 
     return [r0, r1, r2, r3]
 
