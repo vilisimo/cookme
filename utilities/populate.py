@@ -30,7 +30,16 @@ class bcolors:
 
 
 def get_user(username, password):
-    """ Creates a user with a given username and password. """
+    """
+    Creates a user with a given username and password.
+
+    Note: there is no way to check whether the passwords match, as you cannot
+    retrieve user's password. Hence, when trying to get a user, we cannot
+    compare them, and we should not even try.
+
+    Note 2: Because of the above considerations, we cannot use get_or_create,
+    as it will try to get the user with username and password combination.
+    """
 
     user = None
     try:
@@ -44,6 +53,8 @@ def get_user(username, password):
 def migrate():
     """ Prepares database for population by building tables. """
     execute_from_command_line(["manage.py", "migrate"])
+    print(bcolors.OKBLUE + "Migrations were carried out successfully." +
+          bcolors.ENDC)
 
 
 @transaction.atomic

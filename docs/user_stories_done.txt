@@ -135,3 +135,17 @@ that ingredient.
 Priority: SHOULD HAVE
 Status: FINISHED (~28/10/2016)
 ***************************************************************************
+
+
+***************************************************************************
+11. User can instruct the fridge to show possible recipes he/she can make with
+ingredients in the fridge.
+    - Test: ask for recipes without any ingredients.
+      Outcome: no recipes are shown.
+    - Test: ask for recipes with one ingredient.
+      Outcome: only a recipe with one ingredient is shown.
+    - Test: request a recipe with ingredients that should bring it up.
+      Outcome: recipe is shown.
+PRIORITY: MUST HAVE
+Status: FINISHED (04/10/2016)
+***************************************************************************

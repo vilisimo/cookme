@@ -13,20 +13,6 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can instruct the fridge to show possible recipes he/she can make with
-ingredients in the fridge.
-    - Test: ask for recipes without any ingredients.
-      Outcome: no recipes are shown.
-    - Test: ask for recipes with one ingredient.
-      Outcome: only a recipe with one ingredient is shown.
-    - Test: request a recipe with ingredients that should bring it up.
-      Outcome: recipe is shown.
-PRIORITY: MUST HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 In addition to matching ingredients, algorithm also matches their quantity
 with that needed to create a recipe.
     - Test: instruct to find the recipes with sufficient quantity of

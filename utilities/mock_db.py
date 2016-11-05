@@ -6,12 +6,13 @@ thus it would be unwise for them to use general methods. They may change in
 the future.
 """
 
-from django.contrib.auth.models import User
 from django.test import Client
 
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe, RecipeIngredient as RI
 from fridge.models import Fridge, FridgeIngredient as FI
+
+from .populate import get_user
 
 
 def populate_ingredients():
@@ -48,7 +49,7 @@ def populate_fridge_ingredients():
     :return: a list of fridge ingredients created.
     """
 
-    user = User.objects.get_or_create(username='test')[0]
+    user = get_user(username='test', password='test')
     fridge = Fridge.objects.get_or_create(user=user)[0]
     ingredients = populate_ingredients()
     units = populate_units()
@@ -73,7 +74,7 @@ def populate_recipes():
     :return: a list of recipes created.
     """
 
-    user = User.objects.get_or_create(username='test')[0]
+    user = get_user(username='test', password='test')
 
     # Ingredients
     i1, i2, i3, i4 = populate_ingredients()
