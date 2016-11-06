@@ -52,6 +52,7 @@ def get_user(username, password):
 
 def migrate():
     """ Prepares database for population by building tables. """
+
     execute_from_command_line(["manage.py", "migrate"])
     print(bcolors.OKBLUE + "Migrations were carried out successfully." +
           bcolors.ENDC)
@@ -63,6 +64,7 @@ def populate_units(units_txt=None):
     Populates or updates the database with units that are parsed from a txt
     file.
     """
+
     try:
         with open(units_txt) as f:
             f.readline()  # Get rid of the title line
@@ -78,6 +80,7 @@ def populate_units(units_txt=None):
         print(bcolors.FAIL +
               "Input file was not recognized. Please check your input." +
               bcolors.ENDC)
+        raise
 
 
 @transaction.atomic
@@ -86,6 +89,7 @@ def populate_ingredients(ingredients_txt=None):
     Populates or updates the database with ingredients that are parsed from a
     txt file.
     """
+
     try:
         with open(ingredients_txt) as f:
             f.readline()
@@ -99,6 +103,7 @@ def populate_ingredients(ingredients_txt=None):
         print(bcolors.FAIL +
               "Input file was not recognized. Please check your input." +
               bcolors.ENDC)
+        raise
 
 
 @transaction.atomic
@@ -161,11 +166,13 @@ def populate_recipes(recipe_folder=None):
         print(bcolors.FAIL +
               "Input path was not recognized. Please check your input." +
               bcolors.ENDC)
+        raise
 
     except User.DoesNotExist:
         print(bcolors.FAIL +
               "Such username does not exist. Please create a user." +
               bcolors.ENDC)
+        raise
 
 
 if __name__ == '__main__':
