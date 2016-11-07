@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 from ingredients.models import Unit, Ingredient
 from utilities.populate import (
-    get_user, populate_units,
+    get_user, populate_units, populate_ingredients,
 )
 
 
@@ -64,12 +64,12 @@ class PopulateUnitsTests(TestCase):
 
         with open(self.units_txt) as f:
             f.readline()  # Get rid of the line specifying what columns mean
-            info = f.readline().split(';')  # Get info about first ingredient.
-            info = [item.strip() for item in info]
+            first = f.readline().split(';')  # Get info about first ingredient.
+            first = [item.strip() for item in first]
 
-        name = info[0]
-        abbrev = info[1]
-        description = info[2]
+        name = first[0]
+        abbrev = first[1]
+        description = first[2]
 
         populate_units(units_txt=self.units_txt)
         u = Unit.objects.get(name=name, abbrev=abbrev, description=description)
@@ -113,3 +113,78 @@ class PopulateUnitsTests(TestCase):
         units = Unit.objects.all()
 
         self.assertFalse(units)
+
+
+class PopulateIngredientsTests(TestCase):
+    """
+    Test suite to ensure that populate_ingredients() does not break when
+    someone looks at it.
+    """
+
+    def setUp(self):
+        self.directory = os.path.normpath(os.getcwd()) + '/utilities/' + 'data/'
+        self.ingredients_txt = self.directory + 'ingredients.txt'
+
+    def test_ingredients_created(self):
+        """
+        Ensures that file is opened and ingredients are created accordingly.
+        """
+
+        with open(self.ingredients_txt) as f:
+            f.readline()
+            first = f.readline().split(';')  # Get info about first ingredient.
+            first = [item.strip() for item in first]
+
+        name = first[0]
+        type = first[1]
+        desc = first[2]
+
+        populate_ingredients(ingredients_txt=self.ingredients_txt)
+        i = Ingredient.objects.get(name=name, type=type, description=desc)
+
+        self.assertTrue(i)
+
+    def test_correct_amount_of_ingredients_created(self):
+        """
+        Ensures that there are as many ingredients as there are lines in the
+        text file (-1 for the first line, which has descriptions).
+        """
+
+        with open(self.ingredients_txt) as f:
+            for i, line in enumerate(f):
+                pass
+            expected = i
+
+        populate_ingredients(ingredients_txt=self.ingredients_txt)
+        ingredients = Ingredient.objects.all()
+
+        self.assertEquals(expected, len(ingredients))
+
+    def test_exceptions_raised(self):
+        """
+        Ensures that TypeError is raised if input file is not provided.
+        Ensures that FileNotFoundError is raised if input file is not found.
+        """
+
+        with self.assertRaises(TypeError):
+            populate_ingredients()
+
+        with self.assertRaises(FileNotFoundError):
+            populate_ingredients('does_not_exist.txt')
+
+    def test_empty_file(self):
+        """
+        Ensures that when empty file is passed in, no ingredients are created.
+        It might be more user friendly to throw an error/exception, but since
+        I'm the only user, I'll skip that.
+        """
+
+        with NamedTemporaryFile() as temp_file:
+            populate_units(temp_file.name)
+        ingredients = Ingredient.objects.all()
+
+        self.assertFalse(ingredients)
+
+
+
+

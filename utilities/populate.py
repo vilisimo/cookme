@@ -3,6 +3,8 @@ Population scrip that can be run to create an initial, small test database.
 Still needs a lot of work, as it is quite fragile.
 
 Note: password for the recipe's author is the same as the author's name. Unsafe.
+Note 2: status updates are shown in console only when populate.py is launched
+from command line
 """
 
 import os
@@ -53,6 +55,7 @@ def get_user(username, password):
 def migrate():
     """ Prepares database for population by building tables. """
 
+    execute_from_command_line(["manage.py", "makemigrations"])
     execute_from_command_line(["manage.py", "migrate"])
     print(bcolors.OKBLUE + "Migrations were carried out successfully." +
           bcolors.ENDC)
@@ -75,11 +78,13 @@ def populate_units(units_txt=None):
                 Unit.objects.get_or_create(name=line[0],
                                            abbrev=line[1],
                                            description=line[2])
-        print(bcolors.OKBLUE + "Unit population is done." + bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.OKBLUE + "Unit population is done." + bcolors.ENDC)
     except (FileNotFoundError, TypeError):
-        print(bcolors.FAIL +
-              "Input file was not recognized. Please check your input." +
-              bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.FAIL +
+                  "Input file was not recognized. Please check your input." +
+                  bcolors.ENDC)
         raise
 
 
@@ -98,11 +103,14 @@ def populate_ingredients(ingredients_txt=None):
                 Ingredient.objects.get_or_create(name=line[0].strip(),
                                                  type=line[1].strip(),
                                                  description=line[2].strip())
-        print(bcolors.OKBLUE + "Ingredient population is done." + bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.OKBLUE + "Ingredient population is done." +
+                  bcolors.ENDC)
     except (FileNotFoundError, TypeError):
-        print(bcolors.FAIL +
-              "Input file was not recognized. Please check your input." +
-              bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.FAIL +
+                  "Input file was not recognized. Please check your input." +
+                  bcolors.ENDC)
         raise
 
 
@@ -115,7 +123,8 @@ def populate_recipes(recipe_folder=None):
     import yaml
 
     if recipe_folder is None:
-        print(bcolors.FAIL + "Path was not provided." + bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.FAIL + "Path was not provided." + bcolors.ENDC)
         return
 
     try:
@@ -159,19 +168,21 @@ def populate_recipes(recipe_folder=None):
                                                 ingredient=ingr,
                                                 unit=unit,
                                                 quantity=quantity)
-
-        print(bcolors.OKBLUE + "Recipe population is done." + bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.OKBLUE + "Recipe population is done." + bcolors.ENDC)
 
     except (FileNotFoundError, TypeError):
-        print(bcolors.FAIL +
-              "Input path was not recognized. Please check your input." +
-              bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.FAIL +
+                  "Input path was not recognized. Please check your input." +
+                  bcolors.ENDC)
         raise
 
     except User.DoesNotExist:
-        print(bcolors.FAIL +
-              "Such username does not exist. Please create a user." +
-              bcolors.ENDC)
+        if __name__ == '__main__':
+            print(bcolors.FAIL +
+                  "Such username does not exist. Please create a user." +
+                  bcolors.ENDC)
         raise
 
 
