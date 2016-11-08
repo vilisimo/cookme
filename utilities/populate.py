@@ -125,7 +125,12 @@ def populate_recipes(recipe_folder=None):
     if recipe_folder is None:
         if __name__ == '__main__':
             print(bcolors.FAIL + "Path was not provided." + bcolors.ENDC)
-        return
+        raise FileNotFoundError()
+
+    if not os.listdir(recipe_folder):
+        if __name__ == '__main__':
+            print(bcolors.FAIL + "Folder was empty." + bcolors.ENDC)
+        raise FileNotFoundError()
 
     try:
         # Each file represents a recipe

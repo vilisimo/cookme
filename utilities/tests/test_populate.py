@@ -5,8 +5,9 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from ingredients.models import Unit, Ingredient
+from recipes.models import Recipe
 from utilities.populate import (
-    get_user, populate_units, populate_ingredients,
+    get_user, populate_units, populate_ingredients, populate_recipes,
 )
 
 
@@ -184,6 +185,26 @@ class PopulateIngredientsTests(TestCase):
         ingredients = Ingredient.objects.all()
 
         self.assertFalse(ingredients)
+
+
+class PopulateRecipes(TestCase):
+    """
+    Test suite to ensure populate_recipes() works correctly and handles all
+    unusual situations well.
+    """
+
+    def setUp(self):
+        self.parent = os.path.normpath(os.getcwd()) + '/utilities/' + 'data/'
+        self.directory = (os.path.normpath(os.getcwd()) + '/utilities/' +
+                          'data/' + 'recipes/')
+
+    def test_no_folder(self):
+        """ Ensure that an exception is raised when the folder is not given. """
+
+        with self.assertRaises(FileNotFoundError):
+            populate_recipes()
+
+
 
 
 
