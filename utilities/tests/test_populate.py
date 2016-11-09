@@ -1,4 +1,5 @@
 import os
+from unittest import mock
 from tempfile import NamedTemporaryFile
 
 from django.test import TestCase
@@ -57,8 +58,9 @@ class PopulateUnitsTests(TestCase):
     """ Test suite to make sure that unit population goes well. """
 
     def setUp(self):
-        self.directory = os.path.normpath(os.getcwd()) + '/utilities/' + 'data/'
-        self.units_txt = self.directory + 'units.txt'
+        current = os.path.normpath(os.getcwd())
+        self.directory = os.path.join(current, 'utilities', 'data')
+        self.units_txt = os.path.join(self.directory, 'units.txt')
 
     def test_units_created(self):
         """ Ensures that units are properly created when the file exists. """
@@ -123,8 +125,9 @@ class PopulateIngredientsTests(TestCase):
     """
 
     def setUp(self):
-        self.directory = os.path.normpath(os.getcwd()) + '/utilities/' + 'data/'
-        self.ingredients_txt = self.directory + 'ingredients.txt'
+        current = os.path.normpath(os.getcwd())
+        self.directory = os.path.join(current, 'utilities', 'data')
+        self.ingredients_txt = os.path.join(self.directory, 'ingredients.txt')
 
     def test_ingredients_created(self):
         """
@@ -137,11 +140,11 @@ class PopulateIngredientsTests(TestCase):
             first = [item.strip() for item in first]
 
         name = first[0]
-        type = first[1]
+        kind = first[1]
         desc = first[2]
 
         populate_ingredients(ingredients_txt=self.ingredients_txt)
-        i = Ingredient.objects.get(name=name, type=type, description=desc)
+        i = Ingredient.objects.get(name=name, type=kind, description=desc)
 
         self.assertTrue(i)
 
@@ -194,9 +197,9 @@ class PopulateRecipes(TestCase):
     """
 
     def setUp(self):
-        self.parent = os.path.normpath(os.getcwd()) + '/utilities/' + 'data/'
-        self.directory = (os.path.normpath(os.getcwd()) + '/utilities/' +
-                          'data/' + 'recipes/')
+        current = os.path.normpath(os.getcwd())
+        self.parent = os.path.join(current, 'utilities', 'data')
+        self.directory = os.path.join(self.parent, 'recipes')
 
     def test_no_folder(self):
         """ Ensure that an exception is raised when the folder is not given. """
@@ -204,8 +207,22 @@ class PopulateRecipes(TestCase):
         with self.assertRaises(FileNotFoundError):
             populate_recipes()
 
+    def test_empty_folder(self):
+        """
+        Ensure that when an empty folder is given, no recipes are created.
+        Also ensure that nothing is created (nothing should if exception is
+        thrown, but you never know...).
 
+        Note that never mind the directory, listdir will return an empty
+        list, triggering an error, for which we are testing.
+        """
 
+        with mock.patch('utilities.populate.os.listdir') as mocked_listdir:
+            mocked_listdir.return_value = []
 
+            with self.assertRaises(FileNotFoundError):
+                populate_recipes(self.directory)
 
+            recipes = Recipe.objects.all()
+            self.assertFalse(recipes, "Recipes were created after exception!")
 

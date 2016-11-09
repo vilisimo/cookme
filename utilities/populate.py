@@ -125,12 +125,13 @@ def populate_recipes(recipe_folder=None):
     if recipe_folder is None:
         if __name__ == '__main__':
             print(bcolors.FAIL + "Path was not provided." + bcolors.ENDC)
-        raise FileNotFoundError()
+        raise FileNotFoundError("Path was not provided.")
 
     if not os.listdir(recipe_folder):
         if __name__ == '__main__':
-            print(bcolors.FAIL + "Folder was empty." + bcolors.ENDC)
-        raise FileNotFoundError()
+            print(bcolors.FAIL + "Folder is empty. Please add recipes." +
+                  bcolors.ENDC)
+        raise FileNotFoundError("No files found in the directory.")
 
     try:
         # Each file represents a recipe
@@ -192,9 +193,10 @@ def populate_recipes(recipe_folder=None):
 
 
 if __name__ == '__main__':
-    units_file = 'data/units.txt'
-    ingredients_file = 'data/ingredients.txt'
-    recipes_path = 'data/recipes'
+    current = os.path.normpath(os.getcwd())
+    units_file = os.path.join(current, 'data', 'units.txt')
+    ingredients_file = os.path.join(current, 'data', 'ingredients.txt')
+    recipes_path = os.path.join(current, 'data', 'recipes')
     migrate()
     populate_units(units_txt=units_file)
     populate_ingredients(ingredients_txt=ingredients_file)
