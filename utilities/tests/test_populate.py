@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe
 from utilities.populate import (
-    get_user, populate_units, populate_ingredients, populate_recipes,
+    get_user, populate_units, populate_ingredients, populate_recipes, bcolors,
 )
 
 
@@ -190,6 +190,26 @@ class PopulateIngredientsTests(TestCase):
         self.assertFalse(ingredients)
 
 
+class TestColourfulPrint(TestCase):
+    """ Small test suite to test colourful prints. """
+
+    def test_error(self):
+        """ Ensures that error is printed with proper colours. """
+
+        red = '\033[91m'
+        text = bcolors.error("text")
+
+        self.assertIn(red, text)
+
+    def test_success(self):
+        """ Ensures that success messages are printed in proper colour. """
+
+        blue = '\033[94m'
+        text = bcolors.success("text")
+
+        self.assertIn(blue, text)
+
+
 class PopulateRecipes(TestCase):
     """
     Test suite to ensure populate_recipes() works correctly and handles all
@@ -226,3 +246,20 @@ class PopulateRecipes(TestCase):
             recipes = Recipe.objects.all()
             self.assertFalse(recipes, "Recipes were created after exception!")
 
+    def test_population_with_proper_files(self):
+        """
+        Ensure that with a proper file recipes are created.
+        """
+
+        count = len(os.listdir(self.directory))
+        populate_ingredients(os.path.join(self.parent, 'ingredients.txt'))
+        populate_units(os.path.join(self.parent, 'units.txt'))
+        populate_recipes(self.directory)
+        recipes = len(Recipe.objects.all())
+
+        self.assertEquals(count, recipes)
+
+    # Many more tests needed for populate_recipes(), e.g.:
+    #     1. What happens if YAML file is empty?
+    #     2. What happens if it is not empty, but some values are missing?
+    #     3. What happens if values are not missing, but they are empty?

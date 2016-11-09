@@ -30,6 +30,14 @@ class bcolors:
     FAIL = '\033[91m'
     ENDC = '\033[0m'
 
+    @staticmethod
+    def error(message):
+        return "{}{}{}".format(bcolors.FAIL, message, bcolors.ENDC)
+
+    @staticmethod
+    def success(message):
+        return "{}{}{}".format(bcolors.OKBLUE, message, bcolors.ENDC)
+
 
 def get_user(username, password):
     """
@@ -57,8 +65,7 @@ def migrate():
 
     execute_from_command_line(["manage.py", "makemigrations"])
     execute_from_command_line(["manage.py", "migrate"])
-    print(bcolors.OKBLUE + "Migrations were carried out successfully." +
-          bcolors.ENDC)
+    print(bcolors.success("Migrations were carried out successfully."))
 
 
 @transaction.atomic
@@ -79,12 +86,10 @@ def populate_units(units_txt=None):
                                            abbrev=line[1],
                                            description=line[2])
         if __name__ == '__main__':
-            print(bcolors.OKBLUE + "Unit population is done." + bcolors.ENDC)
+            print(bcolors.success("Unit population is done."))
     except (FileNotFoundError, TypeError):
         if __name__ == '__main__':
-            print(bcolors.FAIL +
-                  "Input file was not recognized. Please check your input." +
-                  bcolors.ENDC)
+            print(bcolors.error("Input file not recognized."))
         raise
 
 
@@ -104,13 +109,10 @@ def populate_ingredients(ingredients_txt=None):
                                                  type=line[1].strip(),
                                                  description=line[2].strip())
         if __name__ == '__main__':
-            print(bcolors.OKBLUE + "Ingredient population is done." +
-                  bcolors.ENDC)
+            print(bcolors.success("Ingredient population is done."))
     except (FileNotFoundError, TypeError):
         if __name__ == '__main__':
-            print(bcolors.FAIL +
-                  "Input file was not recognized. Please check your input." +
-                  bcolors.ENDC)
+            print(bcolors.error("Input file was not recognized."))
         raise
 
 
@@ -124,22 +126,27 @@ def populate_recipes(recipe_folder=None):
 
     if recipe_folder is None:
         if __name__ == '__main__':
-            print(bcolors.FAIL + "Path was not provided." + bcolors.ENDC)
+            print(bcolors.error("Path was not provided."))
         raise FileNotFoundError("Path was not provided.")
 
     if not os.listdir(recipe_folder):
         if __name__ == '__main__':
-            print(bcolors.FAIL + "Folder is empty. Please add recipes." +
-                  bcolors.ENDC)
+            print(bcolors.error("Folder is empty. Please add recipes."))
         raise FileNotFoundError("No files found in the directory.")
 
     try:
         # Each file represents a recipe
         files = os.listdir(recipe_folder)
         for index, f in enumerate(files):
-            print("Processing {}/{} file...".format(index+1, len(files)))
+            if __name__ == '__main__':
+                print("Processing {}/{} file...".format(index+1, len(files)))
 
             path = "{}/{}".format(recipe_folder, f)
+            # Skip an empty file
+            if os.stat(path).st_size <= 0:
+                if __name__ == '__main__':
+                    print(bcolors.error("File nr.{} is empty.".format(index+1)))
+                continue
             values = yaml.load(open(path, 'r'))
 
             # First create a recipe
@@ -153,13 +160,10 @@ def populate_recipes(recipe_folder=None):
                 step_list.append(values['steps'][step].strip())
 
             user = get_user(username=author, password=author)
-            recipe, c = Recipe.objects.get_or_create(author=user, title=title,
-                                                     cuisine=cuisine,
-                                                     description=description,
-                                                     steps="\n".join(step_list))
-            # If recipe already in db, exit current iteration
-            if not c:
-                continue
+            recipe = Recipe.objects.get_or_create(author=user, title=title,
+                                                  cuisine=cuisine,
+                                                  description=description,
+                                                  steps="\n".join(step_list))[0]
 
             # Now create RecipeIngredient with appropriate FKs
             ingredients = values['ingredients']
@@ -170,25 +174,22 @@ def populate_recipes(recipe_folder=None):
                                                   quantity_unit[1])[0]
                 ingr = Ingredient.objects.get_or_create(name__iexact=ing)[0]
 
-                RecipeIngredient.objects.create(recipe=recipe,
-                                                ingredient=ingr,
-                                                unit=unit,
-                                                quantity=quantity)
+                RecipeIngredient.objects.get_or_create(recipe=recipe,
+                                                       ingredient=ingr,
+                                                       unit=unit,
+                                                       quantity=quantity)
         if __name__ == '__main__':
-            print(bcolors.OKBLUE + "Recipe population is done." + bcolors.ENDC)
+            print(bcolors.success("Recipe population is done."))
 
     except (FileNotFoundError, TypeError):
         if __name__ == '__main__':
-            print(bcolors.FAIL +
-                  "Input path was not recognized. Please check your input." +
-                  bcolors.ENDC)
+            print(bcolors.error("Input path was not recognized."))
         raise
 
     except User.DoesNotExist:
         if __name__ == '__main__':
-            print(bcolors.FAIL +
-                  "Such username does not exist. Please create a user." +
-                  bcolors.ENDC)
+            print(bcolors.error("Such username does not exist. Please create "
+                                "a user."))
         raise
 
 
