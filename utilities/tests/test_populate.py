@@ -9,6 +9,7 @@ from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe
 from utilities.populate import (
     get_user, populate_units, populate_ingredients, populate_recipes, bcolors,
+    commit_recipe, commit_recipe_ingredient,
 )
 
 
@@ -208,6 +209,104 @@ class TestColourfulPrint(TestCase):
         text = bcolors.success("text")
 
         self.assertIn(blue, text)
+
+
+class CommitRecipeTests(TestCase):
+    """
+    Ensures that helper function commit_recipe creates a recipe instance,
+    commits it to the database, and does not break when a wrong input is
+    provided.
+    """
+
+    def test_creates_recipe_values_ok(self):
+        """ Ensures Recipe object is created when values are correct. """
+
+        values = {
+            'author': 'Test',
+            'title': 'Test',
+            'description': 'Test',
+            'cuisine': 'Test',
+            'steps': {
+                '1': 'First',
+                '2': 'Second'
+            }
+        }
+        recipe = commit_recipe(values)
+
+        self.assertTrue(recipe)
+
+    def test_does_not_have_values(self):
+        """
+        Ensures that when no values are provided, exception is raised and user
+        is informed to provide a value (happens only when launching from
+        command line, though).
+        """
+
+        values = {}
+
+        with self.assertRaises(KeyError):
+            recipe = commit_recipe(values)
+            self.assertFalse(recipe)
+
+    def test_does_not_have_one_value(self):
+        """
+        Ensures that when all but one value (key) is provided, exception is
+        raised and user is informed to provide a value.
+        """
+
+        values = {
+            'author': 'Test',
+            'description': 'Test',
+            'cuisine': 'Test',
+            'steps': {'1': 'First',
+                      '2': 'Second'}
+        }
+
+        with self.assertRaises(KeyError):
+            recipe = commit_recipe(values)
+            self.assertFalse(recipe)
+
+
+class CommitRecipeIngredientTests(TestCase):
+    """
+    Ensures that helper function commit_recipe_ingredients creates a
+    RecipeIngredient instance, commits it to the database, and does not break
+    when a wrong input is provided.
+    """
+
+    def setUp(self):
+        u = User.objects.create_user(username='test')
+        self.r = Recipe.objects.create(author=u, title='test', description='t')
+
+    def test_does_not_have_values(self):
+        """
+        Ensures that when no values are provided, exception is raised and user
+        is informed to provide a value (happens only when launching from
+        command line, though).
+        """
+
+        values = {}
+        with self.assertRaises(KeyError):
+            recipe_ingredients = commit_recipe_ingredient(values, self.r)
+            self.assertFalse(recipe_ingredients)
+
+    def test_creates_recipe_ingredient_values_ok(self):
+        """ Ensures RecipeIngredient is created when values are correct. """
+
+        Ingredient.objects.create(name='test', type='Bread')
+        Ingredient.objects.create(name='test2', type='Bread')
+        Unit.objects.create(name='kilogram', abbrev='kg')
+        Unit.objects.create(name='unit(s)', abbrev='unit(s)')
+
+        values = {
+            'ingredients': {
+                'test': '1 unit(s)',
+                'test2': '2 kg',
+            }
+        }
+        ris = commit_recipe_ingredient(values, self.r)
+
+        self.assertTrue(ris)
 
 
 class PopulateRecipes(TestCase):

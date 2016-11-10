@@ -9,6 +9,7 @@ from command line
 
 import os
 import sys
+import yaml
 
 project_path = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cookme.settings")
@@ -21,7 +22,7 @@ from django.db import transaction
 from django.core.management import execute_from_command_line
 from django.contrib.auth.models import User
 
-from recipes.models import Recipe, RecipeIngredient
+from recipes.models import Recipe, RecipeIngredient as RI
 from ingredients.models import Ingredient, Unit
 
 
@@ -37,6 +38,27 @@ class bcolors:
     @staticmethod
     def success(message):
         return "{}{}{}".format(bcolors.OKBLUE, message, bcolors.ENDC)
+
+
+def terminal_out(message, error=False, terminate=True):
+    """
+    Mini method to print error/success messages, so that if name=main does
+    not have to be repeated over and over again in populate script...
+
+    :param message: error/success message to be printed.
+    :param error: determines the output color: success (false) or error (true).
+    :param terminate: whether the population script stops after the error.
+    """
+
+    if __name__ == '__main__':
+        if error:
+            print(bcolors.error(message))
+            if terminate:
+                print(bcolors.error("Population terminated."))
+        else:
+            print(bcolors.success(message))
+    else:
+        pass
 
 
 def get_user(username, password):
@@ -65,7 +87,7 @@ def migrate():
 
     execute_from_command_line(["manage.py", "makemigrations"])
     execute_from_command_line(["manage.py", "migrate"])
-    print(bcolors.success("Migrations were carried out successfully."))
+    terminal_out("Migrations were carried out successfully.")
 
 
 @transaction.atomic
@@ -85,11 +107,9 @@ def populate_units(units_txt=None):
                 Unit.objects.get_or_create(name=line[0],
                                            abbrev=line[1],
                                            description=line[2])
-        if __name__ == '__main__':
-            print(bcolors.success("Unit population is done."))
+        terminal_out("Unit population is done.")
     except (FileNotFoundError, TypeError):
-        if __name__ == '__main__':
-            print(bcolors.error("Input file not recognized."))
+        terminal_out("Input file not recognized.", error=True)
         raise
 
 
@@ -108,11 +128,64 @@ def populate_ingredients(ingredients_txt=None):
                 Ingredient.objects.get_or_create(name=line[0].strip(),
                                                  type=line[1].strip(),
                                                  description=line[2].strip())
-        if __name__ == '__main__':
-            print(bcolors.success("Ingredient population is done."))
+        terminal_out("Ingredient population is done.")
     except (FileNotFoundError, TypeError):
-        if __name__ == '__main__':
-            print(bcolors.error("Input file was not recognized."))
+        terminal_out("Input file was not recognized.", error=True)
+        raise
+
+
+def commit_recipe(values):
+    """
+    Creates a single recipe instance and commits it to the DB.
+
+    :param values: a dictionary of values to be used in recipe
+                   (typically from YML).
+    :return: Recipe instance
+    """
+
+    try:
+        a = values['author']
+        t = values['title']
+        d = values['description']
+        c = values['cuisine']
+        s = values['steps']
+        step_list = []
+        for step in s:
+            step_list.append(values['steps'][step].strip())
+
+        u = get_user(username=a, password=a)
+        recipe = Recipe.objects.get_or_create(author=u, title=t, cuisine=c,
+                                              description=d,
+                                              steps="\n".join(step_list))[0]
+        return recipe
+    except KeyError:
+        raise
+
+
+def commit_recipe_ingredient(values, recipe):
+    """
+    Creates a single ingredient instance and commits it to the database.
+
+    :param values: dictionary of values to be used in RecipeIngredient
+                   (typically from YML file).
+    :param recipe: Recipe object with which relevant objects are associated.
+    :return: List of RecipeIngredient objects.
+    """
+
+    try:
+        ris = []
+        ingredients = values['ingredients']
+        for ing in ingredients:
+            quantity_unit = values['ingredients'][ing].split()
+            quantity = quantity_unit[0]
+            unit = Unit.objects.get_or_create(abbrev__iexact=
+                                              quantity_unit[1])[0]
+            ingr = Ingredient.objects.get_or_create(name__iexact=ing)[0]
+
+            ris.append(RI.objects.get_or_create(recipe=recipe, ingredient=ingr,
+                                                unit=unit, quantity=quantity))
+        return ris
+    except KeyError:
         raise
 
 
@@ -122,16 +195,12 @@ def populate_recipes(recipe_folder=None):
     Populate the database with recipe instances.
     """
 
-    import yaml
-
     if recipe_folder is None:
-        if __name__ == '__main__':
-            print(bcolors.error("Path was not provided."))
+        terminal_out("Path was not provided.", error=True)
         raise FileNotFoundError("Path was not provided.")
 
     if not os.listdir(recipe_folder):
-        if __name__ == '__main__':
-            print(bcolors.error("Folder is empty. Please add recipes."))
+        terminal_out("Folder is empty. Please add recipes.", error=True)
         raise FileNotFoundError("No files found in the directory.")
 
     try:
@@ -140,57 +209,32 @@ def populate_recipes(recipe_folder=None):
         for index, f in enumerate(files):
             if __name__ == '__main__':
                 print("Processing {}/{} file...".format(index+1, len(files)))
-
             path = "{}/{}".format(recipe_folder, f)
-            # Skip an empty file
+
+            # If file is empty - more useful for myself to warn, instead crash
             if os.stat(path).st_size <= 0:
-                if __name__ == '__main__':
-                    print(bcolors.error("File nr.{} is empty.".format(index+1)))
+                message = "File nr.{} is empty.".format(index+1)
+                terminal_out(message, error=True, terminate=False)
                 continue
+
             values = yaml.load(open(path, 'r'))
+            recipe = commit_recipe(values)
+            commit_recipe_ingredient(values['ingredients'], recipe)
 
-            # First create a recipe
-            author = values['author']
-            title = values['title']
-            description = values['description']
-            cuisine = values['cuisine']
-            steps = values['steps']
-            step_list = []
-            for step in steps:
-                step_list.append(values['steps'][step].strip())
-
-            user = get_user(username=author, password=author)
-            recipe = Recipe.objects.get_or_create(author=user, title=title,
-                                                  cuisine=cuisine,
-                                                  description=description,
-                                                  steps="\n".join(step_list))[0]
-
-            # Now create RecipeIngredient with appropriate FKs
-            ingredients = values['ingredients']
-            for ing in ingredients:
-                quantity_unit = values['ingredients'][ing].split()
-                quantity = quantity_unit[0]
-                unit = Unit.objects.get_or_create(abbrev__iexact=
-                                                  quantity_unit[1])[0]
-                ingr = Ingredient.objects.get_or_create(name__iexact=ing)[0]
-
-                RecipeIngredient.objects.get_or_create(recipe=recipe,
-                                                       ingredient=ingr,
-                                                       unit=unit,
-                                                       quantity=quantity)
-        if __name__ == '__main__':
-            print(bcolors.success("Recipe population is done."))
+        terminal_out("Recipe population is done.")
 
     except (FileNotFoundError, TypeError):
-        if __name__ == '__main__':
-            print(bcolors.error("Input path was not recognized."))
+        terminal_out("Input path was not recognized.", error=True)
         raise
 
     except User.DoesNotExist:
-        if __name__ == '__main__':
-            print(bcolors.error("Such username does not exist. Please create "
-                                "a user."))
+        terminal_out("Such username does not exist. Please create a user.",
+                     error=True)
         raise
+
+    except KeyError as e:
+        terminal_out("'{}' field was not found. Please ensure that YML file "
+                     "contains it.".format(e.args[0]), error=True)
 
 
 if __name__ == '__main__':
