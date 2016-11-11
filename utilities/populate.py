@@ -208,7 +208,8 @@ def populate_recipes(recipe_folder=None):
         files = os.listdir(recipe_folder)
         for index, f in enumerate(files):
             if __name__ == '__main__':
-                print("Processing {}/{} file...".format(index+1, len(files)))
+                print("Processing {}/{} file: {}".format(index+1, len(files),
+                                                         f.split('/')[-1]))
             path = "{}/{}".format(recipe_folder, f)
 
             # If file is empty - more useful for myself to warn, instead crash
@@ -234,7 +235,8 @@ def populate_recipes(recipe_folder=None):
 
     except KeyError as e:
         terminal_out("'{}' field was not found. Please ensure that YML file "
-                     "contains it.".format(e.args[0]), error=True)
+                     "contains it, and that 'ingredients.txt' file has "
+                     "it described.".format(e.args[0]), error=True)
 
 
 if __name__ == '__main__':
