@@ -1,11 +1,13 @@
+# Credit goes to: http://www.bbcgoodfood.com/recipes/3228/chilli-con-carne
+
 author: "test"
-title: "Chilli Con Carne"
+title: "Chili Con Carne"
 description: "This great chilli has to be one of the best dishes to serve to friends for a casual get-together. Source: BBC Food"
 cuisine: "ot"
 
 ingredients:
   olive oil: "1 tbsp"
-  large onion: "1 unit(s)"
+  onion: "1 unit(s)"
   red pepper: "1 unit(s)"
   garlic clove: "2 unit(s)"
   hot chili powder: "1 tsp"

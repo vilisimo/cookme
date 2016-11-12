@@ -11,6 +11,8 @@ class Ingredient(models.Model):
     INGREDIENTS = [
         ('Additives', 'Food additives'),
         ('Bread', 'Bread'),
+        ('Beans', 'Beans'),
+        ('Canned', 'Canned goods'),
         ('Condiments', 'Condiments'),
         ('Oils', 'Cooking oils'),
         ('Eggs', 'Eggs'),
@@ -24,6 +26,7 @@ class Ingredient(models.Model):
         ('Pasta', 'Pasta'),
         ('Paste', 'Paste'),
         ('Poultry', 'Poultry'),
+        ('Rice', 'Rice'),
         ('Salts', 'Salts'),
         ('Sauces', 'Sauces'),
         ('Seafood', 'Seafood'),

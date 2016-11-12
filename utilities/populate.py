@@ -220,7 +220,7 @@ def populate_recipes(recipe_folder=None):
 
             values = yaml.load(open(path, 'r'))
             recipe = commit_recipe(values)
-            commit_recipe_ingredient(values['ingredients'], recipe)
+            commit_recipe_ingredient(values, recipe)
 
         terminal_out("Recipe population is done.")
 
@@ -235,8 +235,7 @@ def populate_recipes(recipe_folder=None):
 
     except KeyError as e:
         terminal_out("'{}' field was not found. Please ensure that YML file "
-                     "contains it, and that 'ingredients.txt' file has "
-                     "it described.".format(e.args[0]), error=True)
+                     "contains it.".format(e.args[0]), error=True)
 
 
 if __name__ == '__main__':
