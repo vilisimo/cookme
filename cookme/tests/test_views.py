@@ -25,7 +25,7 @@ class HomePageTests(TestCase):
 
     def test_correct_root_url_resolves_to_home_function(self):
         """
-        Test suite to ensure that the root URL is mapped to correct view.
+        Test suite to ensure that the root URL is mapped to a correct view.
         """
 
         view = resolve('/')
@@ -34,7 +34,7 @@ class HomePageTests(TestCase):
         self.assertEqual(view.func, home)
 
     def test_anonymous_visit(self):
-        """ Ensures anonymous users do not see link to a fridge. """
+        """ Ensures anonymous users do not see a link to a fridge. """
 
         response = Client().get(self.url)
 
@@ -42,7 +42,7 @@ class HomePageTests(TestCase):
         self.assertNotContains(response, 'Fridge')
 
     def test_logged_visit(self):
-        """ Ensures that logged in user sees the fridge. """
+        """ Ensures that logged in user sees a fridge. """
 
         response = self.logged.get(self.url)
 
@@ -62,7 +62,7 @@ class SearchFunctionTests(TestCase):
     def test_search_form_response_ok(self):
         """
         Ensures that inputting the correct info in search bar search_results in
-        correct response status (302).
+        correct response status (302 - redirects to results page).
         """
 
         data = {'q': 'multiple words and then some'}
@@ -72,8 +72,8 @@ class SearchFunctionTests(TestCase):
 
     def test_search_form_redirection_url_ok(self):
         """
-        Ensures that inputting the correct info in search bar will
-        redirect to the correct view.
+        Ensures that inputting the correct info in search bar will redirect to
+        the correct view.
         """
 
         query = "secret grandma's ingredient"
@@ -175,11 +175,10 @@ class RegisterViewTests(TestCase):
         }
         self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
-
-        assert user.is_authenticated()
-        # Just to make sure we are really logged in.
         response = self.client.get(reverse('fridge:fridge_detail'))
 
+        self.assertTrue(user.is_authenticated())
+        # Just to make sure we are really logged in.
         self.assertEqual(response.status_code, 200)
 
     def test_username_exists(self):
@@ -223,7 +222,7 @@ class LoginTests(TestCase):
         user = auth.get_user(self.client)
 
         self.assertNotEqual(response.status_code, 302)
-        assert (not user.is_authenticated())
+        self.assertFalse(user.is_authenticated())
 
     def test_valid_data(self):
         """ Ensures that upon submitting valid data, user can log in. """
@@ -237,22 +236,25 @@ class LoginTests(TestCase):
         user = auth.get_user(self.client)
 
         self.assertEqual(response.status_code, 302)
-        assert user.is_authenticated()
+        self.assertTrue(user.is_authenticated())
 
-    def test_missing_data(self):
-        """ Ensure that not filling in some fields is not allowed. """
+    def test_missing_password(self):
+        """ Ensure that not filling in password field is not allowed. """
 
-        data = {'username': 'test',}
+        data = {'username': 'test', }
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
         self.assertNotEqual(response.status_code, 302)
-        assert (not user.is_authenticated())
+        self.assertFalse(user.is_authenticated())
+
+    def test_missing_username(self):
+        """ Ensure that not filling in username field is not allowed. """
 
         data = {'password': 'test', }
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
         self.assertNotEqual(response.status_code, 302)
-        assert (not user.is_authenticated())
+        self.assertFalse(user.is_authenticated())
 

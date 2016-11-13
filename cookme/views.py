@@ -55,13 +55,13 @@ def home(request):
 
 def register(request):
     """
-    View allowing users to register.
-
-    Extremely simple registration. Much better alternatives would be AllAuth
-    or django-registration. However, this is mainly for practice purposes.
-    Also, registration is only important to get the fridge. Email, social
-    accounts, etc does not matter, as the app is not designed to scale or to
-    be a serious competitor to proper websites.
+    Extremely simple registration. Much better alternatives:
+        - AllAuth
+        - django-registration.
+    However, this is mainly for practice project. Also, registration is only
+    important to get the fridge. Email, social accounts, etc do not matter, as
+    the app is not designed to scale or to be a serious competitor to proper
+    websites.
 
     :param request: standard request object.
     :return: standard HttpResponse object.
@@ -75,8 +75,9 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            user = authenticate(username=form.cleaned_data['username'],
-                                password=form.cleaned_data['password1'])
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
             login(request, user)
             redirect = request.POST.get('next', '/')
             return HttpResponseRedirect(redirect)

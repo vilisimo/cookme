@@ -23,8 +23,8 @@ class SearchResultsTests(TestCase):
 
     def test_one_ingredient_no_recipes(self):
         """
-        Ensure that an ingredient is shown regardless whether a matching
-        recipe is found.
+        Ensures that an ingredient is shown regardless whether a matching
+        recipe is found or not. User should always know what was searched for.
         """
 
         url = self.url + self.l
@@ -35,16 +35,21 @@ class SearchResultsTests(TestCase):
         self.assertTemplateUsed('search/search_results.html')
 
     def test_one_ingredient_with_recipes(self):
-        """ Ensure that when there is a matching recipe, it is shown. """
+        """
+        Ensure that when there is a matching recipe, it's title is shown.
+        """
 
         r = populate_recipes()[0]  #MeatRec
         url = self.url + self.m
         response = self.client.get(url)
         expected_ingredient = capwords(self.m)
         expected_recipe = r.title
+        expected_url = '<a href="{}">{}</a>'.format(r.get_absolute_url(),
+                                                    expected_recipe)
 
         self.assertContains(response, expected_ingredient, status_code=200)
         self.assertContains(response, expected_recipe)
+        self.assertContains(response, expected_url)
 
     def test_two_ingredients_one_with_dashes(self):
         """

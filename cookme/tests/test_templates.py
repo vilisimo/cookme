@@ -1,7 +1,8 @@
 """
-Test to ensure that templates show essential information. Not supposed to
-test every little bit of it, but just the essential parts which would be
-present no matter what.
+Test suite to ensure that templates show essential information.
+
+These tests are not supposed to test every little bit of it, but just the
+essential parts which would be present no matter what.
 """
 
 from django.test import TestCase, Client
@@ -33,14 +34,20 @@ class HomePageTests(TestCase):
 
 
 class RegisterTests(TestCase):
-    """ Test suite to ensure register template shows essential infomration. """
+    """ Test suite to ensure register template shows essential information. """
 
     def setUp(self):
         self.client = Client()
         self.url = reverse('register')
 
     def test_registered_user_invalid_data(self):
-        """ Ensures invalid data cannot be posted. """
+        """
+        Ensures invalid registration data is not accepted.
+
+        Note that as the project uses Django's inbuilt authentication system, it
+        should not fail. However, if at some point a 3rd party plugin were to be
+        installed/developed, it should pass these tests, too.
+        """
 
         data = {'username': 'test', 'password1': 'test', 'password2': 'test'}
         response = self.client.post(self.url, data=data)
@@ -53,25 +60,34 @@ class RegisterTests(TestCase):
         self.assertContains(
             response, 'This password is too common.')
 
-    def test_fields_missing(self):
-        """ Ensures missing fields are caught. """
+    def test_all_fields_missing(self):
+        """ Ensures missing input is caught. """
 
         data = dict()
         response = self.client.post(self.url, data=data)
 
         self.assertContains(response, 'This field is required.')
 
-        data['username'] = 'test'
+    def test_username_field_missing(self):
+        """ Ensures missing username input is caught. """
+
+        data = {'password1': 'test', 'password2': 'test'}
         response = self.client.post(self.url, data=data)
 
         self.assertContains(response, 'This field is required.')
 
-        data['password1'] = 'test'
-        response = self.client.post(self.url, data=data)
-
-        self.assertContains(response, 'This field is required.')
+    def test_password1_field_missing(self):
+        """ Ensures missing password1 input is caught. """
 
         data = {'username': 'test', 'password2': 'test'}
+        response = self.client.post(self.url, data=data)
+
+        self.assertContains(response, 'This field is required.')
+
+    def test_password2_field_missing(self):
+        """ Ensures missing password2 input is caught. """
+
+        data = {'username': 'test', 'password1': 'test'}
         response = self.client.post(self.url, data=data)
 
         self.assertContains(response, 'This field is required.')
@@ -90,25 +106,26 @@ class RegisterTests(TestCase):
         """
         Ensures url to register view is not shown when user is in register
         view.
+
+        Note: do not forget that login page redirects to the previous page.
         """
 
         response = self.client.get(self.url)
+        expected_html = '<a href={0}?next={0}>Register</a>'.format(self.url)
 
-        # Do not forget that login page redirects to the previous page.
-        self.assertNotContains(response,
-                               '<a href={0}?next={0}>Register</a>'.format(
-                                   self.url), html=True)
+        self.assertNotContains(response, expected_html, html=True)
 
     def test_register_shown(self):
-        """ Ensures that register link is shown in other views. """
+        """
+        Ensures that register link is shown in other views.
 
-        recipe_url = reverse('recipes:recipes')
-        response = self.client.get(recipe_url)
+        Note: do not forget that login page redirects to the previous page.
+        """
 
-        # Do not forget that login page redirects to the previous page.
-        self.assertContains(response,
-                            '<a href={}?next={}>Register</a>'.
-                            format(self.url, recipe_url), html=True)
+        url = reverse('recipes:recipes')
+        response = self.client.get(url)
+        expected_html = '<a href={}?next={}>Register</a>'.format(self.url, url)
+        self.assertContains(response, expected_html, html=True)
 
 
 class LoginTests(TestCase):
@@ -119,45 +136,26 @@ class LoginTests(TestCase):
         self.url = reverse('login')
 
     def test_login_not_shown(self):
-        """ Ensures that login link is not shown when user is in login view. """
+        """
+        Ensures that login link is not shown when user is in login view.
+
+        Note: do not forget that login page redirects to the previous page.
+        """
 
         response = self.client.get(self.url)
+        expected_html = '<a href={0}?next={0}>Login</a>'.format(self.url)
 
-        # Do not forget that login page redirects to the previous page.
-        self.assertNotContains(response,
-                               '<a href={0}?next={0}>Login</a>'.format(
-                                   self.url), html=True)
+        self.assertNotContains(response, expected_html, html=True)
 
     def test_login_shown(self):
-        """ Ensures that login link is shown in other views. """
+        """
+        Ensures that login link is shown in other views.
 
-        recipe_url = reverse('recipes:recipes')
-        response = self.client.get(recipe_url)
+        Note: do not forget that login page redirects to the previous page.
+        """
 
-        # Do not forget that login page redirects to the previous page.
-        self.assertContains(response,
-                            '<a href={}?next={}>Login</a>'.
-                            format(self.url, recipe_url), html=True)
+        url = reverse('recipes:recipes')
+        response = self.client.get(url)
+        expected_html = '<a href={}?next={}>Login</a>'.format(self.url, url)
 
-    # # Does not work even when template has error tags?..
-    # def test_missing_info(self):
-    #     """ Ensure empty fields are not allowed. """
-    #
-    #     data = dict()
-    #     response = self.client.post(self.url, data=data)
-    #
-    #     from django.contrib.auth.forms import AuthenticationForm
-    #     form = AuthenticationForm(data=data)
-    #     print(form.errors)  # Prints errors, but no errors in template?..
-    #
-    #     self.assertContains(response, 'This field is required.')
-    #
-    #     data['username'] = 'test'
-    #     response = self.client.post(self.url, data=data)
-    #
-    #     self.assertContains(response, 'This field is required.')
-    #
-    #     data = {'password': 'test'}
-    #     response = self.client.post(self.url, data=data)
-    #
-    #     self.assertContains(response, 'This field is required.')
+        self.assertContains(response, expected_html, html=True)
