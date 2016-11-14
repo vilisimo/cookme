@@ -25,7 +25,10 @@ class FridgeAdminTests(TestCase):
         self.site = AdminSite()
 
     def test_ingredient_list(self):
-        """ Test to ensure that ingredient list shows up properly. """
+        """
+        Test to ensure that ingredient list shows up in admin panel and
+        contains all the ingredients that it should contain.
+        """
 
         u = Unit.objects.create(name='kilogram', abbrev='kg')
         i1 = Ingredient.objects.create(name='Apple', type='Fruit')
@@ -41,7 +44,10 @@ class FridgeAdminTests(TestCase):
         self.assertEqual(fa.ingredient_list(self.fridge), expected)
 
     def test_recipes_list(self):
-        """ Test to ensure that recipe list shows up properly. """
+        """
+        Test to ensure that recipe list shows up properly in admin panel and
+        contains all the recipes that it should contain.
+        """
 
         r1 = Recipe.objects.create(author=self.user, title='test',
                                    description='test')

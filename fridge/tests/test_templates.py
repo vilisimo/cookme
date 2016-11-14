@@ -1,5 +1,6 @@
 """
-Test suite for templates.
+Test suite for templates to ensure that they contain information that must be
+shown never mind the style used.
 """
 
 from django.test import TestCase
@@ -19,50 +20,76 @@ class AddRecipeTests(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
+        self.potato = Ingredient.objects.create(name='Potato', type='Vegetable')
+        self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
         self.client = logged_in_client()
+        self.data = {
+            'description': 'test',
+            'form-TOTAL_FORMS': '2',
+            'form-INITIAL_FORMS': '0',
+            'form-MAX_NUM_FORMS': '',
+            'form-0-ingredient': str(self.potato.pk),
+            'form-0-unit': str(self.unit.pk),
+            'form-0-quantity': '1',
+        }
 
     def test_add_recipe_form_is_sent(self):
         """ Ensures that a form & formset is sent to a template. """
 
-        response = self.client.get(reverse('fridge:add_recipe'))
+        url = reverse('fridge:add_recipe')
+        response = self.client.get(url)
+
         self.assertIn('form', response.context)
         self.assertIn('formset', response.context)
 
     def test_form_invalid(self):
         """
-        Ensures that missing fields are caught and an error message is shown.
+        Ensures that when all information is missing, an error message is shown.
         """
 
-        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        data = {
-            'description': 'test',
-            'form-TOTAL_FORMS': '2',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(potato.pk),
-            'form-0-unit': str(unit.pk),
-            'form-0-quantity': '1',
-        }
-        response = self.client.post(reverse('fridge:add_recipe'), data)
+        response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-        data['title'] = 'test'
-        data['description'] = '   '
-        response = self.client.post(reverse('fridge:add_recipe'), data)
+    def test_form_invalid_missing_description(self):
+        """
+        Ensures that when description field is missing, form is considered to
+        be invalid.
+        """
+
+        self.data['title'] = 'test'
+        self.data['description'] = '   '
+        self.data['cuisine'] = 'ot'
+        self.data['steps'] = 'step'
+        response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-        data['description'] = 'test'
-        data['cuisine'] = ''
-        response = self.client.post(reverse('fridge:add_recipe'), data)
+    def test_form_invalid_missing_cuisine(self):
+        """
+        Ensures that when cuisine field is missing, form is considered to be
+        invalid.
+        """
+
+        self.data['title'] = 'test'
+        self.data['description'] = 'test'
+        self.data['cuisine'] = '  '
+        self.data['steps'] = 'step'
+        response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-        data['cuisine'] = 'ot'
-        data['steps'] = '   '
-        response = self.client.post(reverse('fridge:add_recipe'), data)
+    def test_form_invalid_missing_steps(self):
+        """
+        Ensures that when steps field is missing, form is considered to be
+        invalid.
+        """
+
+        self.data['title'] = 'test'
+        self.data['description'] = 'test'
+        self.data['cuisine'] = 'ot'
+        self.data['steps'] = '   '
+        response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
@@ -71,23 +98,12 @@ class AddRecipeTests(TestCase):
         Ensures that the same ingredients cannot be selected and posted.
         """
 
-        potato = Ingredient.objects.create(name='Potato', type='Vegetable')
-        unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        data = {
-            'title': 'test',
-            'description': 'test',
-            'form-TOTAL_FORMS': '2',
-            'form-INITIAL_FORMS': '0',
-            'form-MAX_NUM_FORMS': '',
-            'form-0-ingredient': str(potato.pk),
-            'form-0-unit': str(unit.pk),
-            'form-0-quantity': '1',
-            'form-1-ingredient': str(potato.pk),
-            'form-1-unit': str(unit.pk),
-            'form-1-quantity': '1',
-        }
+        self.data['form-0-ingredient'] = str(self.potato.pk)
+        self.data['form-1-ingredient'] = str(self.potato.pk)
+        self.data['form-1-unit'] = str(self.unit.pk)
+        self.data['form-1-quantity'] = '1'
+        response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
-        response = self.client.post(reverse('fridge:add_recipe'), data)
         self.assertContains(response, 'Ingredients should be distinct.')
 
     def test_form_invalid_missing_ingredient(self):
@@ -111,7 +127,7 @@ class AddRecipeTests(TestCase):
 
 
 class FridgeDetailFridgeIngredientFormTests(TestCase):
-    """ Test suite to ensure that FridgeIngredient form performs well. """
+    """ Test suite to ensure that FridgeIngredientForm performs well. """
 
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
@@ -151,8 +167,9 @@ class FridgeDetailFridgeIngredientFormTests(TestCase):
 
     def test_form_is_shown(self):
         """
-        Ensures that a form is shown to a user. Dubious value: string may
-        change.
+        Ensures that a form is shown to a user.
+
+        NOTE: string may change, not the best practice to hard code it.
         """
 
         url = reverse('fridge:fridge_detail')
@@ -183,6 +200,7 @@ class FridgeDetailTests(TestCase):
         """ Ensures that nothing is shown when fridge is empty. """
 
         response = self.client.get(self.url)
+
         self.assertContains(response, 'There are no ingredients')
 
     def test_user_access_shows_ingredients(self):
@@ -210,22 +228,50 @@ class FridgeDetailTests(TestCase):
         r2 = Recipe.objects.create(author=self.user, title='test',
                                    description='test')
         self.fridge.recipes.add(r1)
+        recipes = Recipe.objects.all()
         response = self.client.get(self.url)
 
         self.assertContains(response, r1.title)
         self.assertContains(response, r2.title)
 
+
+    def test_same_names_allowed(self):
+        """
+        Ensure that recipes with the same names ARE allowed. It would be too
+        restrictive to force users to come up with new names. Rather, slugs
+        should differ (see next unit test).
+        """
+
+        Recipe.objects.create(author=self.user, title='test',
+                              description='test')
+        Recipe.objects.create(author=self.user, title='test',
+                              description='test')
+        recipes = Recipe.objects.all()
+
+        self.assertTrue(len(recipes) == 2)
+
+    def test_slugs_different_same_names(self):
+        """ Ensures that recipes with the same names have different slugs. """
+
+        r1 = Recipe.objects.create(author=self.user, title='test',
+                                   description='test')
+        r2 = Recipe.objects.create(author=self.user, title='test',
+                                   description='test')
+
+        self.assertTrue(r1.slug != r2.slug)
+
     def test_shows_remove_ingredient(self):
-        """ Ensures that a template has shows a remove ingredient function. """
+        """ Ensures that a template has a 'remove ingredient' link. """
 
         i1 = Ingredient.objects.create(name='test1', type='Fruit')
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
         fi1 = FridgeIngredient.objects.create(fridge=self.fridge, unit=unit,
                                               ingredient=i1, quantity=1)
+        expected_html = '<a href="{0}">Remove</a>'.format(
+            reverse('fridge:remove_ingredient', kwargs={'pk': fi1.pk}))
         response = self.client.get(self.url)
 
-        self.assertContains(response, '<a href="{0}">Remove</a>'.format(reverse(
-            'fridge:remove_ingredient', kwargs={'pk': fi1.pk})), html=True)
+        self.assertContains(response, expected_html, html=True)
 
     def test_shows_remove_recipe(self):
         """ Ensures that a template shows a remove recipe function. """
@@ -235,8 +281,9 @@ class FridgeDetailTests(TestCase):
         self.fridge.recipes.add(r1)
         response = self.client.get(self.url)
         remove_url = reverse('fridge:remove_recipe', kwargs={'pk': r1.pk})
-        ahref = '<a href="{0}">Remove</a>'.format(remove_url)
-        self.assertContains(response, ahref, html=True)
+        expected_href = '<a href="{0}">Remove</a>'.format(remove_url)
+
+        self.assertContains(response, expected_href, html=True)
 
     def test_shows_possibilities_link_in_template(self):
         """
@@ -246,14 +293,14 @@ class FridgeDetailTests(TestCase):
 
         i1 = Ingredient.objects.create(name='test1', type='Fruit')
         u = Unit.objects.create(name='kilogram', abbrev='kg')
-        fi = FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
-                                             ingredient=i1, unit=u)
+        FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
+                                        ingredient=i1, unit=u)
 
         response = self.client.get(self.url)
         expected_url = reverse('fridge:add_recipe')
-        expected = '<a href="{0}">Add recipe</a>'.format(expected_url)
+        expected_html = '<a href="{0}">Add recipe</a>'.format(expected_url)
 
-        self.assertContains(response, expected, html=True)
+        self.assertContains(response, expected_html, html=True)
 
 
 class PossibilitiesTests(TestCase):

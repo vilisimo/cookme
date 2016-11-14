@@ -1,5 +1,6 @@
 """
-Test suite to check custom model functionality.
+Test suite to check custom model functionality, such as absolute URLs,
+str representations.
 """
 
 
@@ -17,10 +18,12 @@ class FridgeTests(TestCase):
         self.fridge = Fridge.objects.create(user=self.user)
 
     def test_str_representation(self):
-        """ Ensures that a correct string represent. is constructed. """
+        """ Ensures that a correct string representation is constructed. """
 
-        self.assertEqual(str(self.fridge), "{0}'s fridge".format(
-            self.user.username))
+        expected = "{0}'s fridge".format(self.user.username)
+        actual = str(self.fridge)
+
+        self.assertEqual(expected, actual)
 
     def test_absolute_url(self):
         """ Ensures that the absolute URL routes to correct view. """
@@ -41,7 +44,9 @@ class FridgeIngredientTests(TestCase):
                                                   unit=self.unit, quantity=1)
 
     def test_str_representation(self):
-        """ Ensures that a correct string represent. is constructed. """
+        """ Ensures that a correct string representation is constructed. """
 
-        self.assertEquals(str(self.fi), "{0} in {1}".format(self.ingredient,
-                                                            self.fridge))
+        expected = "{0} in {1}".format(self.ingredient, self.fridge)
+        actual = str(self.fi)
+
+        self.assertEquals(expected, actual)

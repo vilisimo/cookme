@@ -243,10 +243,11 @@ class CommitRecipeTests(TestCase):
         """
 
         values = {}
-
+        recipe = None
         with self.assertRaises(KeyError):
             recipe = commit_recipe(values)
-            self.assertFalse(recipe)
+
+        self.assertFalse(recipe)
 
     def test_does_not_have_one_value(self):
         """
@@ -262,9 +263,11 @@ class CommitRecipeTests(TestCase):
                       '2': 'Second'}
         }
 
+        recipe = None
         with self.assertRaises(KeyError):
             recipe = commit_recipe(values)
-            self.assertFalse(recipe)
+
+        self.assertFalse(recipe)
 
 
 class CommitRecipeIngredientTests(TestCase):
@@ -286,9 +289,11 @@ class CommitRecipeIngredientTests(TestCase):
         """
 
         values = {}
+        recipe_ingredients = []
         with self.assertRaises(KeyError):
             recipe_ingredients = commit_recipe_ingredient(values, self.r)
-            self.assertFalse(recipe_ingredients)
+
+        self.assertFalse(recipe_ingredients)
 
     def test_creates_recipe_ingredient_values_ok(self):
         """ Ensures RecipeIngredient is created when values are correct. """
