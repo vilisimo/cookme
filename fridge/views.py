@@ -17,7 +17,7 @@ from utilities.search_helpers import subset_recipes
 @login_required
 def add_recipe(request):
     """
-    Responsible for displaying a form to add a recipe to user's fridge.
+    Responsible for displaying a form to add a recipe to a user's fridge.
 
     Note that recipe is added both to the user's fridge and the global recipe
     list. This is so because the recipe is created from a fridge's view, hence
@@ -65,7 +65,7 @@ def add_recipe(request):
         formset = RecInFormset()
 
     content = {
-        'user': user,   # No need to send if decide to set user in this view
+        'user': user,   # Not really used anywhere, could probably delete it.
         'form': form,
         'formset': formset,
     }
@@ -76,7 +76,7 @@ def add_recipe(request):
 @login_required
 def fridge_detail(request):
     """
-    Responsible for displaying the user's fridge.
+    Responsible for displaying user's fridge.
 
     Note that form to add an ingredient is also shown here, as there is no
     need for a separate page for such a small form.
@@ -87,6 +87,11 @@ def fridge_detail(request):
     increment it. Alternatively, a new value could be used instead. On the
     other hand, if a FridgeIngredient instance does not exists, we create it,
     by passing in a fridge, which is not supplied with a form (but is required).
+
+    NOTE: incrementing is not perfect at the moment. If user has 2 units of
+    lemons, and adds another 500 grams of lemons, he/she will end up with 502
+    units of lemons, which is stupid. JS/AJAX to fix it? Separate functions
+    to convert it?
 
     :param request: default request object.
     :return: default HttpResponse object.
@@ -135,6 +140,8 @@ def remove_ingredient(request, pk):
     Note that in case the user is not the same as the one that owns the
     fridge with a given FridgeIngredient, he/she is redirected to home page.
 
+    Note: good place to use AJAX to avoid refreshing the page?
+
     :param request: standard request object.
     :param pk: primary key of the ingredient to be deleted.
     """
@@ -153,6 +160,8 @@ def remove_recipe(request, pk):
     """
     View that is responsible for removing recipes from user's fridge. Note
     that recipes are not removed from 'global' recipe list.
+
+    Note: good place to use AJAX to avoid refreshing the page?
 
     :param request: standard request object.
     :param pk: to-be-removed recipe's primary key.

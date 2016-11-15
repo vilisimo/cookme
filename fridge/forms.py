@@ -23,7 +23,7 @@ class FridgeIngredientForm(ModelForm):
     Note that even though HTML5 validation for minimum numbers is employed,
     and default value is always one of the existing models, there is also a
     MinValueValidator in the FridgeIngredient model, to ensure that there is
-    no situation where <0 value is provided.
+    no situation where <0 value is provided. Might be a sliiiight overkill.
     """
 
     ingredient = CharField(widget=TextInput(
@@ -45,16 +45,17 @@ class FridgeIngredientForm(ModelForm):
         """
         Overrides the default save method, so that the user can enter an
         ingredient instead of searching through a list of them. While it
-        opens up the database for potential errors, it allows for much more
-        user-friendly experience, as well as more diverse ingredients.
+        opens up the database for potential spelling errors an such, it allows
+        for much more user-friendly experience, as well as more diverse
+        ingredients.
 
-        Of note: every ingredient starts with a capital letter, thus first
-        letter is capitalized.
+        Note: every ingredient starts with a capital letter, thus first
+        letter (or the whole title if there are multiple words) is capitalized.
         """
 
         # Take the input string, create ingredient that has the same name.
         ingredient_name = capwords(self.cleaned_data['ingredient'])
-        ing = Ingredient.objects.get_or_create(name=ingredient_name)[0]
-        self.instance.ingredient = ing
+        ingredient = Ingredient.objects.get_or_create(name=ingredient_name)[0]
+        self.instance.ingredient = ingredient
 
         return super(FridgeIngredientForm, self).save(commit)

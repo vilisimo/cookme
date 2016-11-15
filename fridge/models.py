@@ -8,10 +8,15 @@ from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
 
 
-# May not be needed. May be possible to go through user and create illusion
-# of fridge. However, having Fridge entity allows multiple fridges if needed.
 class Fridge(models.Model):
-    """ Model representing fridge (collection of recipes & ingredients). """
+    """
+    Represents fridge (collection of recipes & ingredients).
+
+    Note: Fridge model not be needed. It is probably possible to create
+    something similar through User/UserProfile and simply create an illusion
+    of a fridge. However, having Fridge entity allows multiple fridges if
+    needed. Besides, it's clearer.
+    """
 
     user = models.OneToOneField(User)
     visible = models.BooleanField(default=True)
@@ -27,11 +32,14 @@ class Fridge(models.Model):
 
 class FridgeIngredient(models.Model):
     """
-    Model representing ingredients in the fridge.
+    Represents ingredients in the fridge.
 
     To make calculations easier, user is required to enter quantities and
     units. Alternative: could offer several search options: exact (with
     quantities), not exact (without, match only on ingredients).
+
+    Interesting problems arise, however: what if you have 2 lemons and the
+    recipe requires 500g of them?
     """
 
     fridge = models.ForeignKey(Fridge)

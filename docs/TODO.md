@@ -22,3 +22,10 @@ duplication can be reduced.
 recipes found) could be written down. This way, can import them in views, 
 pass on to templates, use in tests, etc., no need to change in multiple places.
 - On testing population script: see utilities/tests/test_populate.py.
+- Different quantities: what if recipe requires 2 cups of sugar, whereas you 
+have 500g? Also, what if user has 500g of sugar in a fridge, but decides to 
+add another helping of 3 tablespoons? One possible solution: have functions 
+that convert various different units to other units. Whichever was first in 
+the fridge, stays. All additions are converted to that unit. OR if 500g 
+converted to cups is more than 1 cup, everything is converted to grams. 
+Multiple ways to do it.
