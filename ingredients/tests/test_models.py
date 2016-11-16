@@ -16,20 +16,23 @@ class IngredientTests(TestCase):
 
     def setUp(self):
         self.ingredient = Ingredient.objects.create(name='Meat', type='Meat')
-        self.ingredient2 = Ingredient.objects.create(name='test test',
-                                                     type='Meat')
+        self.ingredient2 = Ingredient.objects.create(name='test2', type='Meat')
 
     def test_str_representation(self):
         """
         Ensures that a string representation of an ingredient is correct.
         """
 
-        self.assertEqual(str(self.ingredient), self.ingredient.name)
+        expected_str= str(self.ingredient)
+
+        self.assertEqual(expected_str, self.ingredient.name)
 
     def test_slug(self):
         """ Ensures that a slug is properly created. """
 
-        self.assertEqual(slugify(self.ingredient2.name), self.ingredient2.slug)
+        expected_slug = slugify(self.ingredient2.name)
+
+        self.assertEqual(expected_slug, self.ingredient2.slug)
 
     def test_unique_slugs(self):
         """
@@ -68,5 +71,7 @@ class UnitsTests(TestCase):
     def test_str_representation(self):
         """ Ensures that a string representation of unit is correct. """
 
+        expected_str = str(self.unit)
         unit_str = self.unit.abbrev
-        self.assertEqual(str(self.unit), unit_str)
+
+        self.assertEqual(expected_str, unit_str)

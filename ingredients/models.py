@@ -6,8 +6,9 @@ from django.utils.text import slugify
 
 
 class Ingredient(models.Model):
-    """ Model that represents ingredients of recipes. """
+    """ Represents ingredients of recipes. """
 
+    # Categories of ingredients
     INGREDIENTS = [
         ('Additives', 'Food additives'),
         ('Bread', 'Bread'),
@@ -48,7 +49,8 @@ class Ingredient(models.Model):
         """
         Even though name is unique, slug may be not unique. For example,
         if model 1 has name ';a;' and model 2 has name ';a:'. In such a case,
-        slug would be 'a' for both.
+        slug would be 'a' for both. Hence, slug needs to be processed before
+        committing it to the database.
         """
 
         if not self.id:
@@ -69,11 +71,7 @@ class Ingredient(models.Model):
 
 
 class Unit(models.Model):
-    """
-    Model representing quantities, such as oz, kg, ml, etc.
-
-    Note that it should also allow inputting blank units, e.g. 5 apples.
-    """
+    """ Represents quantities, such as oz, kg, ml, etc. """
 
     name = models.CharField(max_length=30, blank=False, null=False, unique=True)
     abbrev = models.CharField(max_length=10, blank=True, null=True)

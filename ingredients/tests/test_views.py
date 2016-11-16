@@ -12,7 +12,10 @@ from ingredients.views import ingredient_detail
 
 
 class IngredientDetailViewsURLsTests(TestCase):
-    """ Test suite to ensure that ingredient_detail view works correctly. """
+    """
+    Test suite to ensure that ingredient_detail view can be accessed by all
+    users.
+    """
 
     def setUp(self):
         self.client = Client()
@@ -28,6 +31,7 @@ class IngredientDetailViewsURLsTests(TestCase):
         view = resolve('/ingredients/' + self.i.slug + '/')
 
         self.assertEqual(view.func, ingredient_detail)
+        self.assertEqual(view.view_name, 'ingredients:ingredient_detail')
 
     def test_user_access(self):
         """ Ensures that all users can access ingredient details. """
@@ -44,7 +48,6 @@ class IngredientDetailViewsURLsTests(TestCase):
         """
 
         Ingredient.objects.all().delete()
-
         response = self.logged.get(self.url)
 
         self.assertEqual(response.status_code, 404)
