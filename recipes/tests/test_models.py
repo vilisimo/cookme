@@ -30,8 +30,10 @@ class RecipeTestCase(TestCase):
         """
 
         test_recipe = Recipe.objects.create(author=self.user, title='test')
+        default = "No description provided."
+
         self.assertTrue(test_recipe.description)
-        self.assertTrue(test_recipe.description == "No description provided.")
+        self.assertEquals(test_recipe.description, default)
 
     def test_steps_default(self):
         """
@@ -39,10 +41,10 @@ class RecipeTestCase(TestCase):
         """
 
         test_recipe = Recipe.objects.create(author=self.user, title='test')
+        default = "No steps provided. Time to get creative!"
 
         self.assertTrue(test_recipe.steps)
-        self.assertTrue(test_recipe.steps ==
-                        "No steps provided. Time to get creative!")
+        self.assertEquals(test_recipe.steps, default)
 
     def test_steps_newlines(self):
         """
@@ -50,11 +52,11 @@ class RecipeTestCase(TestCase):
         encountered.
         """
 
-        steps_split = ['step1', 'step2']
+        expected = ['step1', 'step2']
         recipe = Recipe.objects.create(author=self.user, title='test',
                                        steps='step1\n\nstep2')
 
-        self.assertEqual(recipe.step_list(), steps_split)
+        self.assertEqual(recipe.step_list(), expected)
 
     def test_str_representation_one_name(self):
         """ Ensures that string representation is correct. """
@@ -67,8 +69,7 @@ class RecipeTestCase(TestCase):
     def test_str_representation_two_same_names(self):
         """
         Test recipe string representation when there are two recipes with the
-        same name. Should be the same (as str repr. is established at run-time,
-        it makes little sense to make them different - it's just confusing).
+        same name. Should be the same.
         """
 
         self.assertEqual(str(self.r), self.r.title)
@@ -85,16 +86,17 @@ class RecipeTestCase(TestCase):
         """
 
         self.r.title = 'test2'
+
         self.assertNotEquals(self.r.slug, slugify(self.r.title))
 
     def test_unique_slug_creation(self):
         """ Ensures that a unique slug is created for every recipe. """
 
         count = len(Recipe.objects.all())
-
         # Need to turn chars into lower form, as title is capitalized.
-        self.assertEqual(self.a.slug, "{0}-{1}".format(self.a.title.lower(),
-                                                       count))
+        expected = "{0}-{1}".format(self.a.title.lower(), count)
+
+        self.assertEqual(self.a.slug, expected)
 
     def test_capitalisation(self):
         """ Ensures that ingredient names are capitalized. """
@@ -105,7 +107,10 @@ class RecipeTestCase(TestCase):
         self.assertEqual(r.title, capwords(title))
 
     def test_slug_field_is_unique(self):
-        """ Ensures that a unique slug is created for every recipe. """
+        """
+        Ensures that a unique slug is created for every recipe, even when
+        they share the same titles.
+        """
 
         self.assertNotEquals(self.a.slug, self.r.slug)
 
@@ -123,8 +128,10 @@ class RatingTestCase(TestCase):
     def test_str_representation(self):
         """ Ensures that rating's string representation is correct. """
 
-        self.assertEqual(str(self.rating), "{0}\'s {1} rating: {2}".format(
-            self.user.username, self.r, self.rating.stars))
+        expected = "{0}\'s {1} rating: {2}".format(self.user.username,
+                                                   self.r, self.rating.stars)
+
+        self.assertEqual(str(self.rating), expected)
 
 
 class RecipeIngredientTestCase(TestCase):
@@ -142,10 +149,9 @@ class RecipeIngredientTestCase(TestCase):
     def test_str_representation(self):
         """ Ensures that RecipeIngredient string representation is correct. """
 
-        self.assertEqual(str(self.ri), "{0} in {1}".format(self.i, self.r))
+        expected = "{0} in {1}".format(self.i, self.r)
 
-
-""" Testing helper functions """
+        self.assertEqual(str(self.ri), expected)
 
 
 # Function is currently not used.
@@ -157,5 +163,7 @@ class UserDirectoryPathTests(TestCase):
 
     def test_path(self):
         """ Ensure that a constructed path is correct. """
-        self.assertEqual(self.path, "user_{0}/{1}".format(self.user.id,
-                                                          'burbt'))
+
+        expected = "user_{0}/{1}".format(self.user.id, 'burbt')
+
+        self.assertEqual(self.path, expected)

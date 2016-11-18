@@ -15,7 +15,8 @@ from recipes.admin import RecipeAdmin
 class RecipeAdminTests(TestCase):
     """
     Test suite to ensure that custom functionality in Fridge admin panel
-    works as expected.
+    works as expected. More specifically, that lists of model entities show
+    up where appropriate.
     """
 
     def setUp(self):
@@ -25,7 +26,7 @@ class RecipeAdminTests(TestCase):
         self.site = AdminSite()
 
     def test_ingredient_list(self):
-        """ Test to ensure that ingredient list shows up properly """
+        """ Ensures that ingredient list shows up properly """
 
         i1 = Ingredient.objects.create(name='Apple', type='Fruit')
         i2 = Ingredient.objects.create(name='Orange', type='Fruit')
@@ -40,7 +41,7 @@ class RecipeAdminTests(TestCase):
         self.assertEqual(ma.ingredient_list(self.recipe), expected)
 
     def test_step_list(self):
-        """ Test to ensure that steps are shown properly. """
+        """ Ensures that steps are shown properly. """
 
         steps = "; ".join(['step1', 'step2'])
         recipe = Recipe.objects.create(author=self.user, title='test',

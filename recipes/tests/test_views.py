@@ -14,6 +14,8 @@ from recipes.views import recipes, recipe_detail, add_to_fridge
 
 
 class URLTests(TestCase):
+    """ Test suite to ensure that the view is mapped to a correct url. """
+
     def setUp(self):
         self.user = User.objects.create_user(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test',
@@ -23,6 +25,7 @@ class URLTests(TestCase):
         """ Ensures that a user is shown a correct URL for recipes. """
 
         resolver = resolve('/recipes/')
+
         self.assertEqual(resolver.view_name, 'recipes:recipes')
         self.assertEqual(resolver.func, recipes)
 
@@ -33,6 +36,7 @@ class URLTests(TestCase):
 
         recipe_path = self.r.slug + '/'
         resolver = resolve('/recipes/' + recipe_path)
+
         self.assertEqual(resolver.view_name, 'recipes:recipe_detail')
         self.assertEqual(resolver.func, recipe_detail)
 
@@ -45,7 +49,12 @@ class RecipeViewTests(TestCase):
         self.url = reverse('recipes:recipes')
 
     def test_recipes_view(self):
-        """ Ensures that the recipes view renders correctly. """
+        """
+        Ensures that the recipes view renders correctly.
+
+        Note: the view does not require a user to be logged in. Hence,
+        there is no need to test both situations (logged in vs. anonymous)
+        """
 
         response = self.client.get(self.url)
 
@@ -74,9 +83,8 @@ class RecipeDetailTests(TestCase):
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
         RecipeIngredient.objects.create(recipe=self.r, ingredient=ingredient,
                                         unit=unit, quantity=0.5)
-
-        response = self.client.get(self.url)
         ingredients = RecipeIngredient.objects.filter(recipe=self.r)
+        response = self.client.get(self.url)
 
         # QuerySets are not equal even if they contain the same values,
         # hence we need to convert them to lists.
@@ -87,7 +95,6 @@ class RecipeDetailTests(TestCase):
         """ Ensures that non-existent recipe throws 404. """
 
         Recipe.objects.all().delete()
-
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 404)
@@ -170,8 +177,10 @@ class AddRecipeToFridgeTests(TestCase):
 
         c.get(self.url)
         test2recipes = f.recipes.all()
+
         self.assertEqual(len(test2recipes), 1)
 
         recipes = self.fridge.recipes.all()
+
         self.assertFalse(recipes)
 

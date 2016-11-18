@@ -39,7 +39,7 @@ models/entities.
 | *unit (FK)* | Quantity that has amount. |
 | *quantity* | Amount of the ingredient (float). |
 
-###Rating
+###Rating (currently not used)
 | Field | Description |
 | --- | --- |
 | *stars* | How many stars user has given the recipe. |
