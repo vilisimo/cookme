@@ -19,9 +19,10 @@ from .models import RecipeIngredient, Recipe
 
 class AddRecipeForm(ModelForm):
     """
-    The form to create a recipe instance. That is, create a recipe and add it
-    to a fridge. If user wants to add an exiting recipe to a fridge, he/she
-    has to navigate to that fridge and click appropriate button.
+    Recipe instance form. Creates a recipe and adds it to a fridge.
+
+    Note: If user wants to add an exiting recipe to a fridge, he/she has to
+    navigate to that recipe and click an appropriate button.
     """
 
     class Meta:
@@ -55,7 +56,12 @@ class AddRecipeForm(ModelForm):
 
 class RecipeIngredientForm(ModelForm):
     """
-    A form that is used to add associate an ingredient with a given recipe.
+    Associates an ingredient with a given recipe. That is, this form supplements
+    the above one and should be used in conjunction with it. Workflow:
+        - fill in recipe's details
+        - add ingredients to the recipe
+        - submit
+        -> recipe created, ingredients created/found and associated with recipe.
 
     Note that several of these forms must be used in order to add more than one
     ingredient. For this, JavaScript can be employed to create them on the fly.
@@ -65,7 +71,7 @@ class RecipeIngredientForm(ModelForm):
 
     Note that even though HTML5 validation for minimum numbers is employed,
     there is also a MinValueValidator in the RecipeIngredient model, to ensure
-    that there is no situation where <0 value is provided.
+    that there is no situation where < 0 value is provided.
     """
 
     unit = ModelChoiceField(queryset=Unit.objects.all(), empty_label=None)
@@ -104,8 +110,8 @@ class BaseRecipeIngredientFormSet(BaseFormSet):
     def __init__(self, *args, **kwargs):
         """
         Avoids the problem where the user may try to add a recipe & a formset
-        without entering any value in ingredient form. If init is not overriden,
-        then entering nothing does not catch errors.
+        without entering any value in ingredient form. If init is not
+        overridden, then entering nothing does not catch errors.
         """
 
         super(BaseRecipeIngredientFormSet, self).__init__(*args, **kwargs)
@@ -125,5 +131,5 @@ class BaseRecipeIngredientFormSet(BaseFormSet):
         for form in self.forms:
             ingredient = form.cleaned_data['ingredient']
             if ingredient in ingredients:
-                raise ValidationError(_("Ingredients should be distinct."))
+                raise ValidationError(_('Ingredients should be distinct.'))
             ingredients.append(ingredient)

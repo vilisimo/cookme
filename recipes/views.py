@@ -8,7 +8,7 @@ from .models import Recipe, RecipeIngredient
 
 def recipes(request):
     """
-    Should show the list of recipes.
+    Shows the list of recipes.
 
     :param request: standard request object.
     :return: standard HttpResponse object.
@@ -25,7 +25,7 @@ def recipes(request):
 
 def recipe_detail(request, slug):
     """
-    View responsible for displaying a particular recipe.
+    Displays details of a particular recipe.
 
     :param request: standard request object.
     :param slug: slug passed from urls for identification of recipe.
@@ -57,7 +57,7 @@ def recipe_detail(request, slug):
 @login_required
 def add_to_fridge(request, pk):
     """
-    View responsible for adding recipes to user's fridge.
+    Adds recipes to user's fridge.
 
     :param request: standard request object.
     :param pk: recipe's primary key.
