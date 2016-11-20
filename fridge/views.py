@@ -11,7 +11,7 @@ from recipes.forms import (
 from recipes.models import Recipe
 from .models import FridgeIngredient, Fridge
 from .forms import FridgeIngredientForm
-from utilities.search_helpers import subset_recipes
+from utilities.search_helpers import subset_recipes, fridge_subset_recipes
 
 
 @login_required
@@ -179,8 +179,10 @@ def remove_recipe(request, pk):
 @login_required
 def possibilities(request):
     """
-    Responsible for showing recipes that can be made with the ingredients in
-    a fridge.
+    Shows recipes that can be made with the ingredients in a fridge.
+
+    NOTE: ingredients are matched against ALL recipes, not only those in a
+    fridge.
 
     :param request: standard request object.
     :return: standard HttpResponse object.
@@ -199,3 +201,30 @@ def possibilities(request):
     }
 
     return render(request, 'fridge/possibilities.html', content)
+
+
+@login_required
+def fridge_recipes(request):
+    """
+    Shows recipes that can be made with ingredients in the fridge.
+
+    NOTE: ingredients are matched only against those in the fridge.
+    NOTE 2: very similar to above one. CBVs may be able to fix it?
+
+    :param request: standard request object.
+    :return: standard HttpResponse object.
+    """
+
+    user = request.user
+    fridge = Fridge.objects.get_or_create(user=user)[0]
+    ingredients = fridge.ingredients.all()
+    ingredients = [ingredient.name for ingredient in ingredients]
+    recipes = fridge.recipes.all()
+    recipes = fridge_subset_recipes(ingredients, recipes)
+
+    content = {
+        'ingredients': ingredients,
+        'recipes': recipes,
+    }
+
+    return render(request, 'fridge/fridge_recipes.html', content)

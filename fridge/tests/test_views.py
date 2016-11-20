@@ -14,6 +14,7 @@ from fridge.views import (
     remove_ingredient,
     remove_recipe,
     possibilities,
+    fridge_recipes,
 )
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe, RecipeIngredient as RI
@@ -537,7 +538,7 @@ class FridgePossibilitiesTests(TestCase):
         self.user = User.objects.create_user(username='test', password='test')
         self.ingredients = populate_ingredients()
         populate_fridge_ingredients()
-        self.recipes = populate_recipes()
+        self.recipes = list(populate_recipes())  # QuerySets are lazy
         self.client = logged_in_client()
         self.url = reverse('fridge:possibilities')
 
@@ -593,7 +594,7 @@ class FridgePossibilitiesTests(TestCase):
 
         # Create a completely new recipe that has all ingredients and then
         # one original one. This recipe should never be in a list of returned
-        # recipes, as it has one more ingredient than in there are in fridge.
+        # recipes, as it has one more ingredient than there are in the fridge.
         i = Ingredient.objects.create(name='test', type='Fruit')
         u = Unit.objects.create(name='litre', abbrev='l')
         r = Recipe.objects.create(author=self.user, title='test',
@@ -612,7 +613,7 @@ class FridgePossibilitiesTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertNotEquals(list(all_rec), list(response.context['recipes']))
-        self.assertEquals(list(self.recipes), list(response.context['recipes']))
+        self.assertEquals(self.recipes, list(response.context['recipes']))
 
     def test_no_ingredients_in_a_fridge(self):
         """
@@ -640,3 +641,93 @@ class FridgePossibilitiesTests(TestCase):
 
         self.assertNotEquals(list(all_rec), list(response.context['recipes']))
         self.assertTrue(len(response.context['recipes']) == 1)
+
+
+class FridgePossibilitiesWithFridgeRecipesTests(TestCase):
+    """
+    Test suite to ensure that the matching function only returns recipes that
+    are in the fridge, as well as appropriately handles missing data and so on.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        self.ingredients = populate_ingredients()
+        populate_fridge_ingredients()
+        self.recipes = list(populate_recipes())
+        self.client = logged_in_client()
+        self.url = reverse('fridge:fridge_recipes')
+
+    def test_correct_view(self):
+        """ Ensures correct view is shown when url is accessed. """
+
+        url = '/fridge/fridge_recipes/'
+        view = resolve(url)
+
+        self.assertEqual(view.view_name, 'fridge:fridge_recipes')
+        self.assertEqual(view.func, fridge_recipes)
+
+    def test_anonymous_access(self):
+        """ Ensures anonymous user cannot access the view. """
+
+        response = Client().get(self.url)
+        redirect_url = '{}?next={}'.format(reverse('login'), self.url)
+
+        self.assertRedirects(response, redirect_url)
+
+    def test_logged_in_access(self):
+        """ Ensures logged in user can access the view. """
+
+        response = self.client.get(self.url)
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_context_has_ingredients(self):
+        """
+        Ensures the ingredients are successfully retrieved from DB.
+        Prerequisite for matching them against recipes.
+        """
+
+        ingredient_name = self.ingredients[0].name
+        response = self.client.get(self.url)
+
+        self.assertIn(ingredient_name, response.context['ingredients'])
+
+    def test_no_fridge_recipes(self):
+        """
+        Ensures that when there are no recipes in the fridge, nothing is
+        returned.
+        """
+
+        response = self.client.get(self.url)
+
+        self.assertFalse(list(response.context['recipes']))
+
+    def test_fridge_has_recipes(self):
+        """
+        Ensures that when fridge does have recipes, they are matched against
+        ingredients.
+        """
+
+        fridge = Fridge.objects.get(user=self.user)
+        fridge.recipes.add(self.recipes[0])
+        fridge.recipes.add(self.recipes[1])
+        fridge.recipes.add(self.recipes[2])
+        fridge.recipes.add(self.recipes[3])
+        response = self.client.get(self.url)
+
+        self.assertEquals(self.recipes, list(response.context['recipes']))
+
+    def test_fridge_has_two_recipes(self):
+        """
+        Ensures that when fridge has only some recipes, only those recipes in
+        the fridge are matched against the ingredients.
+        """
+
+        fridge = Fridge.objects.get(user=self.user)
+        fridge.recipes.add(self.recipes[0])
+        fridge.recipes.add(self.recipes[1])
+        expected = [self.recipes[0], self.recipes[1]]
+        response = self.client.get(self.url)
+
+        self.assertNotEquals(self.recipes, list(response.context['recipes']))
+        self.assertEquals(expected, list(response.context['recipes']))

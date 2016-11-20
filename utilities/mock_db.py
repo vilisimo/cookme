@@ -99,7 +99,9 @@ def populate_recipes():
     r3 = Recipe.objects.get_or_create(author=user, title="LemonRec")[0]
     RI.objects.create(recipe=r3, ingredient=i2, unit=u, quantity=1)
 
-    return [r0, r1, r2, r3]
+    recipes = Recipe.objects.all()
+
+    return recipes
 
 
 def logged_in_client(user=None):

@@ -108,6 +108,9 @@ def subset_recipes(ingredients):
     contain any of these ingredients, leaving us with a query set of recipes
     that actually contain only those ingredients that we are interested in.
 
+    NOTE: This function looks at ALL recipes, not only those that are in a
+    fridge.
+
     :param ingredients: a set of CAPITALIZED ingredients of which at least one
                         should be in a recipe.
     :return: QuerySet of recipe objects that have at least one ingredient.
@@ -123,6 +126,35 @@ def subset_recipes(ingredients):
 
     # Now get all recipes that do not have these non-matching ingredients.
     recipes = Recipe.objects.exclude(ingredients__in=non_matching)
+
+    return recipes
+
+
+def fridge_subset_recipes(ingredients, recipes):
+    """
+    Returns a list of recipes that contain ingredients form a list and nothing
+    more. Ingredients in the fridge are a superset of ingredients in a recipe.
+
+    Note: this and above are almost identical functions. Would be nice to merge
+    them, but would also be nice to avoid doing several queries (which happens
+    when passing all recipes, in possibilities() case).
+
+    :param ingredients: a set of capitalized ingredients of which at least
+                        one should be in a recipe.
+    :param recipes:     QuerySet of recipes that should be matched against
+                        ingredients.
+    :return: QuerySet of recipe objects. All ingredients from a recipe should
+             be in ingredient set.
+    """
+
+    ingredients = [ingredient if ingredient.istitle() else
+                   capwords(ingredient) for ingredient in ingredients]
+
+    # Get all the ingredients that do not match our set.
+    non_matching = Ingredient.objects.exclude(name__in=ingredients)
+
+    # Now get all recipes that do not have these non-matching ingredients.
+    recipes = recipes.exclude(ingredients__in=non_matching)
 
     return recipes
 

@@ -3,13 +3,17 @@ Tests to ensure that helper functions are fully operational.
 """
 
 from django.test import TestCase
+from django.contrib.auth.models import User
 
-from recipes.models import Recipe
+from recipes.models import Recipe, RecipeIngredient as RI
+from ingredients.models import Ingredient, Unit
 
 from utilities.mock_db import populate_recipes
 from utilities.search_helpers import (
-    encode, decode, get_name_set, superset_recipes, subset_recipes
+    encode, decode, get_name_set, superset_recipes, subset_recipes,
+    fridge_subset_recipes,
 )
+
 
 
 class EncodingTests(TestCase):
@@ -259,3 +263,86 @@ class SubsetRecipesTests(TestCase):
         recipes = subset_recipes(ingredients)
 
         self.assertFalse(recipes)
+
+
+class FridgeSubsetRecipesTests(TestCase):
+    """
+    Test suite to ensure that fridge_subset_recipes matches ingredients
+    against given QuerySet of recipes and returns only those recipes
+    ingredients of which are in the set of ingredients provided.
+    """
+
+    def setUp(self):
+        self.recipes = populate_recipes()
+        self.r1 = self.recipes[0]
+        self.r2 = self.recipes[1]
+        self.r3 = self.recipes[2]
+        self.r4 = self.recipes[3]
+
+    def test_get_recipes_one_ingredient(self):
+        """
+        Ensures that when only one ingredient is given, only a recipe
+        with that one ingredient is returned.
+        """
+
+        ingredients = {'meat'}
+        recipes = fridge_subset_recipes(ingredients, self.recipes)
+
+        self.assertIn(self.r1, recipes)
+
+    def test_get_recipes_two_ingredients(self):
+        """
+        Ensures that when we there are two ingredients in a set, only those
+        recipes that consist of one ingredient or both of them are returned.
+        """
+
+        ingredients = {'meat', 'lemon'}
+        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        expected = [self.r1, self.r4]
+
+        self.assertEquals(expected, list(recipes))
+
+    def test_get_recipes_all_ingredients(self):
+        """
+        Ensures that all recipes are chosen when ingredient list includes all
+        possible ingredients.
+        """
+
+        ingredients = {'meat', 'lemon', 'apple', 'white bread'}
+        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        expected = Recipe.objects.all()
+
+        self.assertEquals(list(expected), list(recipes))
+
+    def test_non_existent_ingredient(self):
+        """ Ensure that non-existent ingredients do not return anything. """
+
+        ingredients = {'fairy dust'}
+        recipes = fridge_subset_recipes(ingredients, self.recipes)
+
+        self.assertFalse(recipes)
+
+    def test_more_recipes_than_in_fridge(self):
+        """
+        Ensure that recipes that do not belong to the QuerySet are not touched.
+        """
+
+        expected = list(self.recipes)  # QuerySets are lazy
+        user = User.objects.create_user(username='test2', password='test2')
+        i1 = Ingredient.objects.get_or_create(name='Meat', type='Meat')[0]
+        i2 = Ingredient.objects.get_or_create(name='Lemon', type='Fruit')[0]
+        r1 = Recipe.objects.get_or_create(author=user, title='MeatLemonRec')[0]
+        u = Unit.objects.get(abbrev='kg')
+        RI.objects.get_or_create(recipe=r1, ingredient=i1, unit=u, quantity=1)
+        RI.objects.get_or_create(recipe=r1, ingredient=i2, unit=u, quantity=1)
+        all_recipes = Recipe.objects.all()
+
+        self.assertEqual(len(all_recipes), len(expected) + 1)
+
+        ingredients = {'meat', 'lemon', 'apple', 'white bread'}
+        # Since self.recipes is QuerySet, which is lazy, we need to exclude the
+        # new recipe, otherwise ingredients will be matched against all recipes.
+        self.recipes = self.recipes.exclude(title='Meatlemonrec')
+        recipes = fridge_subset_recipes(ingredients, self.recipes)
+
+        self.assertEqual(list(expected), list(recipes))

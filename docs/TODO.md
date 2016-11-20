@@ -29,3 +29,4 @@ that convert various different units to other units. Whichever was first in
 the fridge, stays. All additions are converted to that unit. OR if 500g 
 converted to cups is more than 1 cup, everything is converted to grams. 
 Multiple ways to do it.
+- Merge fridge_subset_recipes() with subset_recipes().
