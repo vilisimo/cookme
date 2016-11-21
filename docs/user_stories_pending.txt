@@ -30,25 +30,6 @@ Status: NOT STARTED
 
 
 ***************************************************************************
-User can instruct the website to find recipes from global recipe book that
-he/she can make with ingredients in a fridge.
-    - Test: instruct to find dishes from global recipe book that can be made
-      only with the ingredients in the fridge.
-      Outcome: matching recipes from global recipe book are shown.
-    - Test: ensure that there are no recipes in the fridge. Instruct to find
-      dishes from global recipe book that can be made only with the ingredients
-      in the fridge.
-      Outcome: despite the fridge not having any recipes, user is shown dishes
-      from global recipe book that he/she has enough ingredients for.
-    - Test: instruct to find dishes from global recipe book when the user does
-      not have sufficient ingredients for any of them.
-      Outcome: no recipes are shown.
-PRIORITY: SHOULD HAVE
-Status: NOT STARTED
-***************************************************************************
-
-
-***************************************************************************
 User can edit the recipes he/she has uploaded.
   - Test: edit his/her own recipe.
     Outcome: recipe is edited.

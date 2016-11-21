@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe
-from fridge.models import Fridge, FridgeIngredient
+from fridge.models import Fridge, FridgeIngredient as FI
 from utilities.mock_db import (
     logged_in_client, populate_recipes, populate_fridge_ingredients,
 )
@@ -208,8 +208,8 @@ class FridgeDetailTests(TestCase):
 
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
         ingredient = Ingredient.objects.create(name='test', type='Fruit')
-        fi = FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
-                                             ingredient=ingredient, unit=unit)
+        fi = FI.objects.create(fridge=self.fridge, quantity=1,
+                               ingredient=ingredient, unit=unit)
         response = self.client.get(self.url)
 
         self.assertContains(response, ingredient.name)
@@ -228,12 +228,10 @@ class FridgeDetailTests(TestCase):
         r2 = Recipe.objects.create(author=self.user, title='test',
                                    description='test')
         self.fridge.recipes.add(r1)
-        recipes = Recipe.objects.all()
         response = self.client.get(self.url)
 
         self.assertContains(response, r1.title)
         self.assertContains(response, r2.title)
-
 
     def test_same_names_allowed(self):
         """
@@ -242,10 +240,8 @@ class FridgeDetailTests(TestCase):
         should differ (see next unit test).
         """
 
-        Recipe.objects.create(author=self.user, title='test',
-                              description='test')
-        Recipe.objects.create(author=self.user, title='test',
-                              description='test')
+        Recipe.objects.create(author=self.user, title='test', description='tst')
+        Recipe.objects.create(author=self.user, title='tst', description='test')
         recipes = Recipe.objects.all()
 
         self.assertTrue(len(recipes) == 2)
@@ -258,15 +254,15 @@ class FridgeDetailTests(TestCase):
         r2 = Recipe.objects.create(author=self.user, title='test',
                                    description='test')
 
-        self.assertTrue(r1.slug != r2.slug)
+        self.assertNotEquals(r1.slug, r2.slug)
 
     def test_shows_remove_ingredient(self):
         """ Ensures that a template has a 'remove ingredient' link. """
 
         i1 = Ingredient.objects.create(name='test1', type='Fruit')
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        fi1 = FridgeIngredient.objects.create(fridge=self.fridge, unit=unit,
-                                              ingredient=i1, quantity=1)
+        fi1 = FI.objects.create(fridge=self.fridge, unit=unit, ingredient=i1,
+                                quantity=1)
         expected_html = '<a href="{0}">Remove</a>'.format(
             reverse('fridge:remove_ingredient', kwargs={'pk': fi1.pk}))
         response = self.client.get(self.url)
@@ -293,12 +289,28 @@ class FridgeDetailTests(TestCase):
 
         i1 = Ingredient.objects.create(name='test1', type='Fruit')
         u = Unit.objects.create(name='kilogram', abbrev='kg')
-        FridgeIngredient.objects.create(fridge=self.fridge, quantity=1,
-                                        ingredient=i1, unit=u)
+        FI.objects.create(fridge=self.fridge, quantity=1, ingredient=i1, unit=u)
 
         response = self.client.get(self.url)
-        expected_url = reverse('fridge:add_recipe')
-        expected_html = '<a href="{0}">Add recipe</a>'.format(expected_url)
+        expected_url = reverse('fridge:possibilities')
+        expected_html = '<a href="{0}">Make something!</a>'.format(expected_url)
+
+        self.assertContains(response, expected_html, html=True)
+
+    def test_shows_fridge_recipes_link_in_template(self):
+        """
+        Ensures a link to possibilities view is references somewhere in the
+        fridge.
+        """
+
+        i1 = Ingredient.objects.create(name='test1', type='Fruit')
+        u = Unit.objects.create(name='kilogram', abbrev='kg')
+        FI.objects.create(fridge=self.fridge, quantity=1, ingredient=i1, unit=u)
+
+        response = self.client.get(self.url)
+        expected_url = reverse('fridge:fridge_recipes')
+        expected_html = ('<a href="{0}">Make something I like!</a>'.
+                         format(expected_url))
 
         self.assertContains(response, expected_html, html=True)
 
@@ -323,24 +335,88 @@ class PossibilitiesTests(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'fridge/possibilities.html')
 
-    def test_fridge_recipes_are_shown(self):
-        """ Ensures that possible recipes are shown in the template. """
+    def test_recipes_are_shown(self):
+        """ Ensures that possible global recipes are shown in the template. """
 
         response = self.client.get(self.url)
         expected_title = self.recipes[0].title
-        expected_html = '<a href={}>{}</a>'.format(
-                        self.recipes[0].get_absolute_url(), expected_title)
+        expected_url = self.recipes[0].get_absolute_url()
+        expected_html = '<a href={}>{}</a>'.format(expected_url, expected_title)
 
         self.assertContains(response, expected_title, status_code=200)
         self.assertContains(response, expected_html, html=True)
 
     def test_fridge_recipes_not_shown_without_fridge_ingredients(self):
         """
-        Ensures that recipes are only shown when there are ingredients in a
-        fridge.
+        Ensures that global recipes are only shown when there are ingredients
+        in a fridge.
         """
 
-        FridgeIngredient.objects.all().delete()
+        FI.objects.all().delete()
+
+        response = self.client.get(self.url)
+        recipe_title = self.recipes[0].title
+
+        self.assertNotContains(response, recipe_title)
+
+
+class FridgeRecipesTests(TestCase):
+    """
+    Test suite to ensure that fridge_recipes template shows recipes from a
+    fridge that can be made with given ingredients.
+    """
+
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='test')
+        populate_fridge_ingredients()
+        self.recipes = list(populate_recipes())
+        self.client = logged_in_client()
+        self.url = reverse('fridge:fridge_recipes')
+
+    def test_correct_template_used(self):
+        """ Ensures the correct template is used. """
+
+        response = self.client.get(self.url)
+
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'fridge/fridge_recipes.html')
+
+    def test_fridge_recipes_are_shown_except_those_not_in_fridge(self):
+        """ Ensures that possible fridge recipes are shown in the template. """
+
+        fridge = Fridge.objects.get(user=self.user)
+        fridge.recipes.add(self.recipes[0])
+        fridge.recipes.add(self.recipes[1])
+        fridge.recipes.add(self.recipes[2])
+        response = self.client.get(self.url)
+        expected_title = self.recipes[3].title
+        expected_url = self.recipes[3].get_absolute_url()
+        expected_html = '<a href={}>{}</a>'.format(expected_url, expected_title)
+        self.assertNotContains(response, expected_title, status_code=200)
+        self.assertNotContains(response, expected_html, html=True)
+
+    def test_fridge_recipes_are_shown(self):
+        """ Ensures that possible fridge recipes are shown in the template. """
+
+        fridge = Fridge.objects.get(user=self.user)
+        fridge.recipes.add(self.recipes[0])
+        fridge.recipes.add(self.recipes[1])
+        fridge.recipes.add(self.recipes[2])
+        fridge.recipes.add(self.recipes[3])
+        response = self.client.get(self.url)
+        expected_title = self.recipes[0].title
+        expected_url = self.recipes[0].get_absolute_url()
+        expected_html = '<a href={}>{}</a>'.format(expected_url, expected_title)
+        self.assertContains(response, expected_title, status_code=200)
+        self.assertContains(response, expected_html, html=True)
+
+    def test_fridge_recipes_not_shown_without_fridge_ingredients(self):
+        """
+        Ensures that fridge recipes are only shown when there are ingredients
+        in a fridge.
+        """
+
+        FI.objects.all().delete()
 
         response = self.client.get(self.url)
         recipe_title = self.recipes[0].title

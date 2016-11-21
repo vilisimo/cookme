@@ -138,14 +138,35 @@ Status: FINISHED (~28/10/2016)
 
 
 ***************************************************************************
-11. User can instruct the fridge to show possible recipes he/she can make with
-ingredients in the fridge.
+11. User can instruct the website to find recipes from global recipe book that
+he/she can make with ingredients in a fridge.
+    - Test: instruct to find dishes from global recipe book that can be made
+      only with the ingredients in the fridge.
+      Outcome: matching recipes from global recipe book are shown.
+    - Test: ensure that there are no recipes in the fridge. Instruct to find
+      dishes from global recipe book that can be made only with the ingredients
+      in the fridge.
+      Outcome: despite the fridge not having any recipes, user is shown dishes
+      from global recipe book that he/she has enough ingredients for.
+    - Test: instruct to find dishes from global recipe book when the user does
+      not have sufficient ingredients for any of them.
+      Outcome: no recipes are shown.
+PRIORITY: SHOULD HAVE
+Status: FINISHED (04/10/2016)
+***************************************************************************
+
+
+***************************************************************************
+12. User can instruct the fridge to show possible fridge recipes he/she can
+make with ingredients in the fridge.
     - Test: ask for recipes without any ingredients.
       Outcome: no recipes are shown.
     - Test: ask for recipes with one ingredient.
-      Outcome: only a recipe with one ingredient is shown.
+      Outcome: only a fridge recipe with one ingredient is shown.
     - Test: request a recipe with ingredients that should bring it up.
-      Outcome: recipe is shown.
+      Outcome: fridge recipe is shown.
 PRIORITY: MUST HAVE
-Status: FINISHED (04/10/2016)
+Status: FINISHED (20/10/2016)
 ***************************************************************************
+
+

@@ -59,8 +59,18 @@
                             </li>
                         {% endfor %}
                     </ul>
+
                     <a href="{% url 'fridge:possibilities' %}">
                         Make something!
+                    </a>
+
+                    <!-- URL to fridge recipes that have <= ingredients in
+                    a fridge. Needs a cleaner url name, though.
+
+like                    NOTE: remove BR with CSS.-->
+                    <br/>
+                    <a href="{% url 'fridge:fridge_recipes' %}">
+                        Make something I like!
                     </a>
             {% else %}
                 <p>
