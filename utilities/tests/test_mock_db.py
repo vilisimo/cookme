@@ -3,18 +3,17 @@ from django.contrib.auth.models import User
 
 from recipes.models import Recipe
 from ingredients.models import Ingredient, Unit
-from fridge.models import FridgeIngredient
+from fridge.models import FridgeIngredient, Fridge
 
 from utilities.mock_db import (
     populate_recipes, populate_ingredients, populate_units,
-    populate_fridge_ingredients, logged_in_client,
+    populate_fridge_ingredients, populate_fridge_recipes, logged_in_client,
 )
 
 
-class MockDatabaseTests(TestCase):
+class PopulateRecipesTests(TestCase):
     """
-    Test suite to ensure that mock database population really does populate
-    database.
+    Test suite to ensure that populate_recipes() really does populate recipes.
     """
 
     def test_populate_recipes_returns_recipes(self):
@@ -38,6 +37,13 @@ class MockDatabaseTests(TestCase):
 
         self.assertEquals(list(recipes), list(in_db))
 
+
+class PopulateIngredientsTests(TestCase):
+    """
+    Test suite to ensure that populate_ingredients() really does populate
+    ingredients.
+    """
+
     def test_populate_ingredients_returns_ingredients(self):
         """
         Ensures that populate_ingredients() returns ingredients created.
@@ -57,6 +63,12 @@ class MockDatabaseTests(TestCase):
         in_db = Ingredient.objects.all()
 
         self.assertEquals(list(ingredients), list(in_db))
+
+
+class PopulateUnitsTests(TestCase):
+    """
+    Test suite to ensure that populate_units() really does populate units.
+    """
 
     def test_populate_units_returns_units(self):
         """
@@ -78,6 +90,13 @@ class MockDatabaseTests(TestCase):
 
         self.assertEquals(list(units), list(in_db))
 
+
+class PopulateFridgeIngredientsTests(TestCase):
+    """
+    Test suite to ensure that populate_fridge_ingredients() really does
+    populate fridge ingredients.
+    """
+
     def test_populate_fridge_ingredients_returns_fridge_ingredients(self):
         """
         Ensures that populate_fridge_ingredients() returns ingredients created.
@@ -89,14 +108,48 @@ class MockDatabaseTests(TestCase):
 
     def test_populate_fis_does_not_create_more_fis_than_returned(self):
         """
-        Ensures that units returned are the only ones created, and that there
-        are no more or less of them than that.
+        Ensures that ingredients returned are the only ones created, and that
+        there are no more or less of them than that.
         """
 
         fridge_ingredients = populate_fridge_ingredients()
         in_db = FridgeIngredient.objects.all()
 
         self.assertEqual(list(fridge_ingredients), list(in_db))
+
+
+class PopulateFridgeRecipesTests(TestCase):
+    """
+    Test suite to ensure that populate_fridge_recipes() really does
+    populate fridge recipes.
+    """
+
+    def test_populate_fridge_recipes_returns_fridge_recipes(self):
+        """
+        Ensures that populate_fridge_recipes() returns fridge recipes created.
+        """
+
+        fridge_recipes = populate_fridge_recipes()
+        self.assertTrue(len(fridge_recipes) > 0)
+
+    def test_populate_frs_does_not_create_more_frs_than_returned(self):
+        """
+        Ensures that fridge recipes returned are the only ones created,
+        and that there are no more or less of them than that.
+        """
+
+        fridge_recipes = populate_fridge_recipes()
+        user = User.objects.get(username='test')
+        fridge = Fridge.objects.get(user=user)
+        in_db = fridge.recipes.all()
+
+        self.assertEqual(list(fridge_recipes), list(in_db))
+
+
+class OtherFunctionalityTests(TestCase):
+    """
+    Test suite to ensure that population unrelated functionality works properly.
+    """
 
     def test_logged_in_client_accepts_user(self):
         """

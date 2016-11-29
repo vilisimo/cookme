@@ -69,6 +69,22 @@ def populate_fridge_ingredients():
     return fridge_ingredients
 
 
+def populate_fridge_recipes():
+    """
+    Creates a batch of recipes that are associated with a fridge of test user.
+
+    :return: a list of recipes created.
+    """
+
+    user = get_user(username='test', password='test')
+    fridge = Fridge.objects.get_or_create(user=user)[0]
+    recipes = populate_recipes()
+    fridge.recipes.add(*recipes)
+    fridge_recipes = fridge.recipes.all()
+
+    return fridge_recipes
+
+
 def populate_recipes():
     """
     Creates a batch of test recipes with ingredients and all other necessary
