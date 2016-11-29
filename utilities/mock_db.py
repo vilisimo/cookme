@@ -37,9 +37,11 @@ def populate_units(name='kilogram', abbrev='kg'):
     :return: a (list of) unit(s) created.
     """
 
-    u1 = Unit.objects.get_or_create(name=name, abbrev=abbrev)[0]
+    Unit.objects.get_or_create(name=name, abbrev=abbrev)
+    # In case more than one unit is ever created.
+    units = Unit.objects.all()
 
-    return [u1]
+    return units
 
 
 def populate_fridge_ingredients():
@@ -54,16 +56,17 @@ def populate_fridge_ingredients():
     ingredients = populate_ingredients()
     units = populate_units()
 
-    fi1 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[0],
-                                   unit=units[0], quantity=1)[0]
-    fi2 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[1],
-                                   unit=units[0], quantity=1)[0]
-    fi3 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[2],
-                                   unit=units[0], quantity=1)[0]
-    fi4 = FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[3],
-                                   unit=units[0], quantity=1)[0]
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[0],
+                             unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[1],
+                             unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[2],
+                             unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[3],
+                             unit=units[0], quantity=1)
+    fridge_ingredients = FI.objects.all()
 
-    return [fi1, fi2, fi3, fi4]
+    return fridge_ingredients
 
 
 def populate_recipes():
@@ -71,7 +74,7 @@ def populate_recipes():
     Creates a batch of test recipes with ingredients and all other necessary
     information to test most of the functionality.
 
-    :return: a list of recipes created.
+    :return: a QuerySet of recipes created.
     """
 
     user = get_user(username='test', password='test')
@@ -83,7 +86,7 @@ def populate_recipes():
 
     # Recipes
     r0 = Recipe.objects.get_or_create(author=user, title='MeatRec')[0]
-    RI.objects.create(recipe=r0, ingredient=i1, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r0, ingredient=i1, unit=u, quantity=1)
 
     r1 = Recipe.objects.get_or_create(author=user, title='MeatLemonAppleRec')[0]
     RI.objects.get_or_create(recipe=r1, ingredient=i1, unit=u, quantity=1)
@@ -91,13 +94,13 @@ def populate_recipes():
     RI.objects.get_or_create(recipe=r1, ingredient=i3, unit=u, quantity=1)
 
     r2 = Recipe.objects.get_or_create(author=user, title="AllIngredientsRec")[0]
-    RI.objects.create(recipe=r2, ingredient=i1, unit=u, quantity=1)
-    RI.objects.create(recipe=r2, ingredient=i2, unit=u, quantity=1)
-    RI.objects.create(recipe=r2, ingredient=i3, unit=u, quantity=1)
-    RI.objects.create(recipe=r2, ingredient=i4, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r2, ingredient=i1, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r2, ingredient=i2, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r2, ingredient=i3, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r2, ingredient=i4, unit=u, quantity=1)
 
     r3 = Recipe.objects.get_or_create(author=user, title="LemonRec")[0]
-    RI.objects.create(recipe=r3, ingredient=i2, unit=u, quantity=1)
+    RI.objects.get_or_create(recipe=r3, ingredient=i2, unit=u, quantity=1)
 
     recipes = Recipe.objects.all()
 
