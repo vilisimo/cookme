@@ -22,12 +22,13 @@ def populate_ingredients():
     :return: a list of ingredients created.
     """
 
-    i1 = Ingredient.objects.get_or_create(name='Meat', type='Meat')[0]
-    i2 = Ingredient.objects.get_or_create(name='Lemon', type='Fruit')[0]
-    i3 = Ingredient.objects.get_or_create(name='Apple', type='Fruit')[0]
-    i4 = Ingredient.objects.get_or_create(name='White Bread', type='Bread')[0]
+    Ingredient.objects.get_or_create(name='Meat', type='Meat')
+    Ingredient.objects.get_or_create(name='Lemon', type='Fruit')
+    Ingredient.objects.get_or_create(name='Apple', type='Fruit')
+    Ingredient.objects.get_or_create(name='White Bread', type='Bread')
+    ingredients = Ingredient.objects.all()
 
-    return [i1, i2, i3, i4]
+    return ingredients
 
 
 def populate_units(name='kilogram', abbrev='kg'):
@@ -81,7 +82,6 @@ def populate_fridge_recipes():
     recipes = populate_recipes()
     fridge.recipes.add(*recipes)
     fridge_recipes = fridge.recipes.all()
-
     return fridge_recipes
 
 
@@ -97,25 +97,26 @@ def populate_recipes():
 
     # Ingredients
     i1, i2, i3, i4 = populate_ingredients()
+
     # Units
     u = populate_units()[0]
 
     # Recipes
-    r0 = Recipe.objects.get_or_create(author=user, title='MeatRec')[0]
+    r0 = Recipe.objects.get_or_create(author=user, title='Meatrec')[0]
     RI.objects.get_or_create(recipe=r0, ingredient=i1, unit=u, quantity=1)
 
-    r1 = Recipe.objects.get_or_create(author=user, title='MeatLemonAppleRec')[0]
+    r1 = Recipe.objects.get_or_create(author=user, title='Meatlemonapplerec')[0]
     RI.objects.get_or_create(recipe=r1, ingredient=i1, unit=u, quantity=1)
     RI.objects.get_or_create(recipe=r1, ingredient=i2, unit=u, quantity=1)
     RI.objects.get_or_create(recipe=r1, ingredient=i3, unit=u, quantity=1)
 
-    r2 = Recipe.objects.get_or_create(author=user, title="AllIngredientsRec")[0]
+    r2 = Recipe.objects.get_or_create(author=user, title="Allingredientsrec")[0]
     RI.objects.get_or_create(recipe=r2, ingredient=i1, unit=u, quantity=1)
     RI.objects.get_or_create(recipe=r2, ingredient=i2, unit=u, quantity=1)
     RI.objects.get_or_create(recipe=r2, ingredient=i3, unit=u, quantity=1)
     RI.objects.get_or_create(recipe=r2, ingredient=i4, unit=u, quantity=1)
 
-    r3 = Recipe.objects.get_or_create(author=user, title="LemonRec")[0]
+    r3 = Recipe.objects.get_or_create(author=user, title="Lemonrec")[0]
     RI.objects.get_or_create(recipe=r3, ingredient=i2, unit=u, quantity=1)
 
     recipes = Recipe.objects.all()

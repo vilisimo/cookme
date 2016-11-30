@@ -37,6 +37,18 @@ class PopulateRecipesTests(TestCase):
 
         self.assertEquals(list(recipes), list(in_db))
 
+    def test_populate_recipe_multiple_calls_same_nr_of_recipes(self):
+        """
+        Ensure that no matter how much times populate_recipes() is called,
+        only a certain amount of them are created in a database.
+        """
+
+        expected = len(populate_recipes())
+        populate_recipes()
+        actual = len(Recipe.objects.all())
+
+        self.assertEquals(expected, actual)
+
 
 class PopulateIngredientsTests(TestCase):
     """
