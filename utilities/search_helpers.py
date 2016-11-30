@@ -96,7 +96,7 @@ def superset_recipes(ingredients):
     return matched
 
 
-def subset_recipes(ingredients):
+def subset_recipes(ingredients, fridge=None):
     """
     Returns a list of recipes that contain ingredients from a list and
     nothing more (but they do not have to have every ingredient). That is,
@@ -113,6 +113,8 @@ def subset_recipes(ingredients):
 
     :param ingredients: a set of CAPITALIZED ingredients of which at least one
                         should be in a recipe.
+    :param fridge: a user's fridge from which the recipes should be used to
+                   match against ingredients.
     :return: QuerySet of recipe objects that have at least one ingredient.
     """
 
@@ -125,36 +127,11 @@ def subset_recipes(ingredients):
     non_matching = Ingredient.objects.exclude(name__in=ingredients)
 
     # Now get all recipes that do not have these non-matching ingredients.
-    recipes = Recipe.objects.exclude(ingredients__in=non_matching)
-
-    return recipes
-
-
-def fridge_subset_recipes(ingredients, recipes):
-    """
-    Returns a list of recipes that contain ingredients form a list and nothing
-    more. Ingredients in the fridge are a superset of ingredients in a recipe.
-
-    Note: this and above are almost identical functions. Would be nice to merge
-    them, but would also be nice to avoid doing several queries (which happens
-    when passing all recipes, in possibilities() case).
-
-    :param ingredients: a set of capitalized ingredients of which at least
-                        one should be in a recipe.
-    :param recipes:     QuerySet of recipes that should be matched against
-                        ingredients.
-    :return: QuerySet of recipe objects. All ingredients from a recipe should
-             be in ingredient set.
-    """
-
-    ingredients = [ingredient if ingredient.istitle() else
-                   capwords(ingredient) for ingredient in ingredients]
-
-    # Get all the ingredients that do not match our set.
-    non_matching = Ingredient.objects.exclude(name__in=ingredients)
-
-    # Now get all recipes that do not have these non-matching ingredients.
-    recipes = recipes.exclude(ingredients__in=non_matching)
+    if fridge:
+        fridge_recipes = fridge.recipes.all()
+        recipes = fridge_recipes.exclude(ingredients__in=non_matching)
+    else:
+        recipes = Recipe.objects.exclude(ingredients__in=non_matching)
 
     return recipes
 

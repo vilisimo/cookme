@@ -206,10 +206,10 @@ def possibilities(request):
 @login_required
 def fridge_recipes(request):
     """
-    Shows recipes that can be made with ingredients in the fridge.
+    Chooses recipes from those in the fridge that can be made with ingredients
+    that are in the fridge.
 
-    NOTE: ingredients are matched only against those in the fridge.
-    NOTE 2: very similar to above one. CBVs may be able to fix it?
+    NOTE: very similar to above one. CBVs may be able to fix it?
 
     :param request: standard request object.
     :return: standard HttpResponse object.
@@ -217,13 +217,12 @@ def fridge_recipes(request):
 
     user = request.user
     fridge = Fridge.objects.get_or_create(user=user)[0]
-    ingredients = fridge.ingredients.all()
-    ingredients = [ingredient.name for ingredient in ingredients]
-    recipes = fridge.recipes.all()
-    recipes = fridge_subset_recipes(ingredients, recipes)
+    fridge_ingredients = fridge.ingredients.all()
+    ingredient_names = [ingredient.name for ingredient in fridge_ingredients]
+    recipes = subset_recipes(ingredient_names, fridge=fridge)
 
     content = {
-        'ingredients': ingredients,
+        'ingredients': ingredient_names,
         'recipes': recipes,
     }
 

@@ -7,8 +7,11 @@ from django.contrib.auth.models import User
 
 from recipes.models import Recipe, RecipeIngredient as RI
 from ingredients.models import Ingredient, Unit
+from fridge.models import Fridge
 
-from utilities.mock_db import populate_recipes
+from utilities.mock_db import (
+    populate_recipes, populate_fridge_recipes, get_user
+)
 from utilities.search_helpers import (
     encode, decode, get_name_set, superset_recipes, subset_recipes,
     fridge_subset_recipes,
@@ -265,19 +268,22 @@ class SubsetRecipesTests(TestCase):
         self.assertFalse(recipes)
 
 
-class FridgeSubsetRecipesTests(TestCase):
+class SubsetRecipesWithFridgeTests(TestCase):
     """
-    Test suite to ensure that fridge_subset_recipes matches ingredients
-    against given QuerySet of recipes and returns only those recipes
-    ingredients of which are in the set of ingredients provided.
+    Test suite to ensure that subset_recipes() matches ingredients against a
+    given fridge's recipes and returns only those recipes which match the
+    ingredients provided.
     """
 
     def setUp(self):
-        self.recipes = populate_recipes()
-        self.r1 = self.recipes[0]
-        self.r2 = self.recipes[1]
-        self.r3 = self.recipes[2]
-        self.r4 = self.recipes[3]
+        user = get_user(username='test', password='test')
+        recipes = populate_recipes()
+        populate_fridge_recipes()
+        self.r1 = recipes[0]
+        self.r2 = recipes[1]
+        self.r3 = recipes[2]
+        self.r4 = recipes[3]
+        self.fridge = Fridge.objects.get(user=user)
 
     def test_get_recipes_one_ingredient(self):
         """
@@ -286,8 +292,9 @@ class FridgeSubsetRecipesTests(TestCase):
         """
 
         ingredients = {'meat'}
-        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        recipes = subset_recipes(ingredients, self.fridge)
 
+        self.assertEqual(1, len(recipes))
         self.assertIn(self.r1, recipes)
 
     def test_get_recipes_two_ingredients(self):
@@ -297,7 +304,7 @@ class FridgeSubsetRecipesTests(TestCase):
         """
 
         ingredients = {'meat', 'lemon'}
-        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        recipes = subset_recipes(ingredients, self.fridge)
         expected = [self.r1, self.r4]
 
         self.assertEquals(expected, list(recipes))
@@ -309,7 +316,7 @@ class FridgeSubsetRecipesTests(TestCase):
         """
 
         ingredients = {'meat', 'lemon', 'apple', 'white bread'}
-        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        recipes = subset_recipes(ingredients, self.fridge)
         expected = Recipe.objects.all()
 
         self.assertEquals(list(expected), list(recipes))
@@ -318,7 +325,7 @@ class FridgeSubsetRecipesTests(TestCase):
         """ Ensure that non-existent ingredients do not return anything. """
 
         ingredients = {'fairy dust'}
-        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        recipes = subset_recipes(ingredients, self.fridge)
 
         self.assertFalse(recipes)
 
@@ -327,22 +334,55 @@ class FridgeSubsetRecipesTests(TestCase):
         Ensure that recipes that do not belong to the QuerySet are not touched.
         """
 
-        expected = list(self.recipes)  # QuerySets are lazy
+        # Prepare for creation of a new recipe
         user = User.objects.create_user(username='test2', password='test2')
         i1 = Ingredient.objects.get_or_create(name='Meat', type='Meat')[0]
         i2 = Ingredient.objects.get_or_create(name='Lemon', type='Fruit')[0]
-        r1 = Recipe.objects.get_or_create(author=user, title='MeatLemonRec')[0]
         u = Unit.objects.get(abbrev='kg')
+
+        # Create a unique recipe that does not belong to user 'test'
+        r1 = Recipe.objects.get_or_create(author=user, title='Meatlemonrec')[0]
         RI.objects.get_or_create(recipe=r1, ingredient=i1, unit=u, quantity=1)
         RI.objects.get_or_create(recipe=r1, ingredient=i2, unit=u, quantity=1)
+
+        # Get all recipes and recipes that are added to test user's fridge
+        # and ensure that the first one is only one larger than the second one.
+        fridge_recipes = self.fridge.recipes.all()
         all_recipes = Recipe.objects.all()
 
-        self.assertEqual(len(all_recipes), len(expected) + 1)
+        self.assertEqual(len(all_recipes), len(fridge_recipes) + 1)
+
+        # Now get all matching recipes, exclude the new recipe from a list of
+        # all recipes and make sure the lists are the same.
+        ingredients = {'meat', 'lemon', 'apple', 'white bread'}
+        recipes = subset_recipes(ingredients, self.fridge)
+        all_recipes = all_recipes.exclude(title='Meatlemonrec')
+
+        self.assertEqual(list(all_recipes), list(recipes))
+
+    def test_no_recipes_in_fridge(self):
+        """
+        Ensure that when no recipes are found in the fridge, no matches are
+        suggested.
+        """
 
         ingredients = {'meat', 'lemon', 'apple', 'white bread'}
-        # Since self.recipes is QuerySet, which is lazy, we need to exclude the
-        # new recipe, otherwise ingredients will be matched against all recipes.
-        self.recipes = self.recipes.exclude(title='Meatlemonrec')
-        recipes = fridge_subset_recipes(ingredients, self.recipes)
+        self.fridge.recipes.all().delete()
+        recipes = subset_recipes(ingredients, self.fridge)
 
-        self.assertEqual(list(expected), list(recipes))
+        self.assertFalse(recipes)
+
+    def test_couple_recipes_in_fridge(self):
+        """
+        Ensure that when there are couple (but not all available) recipes in
+        the fridge, only they are matched against ingredients.
+        """
+
+        ingredients = {'meat', 'lemon', 'apple', 'white bread'}
+        self.fridge.recipes.remove(self.r1)
+        self.fridge.recipes.remove(self.r2)
+        fridge_recipes = self.fridge.recipes.all()
+        recipes = subset_recipes(ingredients, self.fridge)
+
+        self.assertEqual(list(recipes), list(fridge_recipes))
+
