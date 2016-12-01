@@ -11,7 +11,7 @@ from recipes.forms import (
 from recipes.models import Recipe
 from .models import FridgeIngredient, Fridge
 from .forms import FridgeIngredientForm
-from utilities.search_helpers import subset_recipes, fridge_subset_recipes
+from utilities.search_helpers import subset_recipes
 
 
 @login_required

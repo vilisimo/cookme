@@ -14,7 +14,6 @@ from utilities.mock_db import (
 )
 from utilities.search_helpers import (
     encode, decode, get_name_set, superset_recipes, subset_recipes,
-    fridge_subset_recipes,
 )
 
 
