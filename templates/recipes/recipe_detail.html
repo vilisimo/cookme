@@ -2,13 +2,13 @@
 
 {% block main %}
     <!-- Breaks between should be handled with styling -->
-    <h2>{{ title }}</h2>
+    <h1>{{ title }}</h1>
     {% if user.is_authenticated %}
         <a href="{% url 'recipes:add_to_fridge' pk %}">
             Add to Fridge
         </a>
     {% endif %}
-    <p>Uploaded by: {{ author }} on {{ date }}</p>
+    <p>Uploaded by: {{ author }} on {{ date|date:'d F Y' }}</p>
 
     <h3>Cuisine</h3>
     <!-- Should this be with in a separate paragraph? -->
@@ -18,11 +18,13 @@
     <!-- Two new lines become <p>. Do not forget to apply styles.-->
     {{ description|linebreaks }}
 
-    <h3>Process</h3>
-    <!-- Style paragraphs with CSS, so that there is some space between. -->
-    {% for step in steps %}
-        <p>{{ step }}</p>
-    {% endfor %}
+    <div class="recipe-process">
+        <h3>Process</h3>
+        <!-- Style paragraphs with CSS, so that there is some space between. -->
+        {% for step in steps %}
+            <p class="recipe-step">{{ step }}</p>
+        {% endfor %}
+    </div>
 
     <h4>Views</h4>
     <!-- Should this be with in a separate paragraph? -->

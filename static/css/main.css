@@ -1,21 +1,17 @@
-/* ******************************************************** */
-/* ********************** base.html *********************** */
-/* ******************************************************** */
-
 * {
     margin: 0;
 }
 
 html, body {
-    height: 100%
+    height: 100%;
 }
 
-/* ************************ FONTS ************************* */
+/* ************************* TEXT ************************* */
 
 body {
     font-family: 'Raleway', serif;
     text-align: justify;
-    line-height: 25px;
+    line-height: 1.6em;
     font-size: 16px;
 }
 
@@ -25,16 +21,58 @@ nav {
     font-size: 17px;
 }
 
+h1 {
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+p + p {
+    margin-top: 1em;
+}
+
+/* ************************* BODY ************************* */
+
+body {
+    background: white;
+}
+
+.recipe-process {
+    counter-reset: step;
+    padding-bottom: 2em;
+}
+
+p.recipe-step {
+    padding-left: 3em;
+    /*display: block;*/
+}
+
+p.recipe-step:before {
+    counter-increment: step;
+    content: counter(step);
+    font-size: 2.5em;
+    position: absolute;
+    margin-left: -45px;
+    margin-top: 0.1em;
+    z-index: 1;
+}
+
 
 /* ************************ HEADER ************************ */
 
 header {
-    background: white;
+    background: inherit;
     position: fixed;
     height: 53px;
     width: 100%;
     top: 0;
     border-bottom: solid 1px black;
+    z-index: 2;
 }
 
 /* ********************* HEADER INSIDES ******************* */
@@ -120,16 +158,16 @@ main {
     width: 97%;
     min-height: 100%;
     padding: 15px;
-    /*margin-top: 30px;*/
-    /*margin-bottom: 30px;*/
     margin: +58px auto -30px auto;
-    text-align: justify;
 }
 
 /*
 1. Padding/margin is still white if background is applied.
 2. Footer is not at the bottom of the screen when there is no text.
    Need to scroll to see it.
+3. Z-index for absolute and relative. Maybe not the way to do it: I feel I do
+   not know enough about positioning and there may be a cleaner way. Needs
+   revisit once I have learned more about CSS.
 */
 
 /*Useful colours: */

@@ -293,3 +293,16 @@ add it if it is not existent.
 Priority: WOULD LIKE TO HAVE
 Status: NOT STARTED
 ***************************************************************************
+
+
+***************************************************************************
+User can see the recipes uploaded by a specific user.
+    - Test: navigate to the user's page (either through link on recipe detail
+      page or by entering correct url).
+      Outcome: recipes uploaded by a user are shown.
+    - Test: navigate to non-existing user.
+      Outcome: 404 is shown.
+    - Test: Navigate to a page of a user that has no recipes.
+      Outcome: User is informed that the selected user has not published any
+      recipes.
+***************************************************************************
