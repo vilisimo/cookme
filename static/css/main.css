@@ -8,6 +8,16 @@ html, body {
 
 /* ************************* TEXT ************************* */
 
+*::selection {
+    background: indianred;
+    color: white;
+}
+
+*::-moz-selection {
+    background: indianred;
+    color: white;
+}
+
 body {
     font-family: 'Raleway', serif;
     text-align: justify;
@@ -23,6 +33,7 @@ nav {
 
 h1 {
     text-transform: uppercase;
+    text-align: center;
     margin-bottom: 1em;
     margin-top: 1em;
 }
@@ -35,6 +46,37 @@ h2, h3, h4, h5, h6 {
 p + p {
     margin-top: 1em;
 }
+
+.recipe-description p + p {
+    margin-top: 0.3em;
+}
+
+.recipe-description, .recipe-additional-information {
+    text-align: center;
+}
+
+.recipe-description {
+    font-size: 18px;
+}
+
+.recipe-additional-information ul {
+    list-style-type: none;
+    font-size: 14px;
+    padding: 0;
+}
+
+.recipe-additional-information li {
+    display: inline;
+    border-right: 1px solid #aaa;
+    padding-right: 5px;
+}
+
+.recipe-additional-information li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+
 
 /* ************************* BODY ************************* */
 
@@ -64,22 +106,21 @@ p.recipe-step:before {
 
 
 /* ************************ HEADER ************************ */
-
 header {
     background: inherit;
     position: fixed;
-    height: 53px;
+    height: 54px;
     width: 100%;
     top: 0;
     border-bottom: solid 1px black;
-    z-index: 2;
+    z-index: 9999;
 }
 
 /* ********************* HEADER INSIDES ******************* */
 
 nav>ul, nav>li {
     list-style-type: none;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 nav li {
@@ -87,15 +128,18 @@ nav li {
 }
 
 nav li a {
-    display:block;
-    text-align: center;
     padding: 14px 16px;
+    display:block;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
     text-decoration: none;
-    color: black;
+    text-align: center;
+    color: #ccc;
 }
 
 nav li a:hover {
-    background-color: #e6e6e6;
+    /*background-color: #e6e6e6;*/
+    color: #2F4F4F
 }
 
 ul.navigation-other {
@@ -159,6 +203,14 @@ main {
     min-height: 100%;
     padding: 15px;
     margin: +58px auto -30px auto;
+}
+
+hr {
+    width: 30%;
+    border-bottom: 1px solid;
+    position: relative;
+    left: 35%;
+    margin-bottom: 10px;
 }
 
 /*
