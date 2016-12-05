@@ -38,8 +38,9 @@
 
             <!-- Navigation bar (except Home) -->
             <ul class="navigation-other">
+                <!-- RECIPES -->
                 <li><a href="{% url 'recipes:recipes' %}">Recipes</a></li>
-                <!-- Here should be a link to user's fridge (on the right side). -->
+                <!-- FRIDGE & LOGOUT -->
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'fridge:fridge_detail' %}">Fridge</a></li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
