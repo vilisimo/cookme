@@ -6,8 +6,10 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 from django.test.client import Client
 
-from utilities.mock_db import logged_in_client
 from ingredients.models import Ingredient
+from utilities.mock_db import (
+    logged_in_client, populate_recipes, populate_ingredients,
+)
 
 
 class IngredientDetailTemplateTests(TestCase):
@@ -40,3 +42,44 @@ class IngredientDetailTemplateTests(TestCase):
         self.assertContains(response, self.i.name)
         self.assertContains(response, self.i.description)
         self.assertContains(response, self.i.type)
+
+    def test_template_shows_recipes(self):
+        """
+        Ensures that when an ingredient is used in recipes, those are shown
+        on ingredient's page.
+        """
+
+        # Clean up: not needed, but serves as a reminder that
+        # populate_ingredients() returns 4 ingredients.
+        # # Ingredient.objects.all().delete()
+
+        meat = populate_ingredients()[0]
+        meatrec = populate_recipes()[0]
+        url = reverse('ingredients:ingredient_detail', args=[meat.slug])
+        response = self.client.get(url)
+
+        self.assertContains(response, meat.name)
+        self.assertContains(response, meatrec.title)
+
+    def test_template_no_recipe(self):
+        """
+        Ensures that an ingredient is shown, but not its recipes if the
+        ingredient is not used in any of them.
+        """
+
+        response = self.client.get(self.url)
+        expected_text = 'This ingredient is not used in any recipes!'
+        expected_html = '<p>{}</p>'.format(expected_text)
+
+        self.assertContains(response, self.i.name)
+        self.assertContains(response, expected_html, html=True)
+
+    def test_no_such_ingredient(self):
+        """
+        Ensures that when there is no such ingredient, 404 is thrown.
+        """
+
+        url = reverse('ingredients:ingredient_detail', args=['non-existent'])
+        response = self.client.get(url)
+
+        self.assertEquals(response.status_code, 404)

@@ -7,4 +7,18 @@
     {% else %}
         No such ingredient found! Strange!
     {% endif %}
+    {% if recipes %}
+        <h3>Recipes that use this ingredient:</h3>
+        {% for recipe in recipes %}
+            <ul>
+                <li>
+                    <a href="{{ recipe.get_absolute_url }}">
+                        {{ recipe.title }}
+                    </a>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>This ingredient is not used in any recipes!</p>
+    {% endif %}
 {% endblock %}
