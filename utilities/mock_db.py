@@ -95,8 +95,13 @@ def populate_recipes():
 
     user = get_user(username='test', password='test')
 
-    # Ingredients
-    i1, i2, i3, i4 = populate_ingredients()
+    # Ingredients. Can be done in one line, but this way avoids problems if
+    # more than 4 ingredients are returned.
+    ingredients = populate_ingredients()
+    i1 = ingredients[0]
+    i2 = ingredients[1]
+    i3 = ingredients[2]
+    i4 = ingredients[3]
 
     # Units
     u = populate_units()[0]
