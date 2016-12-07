@@ -252,19 +252,51 @@ hr {
 }
 
 
-/*
-1. Padding/margin is still white if background is applied.
-2. Footer is not at the bottom of the screen when there is no text.
-   Need to scroll to see it.
-3. Z-index for absolute and relative. Maybe not the way to do it: I feel I do
-   not know enough about positioning and there may be a cleaner way. Needs
-   revisit once I have learned more about CSS.
-*/
+/* ******************************************************** */
+/* ********************** main.html *********************** */
+/* ******************************************************** */
 
-/*Useful colours: */
-/*#ACF3FA*/
-/*#B3D7E3*/
-/*#5F8689*/
+form#search-bar {
+    height: 400px;
+    padding: 0;
+    margin-left: -2.09%;
+    margin-right: -2.09%;
+    margin-top: -2.1%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    background: no-repeat url('../files/images/searchbar-herbs.jpg');
+    background-size: 100%;
+}
+
+#id_q {
+    width: 186px;
+    -webkit-transition: width 0.5s ease-in-out;
+    -moz-transition: width 0.5s ease-in-out;
+    -o-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    font-size: 16px;
+    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32.png') 5px 5px;
+    padding: 12px 20px 12px 40px;
+}
+
+#id_q:focus {
+    width: 40%;
+    outline: none;
+}
+
+#search-bar input[type=submit] {
+    position: relative;
+    padding: 12px 15px;
+    border: 2px solid #207cca;
+    background-color:#207cca;
+    color:#fafafa;
+    font-weight: bold;
+    font-size: 16px;
+}
 
 
 /* ******************************************************** */
@@ -274,3 +306,19 @@ hr {
 #author {
     font-style: italic;
 }
+
+
+/*
+1. Padding/margin is still white if background is applied.
+2. Footer is not at the bottom of the screen when there is no text.
+   Need to scroll to see it.
+3. Z-index for absolute and relative. Maybe not the way to do it: I feel I do
+   not know enough about positioning and there may be a cleaner way. Needs
+   revisit once I have learned more about CSS.
+4. Navbar non-responsive at extremes (narrow windows).
+5. Navbar needs to be more colourful.
+
+SEARCH BAR:
+1. Fix image size.
+2. See why the image keeps moving around, when the search bar does not.
+*/

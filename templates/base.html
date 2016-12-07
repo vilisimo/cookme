@@ -31,7 +31,7 @@
                 <a href="{% url 'home' %}">Home</a>
             </li>
 
-            <!-- REMOVE LATER: ONLY TO MAKE USERNAME IS CLEAR IN PRODUCTION -->
+            <!-- REMOVE LATER: ONLY TO MAKE USERNAME OBVIOUS IN PRODUCTION -->
             {% if user.is_authenticated %}
                 <span id="welcome-user">Welcome, {{ user.username }}</span>
             {% endif %}

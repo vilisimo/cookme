@@ -44,3 +44,8 @@ So far, these major languages/frameworks/tools have been used:
 - Django 1.10
 - HTML5
 - CSS
+
+
+###Images used
+- Search bar: Jan Kraus, https://www.flickr.com/photos/johny/ . Exact 
+location: https://www.flickr.com/photos/johny/16422195602/in/photostream/ 
