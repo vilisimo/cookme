@@ -265,8 +265,7 @@ form#search-bar {
     justify-content: center;
     display: flex;
     align-items: center;
-    background: no-repeat url('../files/images/searchbar-herbs.jpg');
-    background-size: 100%;
+    background: no-repeat url('../files/images/searchbar-outside.jpg') center;
 }
 
 #id_q {
@@ -318,7 +317,4 @@ form#search-bar {
 4. Navbar non-responsive at extremes (narrow windows).
 5. Navbar needs to be more colourful.
 
-SEARCH BAR:
-1. Fix image size.
-2. See why the image keeps moving around, when the search bar does not.
 */

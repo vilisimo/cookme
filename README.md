@@ -47,5 +47,7 @@ So far, these major languages/frameworks/tools have been used:
 
 
 ###Images used
-- Search bar: Jan Kraus, https://www.flickr.com/photos/johny/ . Exact 
-location: https://www.flickr.com/photos/johny/16422195602/in/photostream/ 
+- Search bar background: [Jan Kraus](https://www.flickr.com/photos/johny/). 
+Image [link](https://www.flickr.com/photos/johny/16422195602/in/photostream/).
+- Search bar magnifying glass: [Yannic Lung](https://www.iconfinder.com/yanlu). 
+Icon [link](https://www.iconfinder.com/icons/314478/search_icon#size=24)
