@@ -73,16 +73,22 @@
                 <input type="submit" value="Search" />
             </form>
         {% endblock %}
-        <!-- Find out a cleaner way to have a gap between main body and foot -->
-        <div class="push"></div>
     </main>
 
     <footer>
         <div id="copyright">
-            Copyright? More like no-right, eh, eh?.. OK.
+            <p>No copyright whatsoever.</p>
             <ul class="footer-links">
-                <li><a href="https://github.com/vilisimo/cookme">GitHub</a></li>
-                <li><a href="https://uk.linkedin.com/in/simonasviliunas">LinkedIn</a></li>
+                <li>
+                    <!-- Linebreak after a adds underscore... -->
+                    <a href="https://github.com/vilisimo/cookme">
+                        <img src="{% static 'files/icons/github32x32.png' %}"
+                             alt="Github icon"/></a>
+                </li>
+                <li><a href="https://uk.linkedin.com/in/simonasviliunas">
+                    <img src="{% static 'files/icons/linkedin37x28.png' %}"
+                         alt="LinkedIn icon"/></a>
+                </li>
             </ul>
         </div>
         {% block footer %}

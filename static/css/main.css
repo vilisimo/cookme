@@ -34,6 +34,14 @@ body {
     font-size: 16px;
 }
 
+a {
+    text-decoration:none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
 nav {
     font-family: 'Lato', serif;
     text-transform: uppercase;
@@ -179,19 +187,20 @@ li.navigation-home {
 
 footer {
     height: 60px;
-    width: 100%;
+    margin: 0 2%;
     border-top: solid black 2px;
 }
-
-/* Is this really needed anymore? */
-/*.push {*/
-    /*height: 62px;*/
-/*}*/
 
 #copyright {
     width: 100%;
     height:100%;
     line-height: 30px;
+    font-size: 0.9em;
+}
+
+#copyright img[alt="Github icon"] {
+    width: 28px;
+    height: 28px;
 }
 
 
@@ -278,7 +287,7 @@ form#search-bar {
     box-sizing: border-box;
     border: 2px solid transparent;
     font-size: 16px;
-    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32.png') 5px 5px;
+    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 5px 5px;
     padding: 12px 20px 12px 40px;
 }
 
@@ -305,7 +314,6 @@ form#search-bar {
 #author {
     font-style: italic;
 }
-
 
 /*
 1. Padding/margin is still white if background is applied.
