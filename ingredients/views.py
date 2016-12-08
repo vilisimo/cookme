@@ -14,7 +14,7 @@ def ingredient_detail(request, slug):
     """
 
     ingredient = get_object_or_404(Ingredient, slug=slug)
-    recipes = Recipe.objects.filter(ingredients__name__contains=ingredient.name)
+    recipes = Recipe.objects.filter(ingredients__name__exact=ingredient.name)
 
     content = {
         'ingredient': ingredient,
