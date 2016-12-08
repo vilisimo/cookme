@@ -192,7 +192,7 @@ class FridgeDetailTests(TestCase):
 
         response = self.client.get(self.url)
         expected_url = reverse('fridge:add_recipe')
-        expected = '<a href="{0}">Add recipe</a>'.format(expected_url)
+        expected = '<a href="{0}">Add a recipe</a>'.format(expected_url)
 
         self.assertContains(response, expected, html=True)
 

@@ -2,6 +2,8 @@
 
 {% block main %}
 
+
+    <img src="{{ image.url }}" alt="{{ recipe.title }}"/>
     <h1>{{ title }}</h1>
     <hr>
 
@@ -61,8 +63,5 @@
             {% endfor %}
         </div>
     </div>
-
-    <h4>Image</h4>
-    <p>Surround with img tag: {{ image.url }}</p>
 
 {% endblock %}

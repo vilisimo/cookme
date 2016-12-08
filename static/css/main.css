@@ -35,17 +35,21 @@ body {
 }
 
 a {
-    text-decoration:none;
+    text-decoration: none;
 }
 
 a:hover {
-text-decoration: underline;
+    text-decoration: underline;
 }
 
 nav {
     font-family: 'Lato', serif;
     text-transform: uppercase;
     font-size: 17px;
+}
+
+nav a:hover {
+    text-decoration: none;
 }
 
 
@@ -218,7 +222,7 @@ main {
     min-height: 100%;
     /* Top, right, bottom, left */
     padding: 2% 2% 6% 2%;
-    /* Some space to accommodate navbar */
+    /* Some space to accommodate navigation bar */
     margin: +55px auto auto auto;
 }
 
@@ -322,7 +326,7 @@ form#search-bar {
 3. Z-index for absolute and relative. Maybe not the way to do it: I feel I do
    not know enough about positioning and there may be a cleaner way. Needs
    revisit once I have learned more about CSS.
-4. Navbar non-responsive at extremes (narrow windows).
-5. Navbar needs to be more colourful.
+4. Navigation bar non-responsive at extremes (narrow windows).
+5. Navigation bar needs to be more colourful.
 
 */
