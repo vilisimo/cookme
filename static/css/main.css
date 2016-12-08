@@ -1,4 +1,4 @@
-/* ****** GENERAL RULES TO BE OVERWRITTEN IF NEEDED ******* */
+/* ******************** GENERAL RULES ********************* */
 
 * {
     margin: 0;
@@ -12,6 +12,11 @@ html, body {
 ul, li {
     list-style-type: none;
     padding: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 
@@ -303,9 +308,10 @@ form#search-bar {
 #search-bar input[type=submit] {
     position: relative;
     padding: 12px 15px;
-    border: 2px solid #207cca;
-    background-color:#207cca;
-    color:#fafafa;
+    /* vs #207cca? #008b8b #222c36 coral darkkhaki darkolivegreen */
+    border: 2px solid #222c36;
+    background-color: #222c36;
+    color: #fafafa;
     font-weight: bold;
     font-size: 16px;
 }
