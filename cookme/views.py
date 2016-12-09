@@ -27,10 +27,13 @@ def home(request):
     user = request.user
     if user.is_authenticated:
         fridge = Fridge.objects.get_or_create(user=user)[0]
+        user_additions = (Recipe.objects.filter(author=user)
+                          .order_by('-date')[:4])
 
         content = {
             'user': user,
             'fridge': fridge,
+            'user_additions': user_additions,
         }
 
     if request.method == 'POST':

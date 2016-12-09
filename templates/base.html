@@ -73,24 +73,34 @@
                 <input type="submit" value="Search" />
             </form>
 
+            {% if most_popular or most_recent or user_additions %}
+                <h1>Inspiration</h1>
+            {% endif %}
+
             {% if most_popular %}
                 <h2>Popular</h2>
-                {% for popular in most_popular %}
-                    <h3>{{ popular.title }}</h3>
-                    <p>{{ popular.description }}</p>
+                {% for recipe in most_popular %}
+                    <h3>{{ recipe.title }}</h3>
+                    <p>{{ recipe.description }}</p>
                 {% endfor %}
             {% endif %}
 
             {% if most_recent %}
                 <h2>Recent</h2>
-                {% for recent in most_recent %}
-                    <h3>{{ recent.title }}</h3>
-                    <p>{{ recent.description }}</p>
+                {% for recipe in most_recent %}
+                    <h3>{{ recipe.title }}</h3>
+                    <p>{{ recipe.description }}</p>
                 {% endfor %}
             {% endif %}
 
             {% if user.is_authenticated %}
-                <h2>Your new additions</h2>
+                {% if user_additions %}
+                    <h2>Your new additions</h2>
+                    {% for recipe in user_additions %}
+                        <h3>{{ recipe.title }}</h3>
+                        <p>{{ recipe.description }}</p>
+                    {% endfor %}
+                {% endif %}
             {% endif %}
         {% endblock %}
     </main>

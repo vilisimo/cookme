@@ -91,6 +91,36 @@ class HomePageTests(TestCase):
 
         self.assertNotContains(response, should_not_be, html=True)
 
+    def test_new_additions(self):
+        """
+        Ensures that the most recent recipes are shown on the front page.
+        """
+
+        user2 = User.objects.create_user(username='test2', password='test')
+        r1 = Recipe.objects.create(author=user2, title='test', views=1)
+        Recipe.objects.create(author=user2, title='test2', views=2)
+        Recipe.objects.create(author=user2, title='test3', views=3)
+        Recipe.objects.create(author=user2, title='test4', views=4)
+        Recipe.objects.create(author=user2, title='test5', views=5)
+        r6 = Recipe.objects.create(author=self.user, title='test6', views=1)
+        expected = "<h3>{}</h3>".format(r6.title)
+        should_not_be = "<h3>{}</h3>".format(r1.title)
+        response = self.client.get(self.url)
+
+        self.assertContains(response, expected, html=True)
+        self.assertNotContains(response, should_not_be, html=True)
+
+    def test_new_additions_no_recipe(self):
+        """
+        Ensures that with no recipes, no 'recent' category is shown on the
+        front page.
+        """
+
+        should_not_be = "<h2>Your new additions</h2>"
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, should_not_be, html=True)
+
 
 class RegisterTests(TestCase):
     """ Test suite to ensure register template shows essential information. """

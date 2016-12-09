@@ -67,6 +67,7 @@ class HomePageTests(TestCase):
 
         self.assertIn(r5, recipes)
         self.assertNotIn(r1, recipes)
+        self.assertEquals(len(recipes), 4)
 
     def test_most_popular_do_not_exist(self):
         """
@@ -88,6 +89,7 @@ class HomePageTests(TestCase):
         r1 = Recipe.objects.create(author=self.user, title='test', views=1)
         r2 = Recipe.objects.create(author=self.user, title='test2', views=2)
         r3 = Recipe.objects.create(author=self.user, title='test3', views=3)
+
         response = Client().get(self.url)
         recipes = response.context['most_popular']
 
@@ -124,6 +126,58 @@ class HomePageTests(TestCase):
 
         self.assertIn(r5, recipes)
         self.assertNotIn(r1, recipes)
+        self.assertEqual(len(recipes), 4)
+
+    def test_recent_additions_by_user(self):
+        """
+        Ensures that the front page is passed recipes that a user has 
+        recently added.
+        """
+
+        user2 = User.objects.create_user(username='test2', password='test')
+        r1 = Recipe.objects.create(author=user2, title='test')
+        Recipe.objects.create(author=self.user, title='test2')
+        Recipe.objects.create(author=self.user, title='test3')
+        Recipe.objects.create(author=self.user, title='test4')
+        r5 = Recipe.objects.create(author=self.user, title='test5')
+
+        response = self.logged.get(self.url)
+        recipes = response.context['user_additions']
+
+        self.assertIn(r5, recipes)
+        self.assertNotIn(r1, recipes)
+        self.assertEqual(len(recipes), 4)
+
+    def test_recent_additions_by_user_anonymous_onlooker(self):
+        """
+        Ensures that recent additions are not shown for users that are not
+        logged in.
+        """
+
+        with self.assertRaises(KeyError):
+            response = Client().get(self.url)
+            recipes = response.context['user_additions']
+
+            self.assertFalse(recipes)
+
+    def test_recent_additions_by_user_order_descending(self):
+        """
+        Ensures that the front page is passed recipes that a user has
+        recently added AND that they are ordered from newest to oldest.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test')
+        Recipe.objects.create(author=self.user, title='test2')
+        Recipe.objects.create(author=self.user, title='test3')
+        Recipe.objects.create(author=self.user, title='test4')
+        r5 = Recipe.objects.create(author=self.user, title='test5')
+
+        response = self.logged.get(self.url)
+        recipes = response.context['user_additions']
+
+        self.assertIn(r5, recipes)
+        self.assertNotIn(r1, recipes)
+        self.assertEqual(len(recipes), 4)
 
 
 class SearchFunctionTests(TestCase):
