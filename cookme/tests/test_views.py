@@ -12,6 +12,7 @@ from django.test.client import Client
 
 from cookme.views import home, register
 from utilities.search_helpers import encode
+from recipes.models import Recipe
 
 
 class HomePageTests(TestCase):
@@ -48,6 +49,81 @@ class HomePageTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Fridge')
+
+    def test_most_popular_exist(self):
+        """
+        Ensures that the most popular recipes are shown on the front page.
+        There should be 4 most popular recipes shown on the front page.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
+        Recipe.objects.create(author=self.user, title='test2', views=2)
+        Recipe.objects.create(author=self.user, title='test3', views=3)
+        Recipe.objects.create(author=self.user, title='test4', views=4)
+        r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
+
+        response = Client().get(self.url)
+        recipes = response.context['most_popular']
+
+        self.assertIn(r5, recipes)
+        self.assertNotIn(r1, recipes)
+
+    def test_most_popular_do_not_exist(self):
+        """
+        Ensures that when there are no most popular recipes, no recipes are
+        passed to response's context.
+        """
+
+        response = Client().get(self.url)
+        recipes = response.context['most_popular']
+
+        self.assertFalse(recipes)
+
+    def test_most_popular_less_than_four(self):
+        """
+        Ensures that when there are less than four recipes, all of them are
+        shown.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
+        r2 = Recipe.objects.create(author=self.user, title='test2', views=2)
+        r3 = Recipe.objects.create(author=self.user, title='test3', views=3)
+        response = Client().get(self.url)
+        recipes = response.context['most_popular']
+
+        self.assertEquals([r3, r2, r1], list(recipes))
+
+    def test_recipes_equal_views(self):
+        """
+        Ensures that the oldest recipes are shown first if all most popular
+        recipes have the same amount of views.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
+        r2 = Recipe.objects.create(author=self.user, title='test2', views=1)
+        r3 = Recipe.objects.create(author=self.user, title='test3', views=1)
+
+        response = Client().get(self.url)
+        recipes = response.context['most_popular']
+
+        self.assertEquals([r1, r2, r3], list(recipes))
+
+    def test_recipes_most_recent(self):
+        """
+        Ensures that the most recent recipes are shown on the front page.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test')
+        Recipe.objects.create(author=self.user, title='test2')
+        Recipe.objects.create(author=self.user, title='test3')
+        Recipe.objects.create(author=self.user, title='test4')
+        r5 = Recipe.objects.create(author=self.user, title='test5')
+
+        response = Client().get(self.url)
+        recipes = response.context['most_recent']
+
+        self.assertIn(r5, recipes)
+        self.assertNotIn(r1, recipes)
 
 
 class SearchFunctionTests(TestCase):

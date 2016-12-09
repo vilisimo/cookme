@@ -9,6 +9,8 @@ from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
+from recipes.models import Recipe
+
 
 class HomePageTests(TestCase):
     """
@@ -19,6 +21,7 @@ class HomePageTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.user = User.objects.create_user(username='test', password='test')
         self.url = reverse('home')
 
     def test_search_bar_exists(self):
@@ -31,6 +34,62 @@ class HomePageTests(TestCase):
         # Can't make assertContains recognize the form for some reason,
         # even when copying directly from html source on chrome...
         self.assertIn(element, str(response.content))
+
+    def test_popular_shown(self):
+        """
+        Ensures that the most popular recipes are shown on the front page.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
+        r2 = Recipe.objects.create(author=self.user, title='test2', views=2)
+        r3 = Recipe.objects.create(author=self.user, title='test3', views=3)
+        r4 = Recipe.objects.create(author=self.user, title='test4', views=4)
+        r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
+        expected = "<h3>{}</h3>".format(r5.title)
+        should_not_be = "<h3>{}</h3>".format(r1.title)
+        response = self.client.get(self.url)
+
+        self.assertContains(response, expected, html=True)
+        self.assertNotContains(response, should_not_be, html=True)
+
+    def test_popular_not_shown_with_no_recipes(self):
+        """
+        Ensures that with no recipes, no 'popular' category is shown on the
+        front page.
+        """
+
+        should_not_be = "<h2>Popular</h2>"
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, should_not_be, html=True)
+
+    def test_most_recent_recipes(self):
+        """
+        Ensures that the most recent recipes are shown on the front page.
+        """
+
+        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
+        Recipe.objects.create(author=self.user, title='test2', views=2)
+        Recipe.objects.create(author=self.user, title='test3', views=3)
+        Recipe.objects.create(author=self.user, title='test4', views=4)
+        r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
+        expected = "<h3>{}</h3>".format(r5.title)
+        should_not_be = "<h3>{}</h3>".format(r1.title)
+        response = self.client.get(self.url)
+
+        self.assertContains(response, expected, html=True)
+        self.assertNotContains(response, should_not_be, html=True)
+
+    def test_recent_not_shown_with_no_recipes(self):
+        """
+        Ensures that with no recipes, no 'recent' category is shown on the
+        front page.
+        """
+
+        should_not_be = "<h2>Recent</h2>"
+        response = self.client.get(self.url)
+
+        self.assertNotContains(response, should_not_be, html=True)
 
 
 class RegisterTests(TestCase):

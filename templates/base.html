@@ -28,13 +28,13 @@
         <nav>
             <!-- Perhaps some cleaner way to have Home on the left? -->
             <li class="navigation-home">
-                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'home' %}">Cookme</a>
             </li>
 
             <!-- REMOVE LATER: ONLY TO MAKE USERNAME OBVIOUS IN PRODUCTION -->
-            {% if user.is_authenticated %}
-                <span id="welcome-user">Welcome, {{ user.username }}</span>
-            {% endif %}
+{#            {% if user.is_authenticated %}#}
+{#                <span id="welcome-user">Welcome, {{ user.username }}</span>#}
+{#            {% endif %}#}
 
             <!-- Navigation bar (except Home) -->
             <ul class="navigation-other">
@@ -72,6 +72,26 @@
                 {{ form.q }}
                 <input type="submit" value="Search" />
             </form>
+
+            {% if most_popular %}
+                <h2>Popular</h2>
+                {% for popular in most_popular %}
+                    <h3>{{ popular.title }}</h3>
+                    <p>{{ popular.description }}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if most_recent %}
+                <h2>Recent</h2>
+                {% for recent in most_recent %}
+                    <h3>{{ recent.title }}</h3>
+                    <p>{{ recent.description }}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if user.is_authenticated %}
+                <h2>Your new additions</h2>
+            {% endif %}
         {% endblock %}
     </main>
 

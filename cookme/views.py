@@ -9,6 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, HttpResponseRedirect
 
+from recipes.models import Recipe
 from fridge.models import Fridge
 from search.forms import SearchForm
 from utilities.search_helpers import encode
@@ -48,7 +49,14 @@ def home(request):
     else:
         form = SearchForm()
 
+    # Most popular, oldest ones at the top (if two recipes have equal views)
+    most_popular = Recipe.objects.all().order_by('-views', 'date')[:4]
+    # Most recent is shown first (though same date unlikely)
+    most_recent = Recipe.objects.all().order_by('-date', '-views')[:4]
+
     content['form'] = form
+    content['most_popular'] = most_popular
+    content['most_recent'] = most_recent
 
     return render(request, 'base.html', content)
 
