@@ -263,8 +263,8 @@ class FridgeDetailTests(TestCase):
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
         fi1 = FI.objects.create(fridge=self.fridge, unit=unit, ingredient=i1,
                                 quantity=1)
-        expected_html = '<a href="{0}">Remove</a>'.format(
-            reverse('fridge:remove_ingredient', kwargs={'pk': fi1.pk}))
+        remove_url = reverse('fridge:remove_ingredient', kwargs={'pk': fi1.pk})
+        expected_html = '<a href="{0}">Remove</a>'.format(remove_url)
         response = self.client.get(self.url)
 
         self.assertContains(response, expected_html, html=True)

@@ -41,9 +41,9 @@ class HomePageTests(TestCase):
         """
 
         r1 = Recipe.objects.create(author=self.user, title='test', views=1)
-        r2 = Recipe.objects.create(author=self.user, title='test2', views=2)
-        r3 = Recipe.objects.create(author=self.user, title='test3', views=3)
-        r4 = Recipe.objects.create(author=self.user, title='test4', views=4)
+        Recipe.objects.create(author=self.user, title='test2', views=2)
+        Recipe.objects.create(author=self.user, title='test3', views=3)
+        Recipe.objects.create(author=self.user, title='test4', views=4)
         r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
         expected = "<h3>{}</h3>".format(r5.title)
         should_not_be = "<h3>{}</h3>".format(r1.title)

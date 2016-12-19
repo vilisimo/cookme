@@ -93,11 +93,9 @@ class FridgeDetailViewURLsTests(TestCase):
 
         name = 'test'
         response = self.client.post(self.url, self.data)
-
         self.assertTrue(response.status_code, 302)
 
         ingredient = Ingredient.objects.get(name=name.capitalize())
-
         self.assertTrue(ingredient)
 
     def test_form_valid_ingredient_updated(self):
@@ -108,7 +106,6 @@ class FridgeDetailViewURLsTests(TestCase):
                                       type='Fruit')
         FridgeIngredient.objects.create(fridge=self.fridge, ingredient=i,
                                         unit=self.unit, quantity=quantity)
-
         self.client.post(self.url, self.data)
         fi = FridgeIngredient.objects.get(ingredient=i)
 
@@ -159,9 +156,11 @@ class FridgeDetailViewURLsTests(TestCase):
         Fridge.objects.all().delete()
 
         response = self.client.get(reverse('home'))
+
         self.assertEqual(response.status_code, 200)
 
         response = self.client.get(reverse('fridge:fridge_detail'))
+
         self.assertEqual(response.status_code, 200)
 
     def test_anonymous_access(self):
@@ -237,7 +236,6 @@ class RemoveRecipeTests(TestCase):
         c2.login(username='test2', password='test2')
         f2 = Fridge.objects.create(user=u2)
         f2.recipes.add(self.r)
-
         response = c2.get(self.url)
 
         self.assertEqual(response.status_code, 302)
@@ -584,6 +582,7 @@ class FridgePossibilitiesTests(TestCase):
         """
 
         response = self.client.get(self.url)
+
         self.assertEquals(list(self.recipes), list(response.context['recipes']))
 
     def test_context_does_not_have_novel_recipes(self):
