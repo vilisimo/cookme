@@ -28,6 +28,17 @@ technologies.
 For installation instructions, please refer 
 [here](../../tree/master/docs/installation.md).
 
+###Progress
+At the moment, project is in front-end stage. That is, the website needs 
+CSS/HTML editing. Bare minimum of functionality has been achieved, but the 
+look of the website is not acceptable yet.
+   
+   - Basic functionality implementation _(done)_.
+   - Front-end: HTML/CSS __(in process)__.
+   - JavaScript enhancements.
+   - Implementation of optional requirements.
+   - Deployment.
+
 ###Design documents 
 To see the thought process behind the project, refer to the 
 [docs](../../tree/master/docs). An attempt was made to follow agile-ish

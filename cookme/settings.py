@@ -1,5 +1,5 @@
 import os
-from .local_settings import SECRET_KEY
+# from .local_settings import SECRET_KEY
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,7 +10,8 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # Random key for GitHub so that it is easier to set things up.
-# SECRET_KEY = 'z+ogt(o0760*rl6%n$_2u3$$m=d$t-fzx0e)+rmbtv*vj6$wp2'
+# NOTE: this key is not used in dev/production.
+SECRET_KEY = 'z+ogt(o0760*rl6%n$_2u3$$m=d$t-fzx0e)+rmbtv*vj6$wp2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
