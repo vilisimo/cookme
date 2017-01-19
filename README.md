@@ -1,8 +1,8 @@
 ##Idea
 The website is designed to be a simple recipe holder with not-too-ugly 
-front-end. The user is presented with a simple interface that allows to 
+front-end. The user is presented with a clean interface that allows to 
 browse recipes that have been added to the 'global' recipe book - just 
-as in the usual cooking website. Additionally, user can search for 
+as in any ordinary cooking website. Additionally, user can search for 
 ingredient(s) that he/she would like to use: recipes containing those 
 ingredients will be shown. Furthermore, user can add recipes and ingredients
 to his/her fridge. Once ingredients and recipes are added, user can instruct
@@ -14,15 +14,12 @@ JavaScript, jQuery, Ajax, etc. It is not designed to be the innovative app:
 there are literally dozens of similar websites/apps. Rather, the focus is on 
 making main things work first, getting exposure to different technologies, 
 rather than providing people with groundbreaking cooking experience or every 
-feature that I can think of. 
+feature that can be thought of.  
 
 ##About the project
-The website is being created on OS X (El Capitan) and Ubuntu 16.04. Testing
-is done on Chrome. Focus is more in the area of proof of concept, thus 
-compatibility with other browsers is not (at least not yet) the main concern.
-That being said, where appropriate, effort will be made to provide similar 
-experience on all major browsers - after all, it is also part of mastering web 
-technologies. 
+The website is being created on Ubuntu 16.04 and OS X. Testing is done on 
+Chrome/Firefox. Focus is more in the area of proof of concept, thus 
+compatibility with other browsers is not (at least not yet) the main concern. 
 
 ###Installation
 For installation instructions, please refer 
@@ -36,7 +33,7 @@ look of the website is not acceptable yet.
    - Basic functionality implementation _(done)_.
    - Front-end: HTML/CSS __(in process)__.
    - JavaScript enhancements.
-   - Implementation of optional requirements.
+   - _(Optional)_ Implementation of optional requirements.
    - Deployment.
 
 ###Design documents 
@@ -51,10 +48,10 @@ Capitan) and Linux (Ubuntu 16.04).
 
 ###Languages/tools used
 So far, these major languages/frameworks/tools have been used:
-- Python 3.5
+- Python 3.6
 - Django 1.10
 - HTML5
-- CSS
+- CSS3
 
 
 ###Images used
