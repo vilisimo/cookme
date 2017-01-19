@@ -55,7 +55,7 @@ class RecipeTemplateTests(TestCase):
         """
 
         add_link = reverse('recipes:add_to_fridge', kwargs={'pk': self.r1.pk})
-        expected_html = '<a href="{}">Add</a>'.format(add_link)
+        expected_html = f'<a href="{add_link}">Add</a>'
         self.client.login(username='test', password='test')
         response = self.client.get(self.url)
 
@@ -65,7 +65,7 @@ class RecipeTemplateTests(TestCase):
         """ Ensures add link is not shown for anonymous user. """
 
         add_url = reverse('recipes:add_to_fridge', kwargs={'pk': self.r1.pk})
-        expected_html = '<a href={}>Add</a>'.format(add_url)
+        expected_html = f'<a href={add_url}>Add</a>'
         response = self.client.get(self.url)
 
         self.assertNotContains(response, expected_html, html=True)
@@ -131,7 +131,7 @@ class RecipeDetailTemplateTests(TestCase):
         """ Ensures that default value is shown correctly in the template. """
 
         response = self.client.get(self.url)
-        expected_html = "<p class='recipe-step'>{0}</p>".format(self.r1.steps)
+        expected_html = f'<p class="recipe-step">{self.r1.steps}</p>'
 
         self.assertEqual(response.context['steps'], self.r1.step_list())
         self.assertContains(response, expected_html, html=True)
@@ -142,7 +142,7 @@ class RecipeDetailTemplateTests(TestCase):
         recipe = Recipe.objects.create(author=self.user, title='test',
                                        description='test', steps='step1')
         url = reverse('recipes:recipe_detail', kwargs={'slug': recipe.slug})
-        expected_html = "<p class='recipe-step'>{0}</p>".format(recipe.steps)
+        expected_html = f'<p class="recipe-step">{recipe.steps}</p>'
         response = self.client.get(url)
 
         self.assertEqual(response.context['steps'], recipe.step_list())
@@ -158,7 +158,7 @@ class RecipeDetailTemplateTests(TestCase):
         self.r1.save()
         steps = self.r1.step_list()
         url = reverse('recipes:recipe_detail', kwargs={'slug': self.r1.slug})
-        expected_html = "<p class='recipe-step'>{0}</p>".format(steps[1])
+        expected_html = f'<p class="recipe-step">{steps[1]}</p>'
         response = self.client.get(url)
 
         self.assertEqual(response.context['steps'], steps)

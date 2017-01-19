@@ -94,7 +94,7 @@ class RecipeTestCase(TestCase):
 
         count = len(Recipe.objects.all())
         # Need to turn chars into lower form, as title is capitalized.
-        expected = "{0}-{1}".format(self.a.title.lower(), count)
+        expected = f'{self.a.title.lower()}-{count}'
 
         self.assertEqual(self.a.slug, expected)
 
@@ -128,8 +128,9 @@ class RatingTestCase(TestCase):
     def test_str_representation(self):
         """ Ensures that rating's string representation is correct. """
 
-        expected = "{0}\'s {1} rating: {2}".format(self.user.username,
-                                                   self.r, self.rating.stars)
+        username = self.user.username
+        stars = self.rating.stars
+        expected = f'{username}\'s {self.r} rating: {stars}'
 
         self.assertEqual(str(self.rating), expected)
 
@@ -149,7 +150,7 @@ class RecipeIngredientTestCase(TestCase):
     def test_str_representation(self):
         """ Ensures that RecipeIngredient string representation is correct. """
 
-        expected = "{0} in {1}".format(self.i, self.r)
+        expected = f'{self.i} in {self.r}'
 
         self.assertEqual(str(self.ri), expected)
 
@@ -159,11 +160,11 @@ class UserDirectoryPathTests(TestCase):
     def setUp(self):
         self.user = User.objects.create(username='test')
         self.r = Recipe.objects.create(author=self.user, title='test')
-        self.path = user_directory_path(self.r, 'burbt')
+        self.path = user_directory_path(self.r, 'test-path')
 
     def test_path(self):
         """ Ensure that a constructed path is correct. """
 
-        expected = "user_{0}/{1}".format(self.user.id, 'burbt')
+        expected = f'user_{self.user.id}/test-path'
 
         self.assertEqual(self.path, expected)

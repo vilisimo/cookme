@@ -33,7 +33,7 @@ class FridgeIngredientForm(ModelForm):
 
     class Meta:
         model = FridgeIngredient
-        exclude = ("fridge", "ingredient")
+        exclude = ('fridge', 'ingredient')
 
         widgets = {
             'unit': Select(attrs={'required': 'true'}),

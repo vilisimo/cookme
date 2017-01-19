@@ -28,8 +28,7 @@ class HomePageTests(TestCase):
         """ Ensures that the search bar is on the front page. """
 
         response = self.client.get(self.url)
-        element = '<form action="{}" method="post" id="search-bar">'.format(
-            reverse('home'))
+        element = f'<form action="{self.url}" method="post" id="search-bar">'
 
         # Can't make assertContains recognize the form for some reason,
         # even when copying directly from html source on chrome...
@@ -45,8 +44,8 @@ class HomePageTests(TestCase):
         Recipe.objects.create(author=self.user, title='test3', views=3)
         Recipe.objects.create(author=self.user, title='test4', views=4)
         r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
-        expected = "<h3>{}</h3>".format(r5.title)
-        should_not_be = "<h3>{}</h3>".format(r1.title)
+        expected = f'<h3>{r5.title}</h3>'
+        should_not_be = f'<h3>{r1.title}</h3>'
         response = self.client.get(self.url)
 
         self.assertContains(response, expected, html=True)
@@ -58,7 +57,7 @@ class HomePageTests(TestCase):
         front page.
         """
 
-        should_not_be = "<h2>Popular</h2>"
+        should_not_be = '<h2>Popular</h2>'
         response = self.client.get(self.url)
 
         self.assertNotContains(response, should_not_be, html=True)
@@ -73,8 +72,8 @@ class HomePageTests(TestCase):
         Recipe.objects.create(author=self.user, title='test3', views=3)
         Recipe.objects.create(author=self.user, title='test4', views=4)
         r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
-        expected = "<h3>{}</h3>".format(r5.title)
-        should_not_be = "<h3>{}</h3>".format(r1.title)
+        expected = f'<h3>{r5.title}</h3>'
+        should_not_be = f'<h3>{r1.title}</h3>'
         response = self.client.get(self.url)
 
         self.assertContains(response, expected, html=True)
@@ -86,7 +85,7 @@ class HomePageTests(TestCase):
         front page.
         """
 
-        should_not_be = "<h2>Recent</h2>"
+        should_not_be = '<h2>Recent</h2>'
         response = self.client.get(self.url)
 
         self.assertNotContains(response, should_not_be, html=True)
@@ -103,8 +102,8 @@ class HomePageTests(TestCase):
         Recipe.objects.create(author=user2, title='test4', views=4)
         Recipe.objects.create(author=user2, title='test5', views=5)
         r6 = Recipe.objects.create(author=self.user, title='test6', views=1)
-        expected = "<h3>{}</h3>".format(r6.title)
-        should_not_be = "<h3>{}</h3>".format(r1.title)
+        expected = f'<h3>{r6.title}</h3>'
+        should_not_be = f'<h3>{r1.title}</h3>'
         response = self.client.get(self.url)
 
         self.assertContains(response, expected, html=True)
@@ -116,7 +115,7 @@ class HomePageTests(TestCase):
         front page.
         """
 
-        should_not_be = "<h2>Your new additions</h2>"
+        should_not_be = '<h2>Your new additions</h2>'
         response = self.client.get(self.url)
 
         self.assertNotContains(response, should_not_be, html=True)
@@ -200,7 +199,7 @@ class RegisterTests(TestCase):
         """
 
         response = self.client.get(self.url)
-        expected_html = '<a href={0}?next={0}>Register</a>'.format(self.url)
+        expected_html = f'<a href={self.url}?next={self.url}>Register</a>'
 
         self.assertNotContains(response, expected_html, html=True)
 
@@ -213,7 +212,8 @@ class RegisterTests(TestCase):
 
         url = reverse('recipes:recipes')
         response = self.client.get(url)
-        expected_html = '<a href={}?next={}>Register</a>'.format(self.url, url)
+        expected_html = f'<a href={self.url}?next={url}>Register</a>'
+
         self.assertContains(response, expected_html, html=True)
 
 
@@ -232,7 +232,7 @@ class LoginTests(TestCase):
         """
 
         response = self.client.get(self.url)
-        expected_html = '<a href={0}?next={0}>Login</a>'.format(self.url)
+        expected_html = f'<a href={self.url}?next={self.url}>Login</a>'
 
         self.assertNotContains(response, expected_html, html=True)
 
@@ -245,6 +245,6 @@ class LoginTests(TestCase):
 
         url = reverse('recipes:recipes')
         response = self.client.get(url)
-        expected_html = '<a href={}?next={}>Login</a>'.format(self.url, url)
+        expected_html = f'<a href={self.url}?next={url}>Login</a>'
 
         self.assertContains(response, expected_html, html=True)

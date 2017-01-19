@@ -27,7 +27,7 @@ class AddRecipeForm(ModelForm):
 
     class Meta:
         model = Recipe
-        fields = ("title", "description", "steps", "cuisine", "image",)
+        fields = ('title', 'description', 'steps', 'cuisine', 'image',)
 
         widgets = {
             'title': TextInput(
@@ -81,7 +81,7 @@ class RecipeIngredientForm(ModelForm):
 
     class Meta:
         model = RecipeIngredient
-        exclude = ("recipe", "ingredient")
+        exclude = ('recipe', 'ingredient')
 
         widgets = {
             'unit': Select(attrs={'required': 'true'}),

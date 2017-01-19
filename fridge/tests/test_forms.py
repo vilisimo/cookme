@@ -27,7 +27,7 @@ class FridgeIngredientFormTests(TestCase):
         """ Ensure that a form with empty fields does not pass. """
 
         data = dict()
-        form = FridgeIngredientForm(data=data)
+        form = FridgeIngredientForm(data={})
 
         self.assertFalse(form.is_valid(), "Form with no data was valid.")
 

@@ -17,7 +17,6 @@ from utilities.search_helpers import (
 )
 
 
-
 class EncodingTests(TestCase):
     """
     Test suite to ensure that function producing query string works.

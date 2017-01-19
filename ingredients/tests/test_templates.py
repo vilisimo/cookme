@@ -69,7 +69,7 @@ class IngredientDetailTemplateTests(TestCase):
 
         response = self.client.get(self.url)
         expected_text = 'This ingredient is not used in any recipes!'
-        expected_html = '<p>{}</p>'.format(expected_text)
+        expected_html = f'<p>{expected_text}</p>'
 
         self.assertContains(response, self.i.name)
         self.assertContains(response, expected_html, html=True)

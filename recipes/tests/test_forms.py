@@ -184,7 +184,7 @@ class RecipeIngredientFormTests(TestCase):
 
         form = RecipeIngredientForm(data=self.data)
 
-        self.assertTrue(form.is_valid(), "Correct data threw an error.")
+        self.assertTrue(form.is_valid(), 'Correct data threw an error.')
 
     def test_fields_valid_create_ingredient_entry(self):
         """

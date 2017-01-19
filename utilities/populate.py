@@ -33,11 +33,11 @@ class bcolors:
 
     @staticmethod
     def error(message):
-        return "{}{}{}".format(bcolors.FAIL, message, bcolors.ENDC)
+        return f'{bcolors.FAIL}{message}{bcolors.ENDC}'
 
     @staticmethod
     def success(message):
-        return "{}{}{}".format(bcolors.OKBLUE, message, bcolors.ENDC)
+        return f'{bcolors.OKBLUE}{message}{bcolors.ENDC}'
 
 
 def terminal_out(message, error=False, terminate=True):
@@ -54,7 +54,7 @@ def terminal_out(message, error=False, terminate=True):
         if error:
             print(bcolors.error(message))
             if terminate:
-                print(bcolors.error("Population terminated."))
+                print(bcolors.error('Population terminated.'))
         else:
             print(bcolors.success(message))
     else:
@@ -85,9 +85,9 @@ def get_user(username, password):
 def migrate():
     """ Prepares database for population by building tables. """
 
-    execute_from_command_line(["manage.py", "makemigrations"])
-    execute_from_command_line(["manage.py", "migrate"])
-    terminal_out("Migrations were carried out successfully.")
+    execute_from_command_line(['manage.py', 'makemigrations'])
+    execute_from_command_line(['manage.py', 'migrate'])
+    terminal_out('Migrations were carried out successfully.')
 
 
 @transaction.atomic
@@ -107,9 +107,9 @@ def populate_units(units_txt=None):
                 Unit.objects.get_or_create(name=line[0],
                                            abbrev=line[1],
                                            description=line[2])
-        terminal_out("Unit population is done.")
+        terminal_out('Unit population is done.')
     except (FileNotFoundError, TypeError):
-        terminal_out("Input file not recognized.", error=True)
+        terminal_out('Input file not recognized.', error=True)
         raise
 
 
@@ -128,9 +128,9 @@ def populate_ingredients(ingredients_txt=None):
                 Ingredient.objects.get_or_create(name=line[0].strip(),
                                                  type=line[1].strip(),
                                                  description=line[2].strip())
-        terminal_out("Ingredient population is done.")
+        terminal_out('Ingredient population is done.')
     except (FileNotFoundError, TypeError):
-        terminal_out("Input file was not recognized.", error=True)
+        terminal_out('Input file was not recognized.', error=True)
         raise
 
 
@@ -196,25 +196,25 @@ def populate_recipes(recipe_folder=None):
     """
 
     if recipe_folder is None:
-        terminal_out("Path was not provided.", error=True)
-        raise FileNotFoundError("Path was not provided.")
+        terminal_out('Path was not provided.', error=True)
+        raise FileNotFoundError('Path was not provided.')
 
     if not os.listdir(recipe_folder):
-        terminal_out("Folder is empty. Please add recipes.", error=True)
-        raise FileNotFoundError("No files found in the directory.")
+        terminal_out('Folder is empty. Please add recipes.', error=True)
+        raise FileNotFoundError('No files found in the directory.')
 
     try:
         # Each file represents a recipe
         files = os.listdir(recipe_folder)
         for index, f in enumerate(files):
             if __name__ == '__main__':
-                print("Processing {}/{} file: {}".format(index+1, len(files),
-                                                         f.split('/')[-1]))
-            path = "{}/{}".format(recipe_folder, f)
+                processed = f.split('/')[-1]
+                print(f'Processing {index+1}/{len(files)} file: {processed}')
+            path = f'{recipe_folder}/{f}'
 
             # If file is empty - more useful for myself to warn, instead crash
             if os.stat(path).st_size <= 0:
-                message = "File nr.{} is empty.".format(index+1)
+                message = f'File nr.{index+1} is empty.'
                 terminal_out(message, error=True, terminate=False)
                 continue
 
@@ -222,20 +222,20 @@ def populate_recipes(recipe_folder=None):
             recipe = commit_recipe(values)
             commit_recipe_ingredient(values, recipe)
 
-        terminal_out("Recipe population is done.")
+        terminal_out('Recipe population is done.')
 
     except (FileNotFoundError, TypeError):
-        terminal_out("Input path was not recognized.", error=True)
+        terminal_out('Input path was not recognized.', error=True)
         raise
 
     except User.DoesNotExist:
-        terminal_out("Such username does not exist. Please create a user.",
+        terminal_out('Such username does not exist. Please create a user.',
                      error=True)
         raise
 
     except KeyError as e:
-        terminal_out("'{}' field was not found. Please ensure that YML file "
-                     "contains it.".format(e.args[0]), error=True)
+        terminal_out(f"'{e.args[0]}' field was not found. Please ensure that "
+                     f"YML file contains it.", error=True)
 
 
 if __name__ == '__main__':

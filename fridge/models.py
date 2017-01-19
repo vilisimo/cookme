@@ -52,4 +52,4 @@ class FridgeIngredient(models.Model):
         unique_together = ('fridge', 'ingredient')
 
     def __str__(self):
-        return "{0} in {1}".format(self.ingredient, self.fridge)
+        return f'{self.ingredient} in {self.fridge}'

@@ -192,7 +192,7 @@ class FridgeDetailTests(TestCase):
 
         response = self.client.get(self.url)
         expected_url = reverse('fridge:add_recipe')
-        expected = '<a href="{0}">Add a recipe</a>'.format(expected_url)
+        expected = f'<a href="{expected_url}">Add a recipe</a>'
 
         self.assertContains(response, expected, html=True)
 
@@ -264,7 +264,7 @@ class FridgeDetailTests(TestCase):
         fi1 = FI.objects.create(fridge=self.fridge, unit=unit, ingredient=i1,
                                 quantity=1)
         remove_url = reverse('fridge:remove_ingredient', kwargs={'pk': fi1.pk})
-        expected_html = '<a href="{0}">Remove</a>'.format(remove_url)
+        expected_html = f'<a href="{remove_url}">Remove</a>'
         response = self.client.get(self.url)
 
         self.assertContains(response, expected_html, html=True)
@@ -277,7 +277,7 @@ class FridgeDetailTests(TestCase):
         self.fridge.recipes.add(r1)
         response = self.client.get(self.url)
         remove_url = reverse('fridge:remove_recipe', kwargs={'pk': r1.pk})
-        expected_href = '<a href="{0}">Remove</a>'.format(remove_url)
+        expected_href = f'<a href="{remove_url}">Remove</a>'
 
         self.assertContains(response, expected_href, html=True)
 
@@ -293,7 +293,7 @@ class FridgeDetailTests(TestCase):
 
         response = self.client.get(self.url)
         expected_url = reverse('fridge:possibilities')
-        expected_html = '<a href="{0}">Make something!</a>'.format(expected_url)
+        expected_html = f'<a href="{expected_url}">Make something!</a>'
 
         self.assertContains(response, expected_html, html=True)
 
@@ -309,8 +309,7 @@ class FridgeDetailTests(TestCase):
 
         response = self.client.get(self.url)
         expected_url = reverse('fridge:fridge_recipes')
-        expected_html = ('<a href="{0}">Make something I like!</a>'.
-                         format(expected_url))
+        expected_html = f'<a href="{expected_url}">Make something I like!</a>'
 
         self.assertContains(response, expected_html, html=True)
 
@@ -341,7 +340,7 @@ class PossibilitiesTests(TestCase):
         response = self.client.get(self.url)
         expected_title = self.recipes[0].title
         expected_url = self.recipes[0].get_absolute_url()
-        expected_html = '<a href={}>{}</a>'.format(expected_url, expected_title)
+        expected_html = f'<a href={expected_url}>{expected_title}</a>'
 
         self.assertContains(response, expected_title, status_code=200)
         self.assertContains(response, expected_html, html=True)
@@ -391,7 +390,7 @@ class FridgeRecipesTests(TestCase):
         response = self.client.get(self.url)
         expected_title = self.recipes[3].title
         expected_url = self.recipes[3].get_absolute_url()
-        expected_html = '<a href={}>{}</a>'.format(expected_url, expected_title)
+        expected_html = f'<a href={expected_url}>{expected_title}</a>'
         self.assertNotContains(response, expected_title, status_code=200)
         self.assertNotContains(response, expected_html, html=True)
 
@@ -406,7 +405,7 @@ class FridgeRecipesTests(TestCase):
         response = self.client.get(self.url)
         expected_title = self.recipes[0].title
         expected_url = self.recipes[0].get_absolute_url()
-        expected_html = '<a href={}>{}</a>'.format(expected_url, expected_title)
+        expected_html = f'<a href={expected_url}>{expected_title}</a>'
         self.assertContains(response, expected_title, status_code=200)
         self.assertContains(response, expected_html, html=True)
 

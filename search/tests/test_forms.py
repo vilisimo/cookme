@@ -14,24 +14,24 @@ class SearchFormTests(TestCase):
 
         form = SearchForm(data={})
 
-        self.assertFalse(form.is_valid(), "Form with no data was valid.")
-        self.assertIn("This field is required", str(form['q'].errors))
+        self.assertFalse(form.is_valid(), 'Form with no data was valid.')
+        self.assertIn('This field is required', str(form['q'].errors))
 
     def test_non_empty_string_one_character(self):
         """ Ensures non-empty, 1 character string is allowed. """
 
         form = SearchForm(data=self.data)
 
-        self.assertTrue(form.is_valid(), "Form with 1 char was invalid.")
+        self.assertTrue(form.is_valid(), 'Form with 1 char was invalid.')
 
     def test_string_too_long(self):
         """ Ensures lengthy string is not allowed. """
 
         self.data['q'] = 'a'*501
         form = SearchForm(data=self.data)
-        expected_error = "Ensure this value has at most 500 characters"
+        expected_error = 'Ensure this value has at most 500 characters'
 
-        self.assertFalse(form.is_valid(), "Form with 501 char was valid.")
+        self.assertFalse(form.is_valid(), 'Form with 501 char was valid.')
         self.assertIn(expected_error, str(form['q'].errors))
 
     def test_string_too_long_if_whitespaces_counted(self):
@@ -44,8 +44,8 @@ class SearchFormTests(TestCase):
         form = SearchForm(data=self.data)
 
         self.assertTrue(len(self.data['q']) > 500)
-        self.assertTrue(form.is_valid(), "Form with whitespace length > 500 "
-                                         "was valid.")
+        self.assertTrue(form.is_valid(), 'Form with whitespace length > 500 '
+                                         'was valid.')
 
     def test_multiple_words(self):
         """ Ensures that entering multiple words do not result in an error. """
@@ -53,4 +53,4 @@ class SearchFormTests(TestCase):
         self.data['q'] = 'multiple words'
         form = SearchForm(data=self.data)
 
-        self.assertTrue(form.is_valid(), "Multiple words were not allowed.")
+        self.assertTrue(form.is_valid(), 'Multiple words were not allowed.')

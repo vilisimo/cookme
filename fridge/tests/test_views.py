@@ -191,7 +191,7 @@ class RemoveRecipeTests(TestCase):
     def test_url_route(self):
         """ Ensures that URL routes to correct view. """
 
-        url = '/fridge/remove_recipe/{}/'.format(self.r.pk)
+        url = f'/fridge/remove_recipe/{self.r.pk}/'
         resolver = resolve(url)
 
         self.assertEqual(resolver.view_name, 'fridge:remove_recipe')
@@ -209,7 +209,7 @@ class RemoveRecipeTests(TestCase):
 
         client2 = Client()
         response = client2.get(self.url)
-        redirect_url = '{}?next={}'.format(reverse('login'), self.url)
+        redirect_url = f'{reverse("login")}?next={self.url}'
 
         self.assertRedirects(response, redirect_url)
 
@@ -283,7 +283,7 @@ class RemoveIngredientTests(TestCase):
     def test_url_route_remove_ingredient(self):
         """ Ensures that URL routes to correct view. """
 
-        url = '/fridge/remove_ingredient/{}/'.format(self.i1.pk)
+        url = f'/fridge/remove_ingredient/{self.i1.pk}/'
         resolver = resolve(url)
 
         self.assertEqual(resolver.view_name, 'fridge:remove_ingredient')
@@ -560,7 +560,7 @@ class FridgePossibilitiesTests(TestCase):
         """ Ensures anonymous users cannot access this view. """
 
         response = Client().get(self.url)
-        redirect_url = '{}?next={}'.format(reverse('login'), self.url)
+        redirect_url = f'{reverse("login")}?next={self.url}'
 
         self.assertRedirects(response, redirect_url)
 
@@ -669,7 +669,7 @@ class FridgePossibilitiesWithFridgeRecipesTests(TestCase):
         """ Ensures anonymous user cannot access the view. """
 
         response = Client().get(self.url)
-        redirect_url = '{}?next={}'.format(reverse('login'), self.url)
+        redirect_url = f'{reverse("login")}?next={self.url}'
 
         self.assertRedirects(response, redirect_url)
 

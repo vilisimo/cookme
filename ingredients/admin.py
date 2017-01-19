@@ -4,7 +4,7 @@ from .models import Ingredient, Unit
 
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('name', 'type', 'description', 'id', 'slug')
-    prepopulated_fields = {"slug": ("name",)}
+    prepopulated_fields = {'slug': ("name",)}
 
 
 class UnitAdmin(admin.ModelAdmin):

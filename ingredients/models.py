@@ -57,7 +57,7 @@ class Ingredient(models.Model):
             slug = slugify(self.name)
             i = 2
             while Ingredient.objects.filter(slug=slug):
-                slug = "{0}-{1}".format(slug, i)
+                slug = '{slug}-{i}'
                 i += 1
             self.slug = slug
             self.name = capwords(self.name)

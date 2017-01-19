@@ -20,7 +20,7 @@ class FridgeTests(TestCase):
     def test_str_representation(self):
         """ Ensures that a correct string representation is constructed. """
 
-        expected = "{0}'s fridge".format(self.user.username)
+        expected = f"{self.user.username}'s fridge"
         actual = str(self.fridge)
 
         self.assertEqual(expected, actual)
@@ -46,7 +46,7 @@ class FridgeIngredientTests(TestCase):
     def test_str_representation(self):
         """ Ensures that a correct string representation is constructed. """
 
-        expected = "{0} in {1}".format(self.ingredient, self.fridge)
+        expected = f'{self.ingredient} in {self.fridge}'
         actual = str(self.fi)
 
         self.assertEquals(expected, actual)

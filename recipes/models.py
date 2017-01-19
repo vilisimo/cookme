@@ -14,7 +14,7 @@ from ingredients.models import Ingredient, Unit
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/{1}'.format(instance.author.id, filename)
+    return f'user_{instance.author.id}/{filename}'
 
 
 class Recipe(models.Model):
@@ -73,14 +73,14 @@ class Recipe(models.Model):
             # once, rather than evaluating it over and over again upon
             # accessing the template?
             if not self.steps:
-                self.steps = "No steps provided. Time to get creative!"
+                self.steps = 'No steps provided. Time to get creative!'
             if not self.description:
-                self.description = "No description provided."
+                self.description = 'No description provided.'
 
             i = 2  # user-friendly; if we find something, there are 2 instances
             slug = slugify(self.title)
             while Recipe.objects.filter(slug=slug):
-                slug = "{0}-{1}".format(slug, i)
+                slug = f'{slug}-{i}'
                 i += 1
             self.slug = slug
             self.title = capwords(self.title)
@@ -115,8 +115,7 @@ class Rating(models.Model):
         return super(Rating, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.user) + \
-               '\'s ' + str(self.recipe) + ' rating: {0}'.format(self.stars)
+        return f'{self.user}\'s {str(self.recipe)} rating: {self.stars}'
 
 
 class RecipeIngredient(models.Model):
@@ -132,4 +131,4 @@ class RecipeIngredient(models.Model):
         unique_together = ('recipe', 'ingredient')
 
     def __str__(self):
-        return "{0} in {1}".format(self.ingredient, self.recipe)
+        return f'{self.ingredient} in {self.recipe}'
