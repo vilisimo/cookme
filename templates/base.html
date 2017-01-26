@@ -74,33 +74,40 @@
             </form>
 
             {% if most_popular or most_recent or user_additions %}
-                <h1>Inspiration</h1>
-            {% endif %}
+                <section>
+                    <h1>Inspiration</h1>
+                    {% if most_popular %}
+                        <article>
+                            <h2>Popular</h2>
+                            {% for recipe in most_popular %}
+                                <h3>{{ recipe.title }}</h3>
+                                <p>{{ recipe.description }}</p>
+                            {% endfor %}
+                        </article>
+                    {% endif %}
 
-            {% if most_popular %}
-                <h2>Popular</h2>
-                {% for recipe in most_popular %}
-                    <h3>{{ recipe.title }}</h3>
-                    <p>{{ recipe.description }}</p>
-                {% endfor %}
-            {% endif %}
+                    {% if most_recent %}
+                        <article>
+                            <h2>Recent</h2>
+                            {% for recipe in most_recent %}
+                                <h3>{{ recipe.title }}</h3>
+                                <p>{{ recipe.description }}</p>
+                            {% endfor %}
+                        </article>
+                    {% endif %}
 
-            {% if most_recent %}
-                <h2>Recent</h2>
-                {% for recipe in most_recent %}
-                    <h3>{{ recipe.title }}</h3>
-                    <p>{{ recipe.description }}</p>
-                {% endfor %}
-            {% endif %}
-
-            {% if user.is_authenticated %}
-                {% if user_additions %}
-                    <h2>Your new additions</h2>
-                    {% for recipe in user_additions %}
-                        <h3>{{ recipe.title }}</h3>
-                        <p>{{ recipe.description }}</p>
-                    {% endfor %}
-                {% endif %}
+                    {% if user.is_authenticated %}
+                        {% if user_additions %}
+                            <article>
+                                <h2>Your new additions</h2>
+                                {% for recipe in user_additions %}
+                                    <h3>{{ recipe.title }}</h3>
+                                    <p>{{ recipe.description }}</p>
+                                {% endfor %}
+                            </article>
+                        {% endif %}
+                    {% endif %}
+                </section>
             {% endif %}
         {% endblock %}
     </main>
