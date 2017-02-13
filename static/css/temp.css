@@ -7,12 +7,12 @@ header, footer, nav, article {
 }
 
 #page {
-    max-width: 1200px;
+    max-width: 1080px;
     min-width: 600px;
     margin: 20px auto 20px auto;
     border: 2px solid black;
-    background-position: center;
-    background: white;
+    /*background-position: center;*/
+    background: white center;
 }
 
 ul, li {
@@ -62,11 +62,11 @@ nav li a:hover {
     color: #ccc;
 }
 
-@media screen and (max-width: 600px) {
-    /* ============== */
-    /* Navigation bar */
-    /* ============== */
+/* ================================ */
+/*              MEDIA               */
+/* ================================ */
 
+@media screen and (max-width: 600px) {
     nav li, ul .left {
         display: block;
         float: none;
@@ -77,30 +77,3 @@ nav li a:hover {
         border-bottom: 1px solid #aaaaaa;
     }
 }
-
-
-
-/*#navigation-bar {*/
-    /*list-style-type: none;*/
-    /*margin: 0;*/
-    /*padding: 0;*/
-    /*overflow: hidden;*/
-/*}*/
-
-/*#navigation-bar li {*/
-    /*float: left;*/
-/*}*/
-
-/*#navigation-bar li a {*/
-    /*display: inline-block;*/
-    /*text-align: center;*/
-    /*padding: 14px 16px;*/
-    /*text-decoration: none;*/
-    /*transition: 0.3s;*/
-    /*font-size: 17px;*/
-/*}*/
-
-/*#navigation-bar li:not(#home) {*/
-    /*float: right;*/
-/*}*/
-
