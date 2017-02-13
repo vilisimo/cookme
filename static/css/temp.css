@@ -11,7 +11,6 @@ header, footer, nav, article {
     min-width: 600px;
     margin: 20px auto 20px auto;
     border: 2px solid black;
-    /*background-position: center;*/
     background: white center;
 }
 
@@ -19,20 +18,21 @@ ul, li {
     list-style-type: none;
     padding: 0;
 }
-/* ==== */
-/* Body */
-/* ==== */
+
+/* ============= */
+/*      Body     */
+/* ============= */
 
 body {
-    font-family: 'Raleway', serif;
+    font-family: 'Slabo 27px', serif;
     line-height: 1.6em;
     font-size: 16px;
 }
 
 
-/*==============*/
-/*Navigation bar*/
-/*==============*/
+/* ==================== */
+/*    Navigation bar    */
+/* ==================== */
 
 nav {
     font-family: 'Lato', serif;
@@ -62,6 +62,7 @@ nav li a:hover {
     color: #ccc;
 }
 
+
 /* ================================ */
 /*              MEDIA               */
 /* ================================ */
@@ -76,4 +77,34 @@ nav li a:hover {
         text-align: center;
         border-bottom: 1px solid #aaaaaa;
     }
+}
+
+
+/* ================== */
+/*   Footer insides   */
+/* ================== */
+
+footer {
+    border-top: 2px solid darkgrey;
+    text-align: center;
+    margin: 10px 2% 0 2%;
+}
+
+#copyright {
+    line-height: 30px;
+    font-size: 12px;
+}
+
+#copyright li {
+    display: inline;
+    padding: 0 3px;
+}
+
+#copyright img[alt="Github icon"] {
+    width: 28px;
+    height: 28px;
+}
+
+.footer-links {
+    padding-top: 5px;
 }
