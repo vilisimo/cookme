@@ -8,13 +8,11 @@
     {% block mainstyle %}
         <!-- In case the main stylesheet need to be overwritten. -->
         <link rel="stylesheet" href="{% static 'css/temp.css' %}">
-        <link href="https://fonts.googleapis.com/css?family=Lato:black"
-              rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lato:black|Raleway" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Slabo+27px" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-        <script type="text/javascript" href="{% static 'js/temp.js' %}"></script>
     {% endblock %}
 
     {% block head %}
@@ -28,23 +26,23 @@
         <header>
             <nav>
                 <ul>
-                    <li id="home"><a href="{% url 'home' %}">Cookme</a></li>
-                    <li><a href="{% url 'recipes:recipes' %}">Recipes</a></li>
+                    <li id="home"><a href="{% url 'home' %}">Cook<span class="title-second-part">me</span></a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'fridge:fridge_detail' %}">Fridge</a></li>
                         <li><a href="{% url 'logout' %}">Logout</a></li>
+                        <li><a href="{% url 'fridge:fridge_detail' %}">Fridge</a></li>
                     {% else %}
                         <!-- Hiding links when clicked on them avoids the problem of
                         redirection to the same page. -->
                         {% url 'login' as login_url %}
+                        {% url 'register' as register_url %}
                         {% if request.path != login_url %}
                             <li><a href="{% url 'login' %}?next={{ request.path|urlencode }}">Login</a></li>
                         {% endif %}
-                        {% url 'register' as register_url %}
                         {% if request.path != register_url %}
                             <li><a href="{% url 'register' %}?next={{ request.path|urlencode }}">Register</a></li>
                         {% endif %}
                     {% endif %}
+                    <li><a href="{% url 'recipes:recipes' %}">Recipes</a></li>
                 </ul>
             </nav>
 
