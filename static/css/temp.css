@@ -8,7 +8,6 @@ header, footer, nav, article {
 
 #page {
     max-width: 1080px;
-    min-width: 600px;
     margin: 20px auto 20px auto;
     border: 2px solid black;
     background: white center;
@@ -40,21 +39,27 @@ nav {
     font-size: 20px;
 }
 
-nav li {
-    display: inline;
-    list-style-type: none;
+nav ul {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+
 }
 
-ul .left {
-    display: inline;
+nav li {
     float: right;
 }
 
+nav li#home {
+    float: left;
+}
+
 nav li a {
-    display: inline-block;
+    display: block;
     text-decoration: none;
+    text-align: center;
     padding: 14px 16px;
-    transition: all 1s ease;
+    transition: all 0.5s ease;
     color: #2F4F4F;
 }
 
@@ -68,14 +73,12 @@ nav li a:hover {
 /* ================================ */
 
 @media screen and (max-width: 600px) {
-    nav li, ul .left {
-        display: block;
-        float: none;
+    nav li {
+        border-bottom: 1px solid #aaaaaa;
     }
 
-    nav li {
-        text-align: center;
-        border-bottom: 1px solid #aaaaaa;
+    nav li#home, nav li {
+        float: none;
     }
 }
 
