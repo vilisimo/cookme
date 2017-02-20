@@ -80,6 +80,14 @@ h2 {
 
     .three {
         width: 100%;
+        height: 400px;
+    }
+
+    .three img {
+        max-width: 400px;
+        max-height: 400px;
+        width: 100%;
+        height: auto;
     }
 }
 
