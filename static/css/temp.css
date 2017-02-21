@@ -26,7 +26,12 @@ main {
     padding: 30px 40px;
 }
 
+h2, h3 {
+    text-align: center;
+}
+
 h2 {
+    min-width: 300px;
     text-transform: uppercase;
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 600;
@@ -38,56 +43,57 @@ h2 {
     background-size: 50% 2px;
 }
 
-
-.top-three {
-    overflow: hidden;
-    text-align: center;
+h3 {
+    padding: 20px 0;
 }
 
-.three {
+.top-four:before, .top-four:after {
+    content: " ";
+    display: table;
+}
+
+.top-four:after {
+    clear: both;
+}
+
+.four {
     box-sizing: border-box;
-    text-align: center;
-    display: inline-block;
-    width: 33%;
-    min-width: 228px;
-    height: 300px;
-    overflow: hidden;
-    padding: 16px 14px 16px 14px;
+    padding: 16px 18px 16px 18px;
+    display: block;
+    float: left;
+    width: 25%;
 }
 
-.three p {
+.four p {
     text-align: justify;
     text-overflow: ellipsis;
 }
 
-.three img {
-    max-width: 200px;
-    max-height: 200px;
+.four img {
+    max-width: 300px;
+    max-height: 300px;
     width: 100%;
     height: 100%;
+    display: block;
+    margin: auto;
 }
 
 
-
-@media all and (max-width: 771px) {
-    .top-three {
-        float: none;
+@media (max-width: 1000px) {
+    .four {
+        width: 50%;
+        padding-bottom: 50px;
     }
+}
 
-    .top-three h2 {
-        text-align: center;
-    }
-
-    .three {
+@media (max-width: 600px) {
+    .four {
         width: 100%;
-        height: 400px;
+        min-width: 250px;
     }
 
-    .three img {
-        max-width: 400px;
-        max-height: 400px;
+    .top-four {
         width: 100%;
-        height: auto;
     }
 }
 
@@ -133,7 +139,7 @@ nav li a:hover {
 
 
 
-@media screen and (max-width: 600px) {
+@media (max-width: 600px) {
     nav li {
         border-bottom: 1px solid #aaaaaa;
     }
