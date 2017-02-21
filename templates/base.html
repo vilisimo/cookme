@@ -60,11 +60,11 @@
                 </form>
 
                 {% if most_popular %}
-                <div class="top-three most-popular">
+                <div class="top-four most-popular">
                     <h2>Popular</h2>
                     {% for recipe in most_popular %}
-                        <div class="three popular">
-                            <img src="{% static recipe.image %}" />
+                        <div class="four popular">
+                            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
                             <h3>{{ recipe.title }}</h3>
                             <p>{{ recipe.description }}</p>
                         </div>
@@ -73,11 +73,11 @@
                 {% endif %}
 
                 {% if most_recent %}
-                <div class="top-three most-recent">
+                <div class="top-four most-recent">
                     <h2>Recent</h2>
                     {% for recipe in most_recent %}
-                        <div class="three recent">
-                            <img src="{% static recipe.image %}" />
+                        <div class="four recent">
+                            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
                             <h3>{{ recipe.title }}</h3>
                             <p>{{ recipe.description }}</p>
                         </div>
@@ -86,12 +86,13 @@
                 {% endif %}
 
                 {% if user.is_authenticated %}
-                <div class="top-three user-additions">
+                <div class="top-four user-additions">
                     {% if user_additions %}
                         <h2>Your new additions</h2>
                         {% for recipe in user_additions %}
-                            <div class="three additions">
-                                <img src="{% static recipe.image %}" />
+                            <div class="four additions">
+                                {% static recipe.image %}
+                                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
                                 <h3>{{ recipe.title }}</h3>
                                 <p>{{ recipe.description }}</p>
                             </div>
