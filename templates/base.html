@@ -64,7 +64,10 @@
                     <h2>Popular</h2>
                     {% for recipe in most_popular %}
                         <div class="four popular">
-                            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                            <div class="img-wrapper" style="background-image: url({{ recipe.image.url }});"
+                            title="{{ recipe.title }}">
+{#                                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>#}
+                            </div>
                             <h3>{{ recipe.title }}</h3>
                             <p>{{ recipe.description }}</p>
                         </div>
@@ -77,7 +80,9 @@
                     <h2>Recent</h2>
                     {% for recipe in most_recent %}
                         <div class="four recent">
-                            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                            <div class="img-wrapper" style="background-image: url({{ recipe.image.url }});">
+{#                                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>#}
+                            </div>
                             <h3>{{ recipe.title }}</h3>
                             <p>{{ recipe.description }}</p>
                         </div>
@@ -91,8 +96,10 @@
                         <h2>Your new additions</h2>
                         {% for recipe in user_additions %}
                             <div class="four additions">
-                                {% static recipe.image %}
-                                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+{#                                {% static recipe.image %}#}
+                                <div class="img-wrapper" style="background-image: url({{ recipe.image.url }});">
+                                </div>
+{#                                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>#}
                                 <h3>{{ recipe.title }}</h3>
                                 <p>{{ recipe.description }}</p>
                             </div>
