@@ -9,7 +9,7 @@ class SearchForm(forms.Form):
     adding a choice field for searching either by ingredient or recipe name.
     """
 
-    placeholder = 'Enter ingredients, separated by a comma.'
+    placeholder = 'Enter ingredients, separated by a comma'
     q = forms.CharField(max_length=500, min_length=1, required=True, strip=True,
                         widget=forms.TextInput(attrs={'placeholder':
                                                       placeholder}))

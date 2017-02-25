@@ -53,6 +53,7 @@
             <!-- Need to use CSS to make the search bar wider. Placeholder
             doesn't fit -->
             {% block main %}
+                <!-- NOTE: placeholder needs to be changed when the screen size is small. JS? -->
                 <form action="{% url 'home' %}" method="post" id="search-bar">
                     {% csrf_token %}
                     {{ form.q }}

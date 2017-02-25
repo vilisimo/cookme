@@ -47,6 +47,48 @@ h3 {
     padding: 20px 0;
 }
 
+/* SEARCH BAR */
+
+form#search-bar {
+    height: 300px;
+    padding: 0;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    /*background: no-repeat url('../files/images/searchbar-outside.jpg') center;*/
+}
+
+#id_q {
+    width: 194px;
+    -webkit-transition: width 0.5s ease-in-out;
+    -moz-transition: width 0.5s ease-in-out;
+    -o-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+
+    box-sizing: border-box;
+    border: 2px solid #222c36;
+    font-size: 16px;
+    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 5px 5px;
+    padding: 12px 20px 12px 40px;
+}
+
+#id_q:focus {
+    width: 40%;
+    outline: none;
+}
+
+#search-bar input[type=submit] {
+    position: relative;
+    padding: 12px 15px;
+    border: 2px solid #222c36;
+    background-color: #222c36;
+    color: #fafafa;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* TOP FOUR RECIPES */
+
 .top-four:before, .top-four:after {
     content: " ";
     display: table;
@@ -62,7 +104,6 @@ h3 {
     display: block;
     float: left;
     width: 25%;
-    /*height: 300px;*/
 }
 
 .four p {
@@ -71,12 +112,6 @@ h3 {
 }
 
 .four img {
-    /*object-fit: contain;*/
-    /*max-width: 100%;*/
-    /*width: auto;*/
-    /*height: 100%;*/
-    /*display: block;*/
-    /*margin: auto;*/
     width: 100%;
     height: 250px;
     object-fit: cover;
@@ -84,18 +119,14 @@ h3 {
     margin: auto;
 }
 
-/*.img-wrapper {*/
-    /*!*width: inherit;*!*/
-    /*height: 250px;*/
-    /*overflow: hidden;*/
-    /*background-size: cover;*/
-    /*background-position: center center;*/
-/*}*/
-
 @media (max-width: 1000px) {
     .four {
         width: 50%;
         padding-bottom: 50px;
+    }
+
+    #id_q:focus {
+        width: 80%;
     }
 }
 
