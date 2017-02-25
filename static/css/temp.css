@@ -31,16 +31,15 @@ h2, h3 {
 }
 
 h2 {
-    min-width: 300px;
-    text-transform: uppercase;
     font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 600;
-    margin: 76px 0 46px 0;
+    text-transform: uppercase;
+    line-height: 1em;
     font-size: 40px;
+    margin: 76px 0 46px 0;
     padding-bottom: 20px;
 
     background: linear-gradient(black, black) bottom no-repeat;
-    background-size: 50% 2px;
+    background-size: 75% 2px;
 }
 
 h3 {
@@ -106,9 +105,12 @@ form#search-bar {
     width: 25%;
 }
 
+/* Problem: around ~ 600px some boxes go onto the right side */
 .four p {
     text-align: justify;
-    text-overflow: ellipsis;
+    /*text-overflow: ellipsis;*/
+    /*white-space: nowrap;*/
+    /*overflow: hidden;*/
 }
 
 .four img {
@@ -119,7 +121,7 @@ form#search-bar {
     margin: auto;
 }
 
-@media (max-width: 1000px) {
+@media all and (max-width: 1000px) {
     .four {
         width: 50%;
         padding-bottom: 50px;
@@ -130,7 +132,7 @@ form#search-bar {
     }
 }
 
-@media (max-width: 600px) {
+@media all and (max-width: 600px) {
     .four {
         width: 100%;
         min-width: 250px;
