@@ -1,26 +1,26 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    {% if recipes %}
-        <ul>
-            {% for recipe in recipes %}
-                <li>
-                    <a href="{{ recipe.get_absolute_url }}">
-                        {{ recipe.title }} by <span id="author">{{ recipe.author }}</span>
-                    </a>
-                    <!-- Remove when working on CSS-->
-                    &nbsp
-                    <!-- No need to show 'add' if user is anonymous. -->
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'recipes:add_to_fridge' recipe.pk %}">
-                            Add
-                        </a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <h3>You do not have any recipes.</h3>
-        <p>Please go and cook something!</p>
-    {% endif %}
+  {% if recipes %}
+    <ul>
+      {% for recipe in recipes %}
+        <li>
+          <a href="{{ recipe.get_absolute_url }}">
+            {{ recipe.title }} by <span id="author">{{ recipe.author }}</span>
+          </a>
+          <!-- Remove when working on CSS-->
+          &nbsp
+          <!-- No need to show 'add' if user is anonymous. -->
+          {% if user.is_authenticated %}
+            <a href="{% url 'recipes:add_to_fridge' recipe.pk %}">
+              Add
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h3>You do not have any recipes.</h3>
+    <p>Please go and cook something!</p>
+  {% endif %}
 {% endblock %}

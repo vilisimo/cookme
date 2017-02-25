@@ -1,24 +1,24 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    {% if ingredient %}
-        <h3>{{ ingredient.name }} ({{ ingredient.type }})</h3>
-        <p>{{ ingredient.description }}</p>
-    {% else %}
-        No such ingredient found! Strange!
-    {% endif %}
-    {% if recipes %}
-        <h3>Recipes that use this ingredient:</h3>
-        {% for recipe in recipes %}
-            <ul>
-                <li>
-                    <a href="{{ recipe.get_absolute_url }}">
-                        {{ recipe.title }}
-                    </a>
-                </li>
-            </ul>
-        {% endfor %}
-    {% else %}
-        <p>This ingredient is not used in any recipes!</p>
-    {% endif %}
+  {% if ingredient %}
+    <h3>{{ ingredient.name }} ({{ ingredient.type }})</h3>
+    <p>{{ ingredient.description }}</p>
+  {% else %}
+    No such ingredient found! Strange!
+  {% endif %}
+  {% if recipes %}
+    <h3>Recipes that use this ingredient:</h3>
+    {% for recipe in recipes %}
+      <ul>
+        <li>
+          <a href="{{ recipe.get_absolute_url }}">
+            {{ recipe.title }}
+          </a>
+        </li>
+      </ul>
+    {% endfor %}
+  {% else %}
+    <p>This ingredient is not used in any recipes!</p>
+  {% endif %}
 {% endblock %}

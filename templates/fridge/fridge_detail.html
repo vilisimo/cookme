@@ -1,111 +1,111 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    {% if fridge %}
-        <h2>{{ fridge.user }}'s fridge</h2>
-        <!-- Take care of spacing with CSS -->
-        <br/><br/>
-        <div class="fridge-recipes">
-            <h3>Recipes</h3>
-            {% if recipes %}
-                {% for recipe in recipes %}
-                    <ul>
-                        <li>
-                            <a href="{{ recipe.get_absolute_url }}">
-                                {{ recipe }}
-                            </a>
-                            <!-- Take care with CSS -->
-                            &nbsp
-                            <a href="{% url 'fridge:remove_recipe' recipe.pk %}">
-                                Remove
-                            </a>
-                        </li>
-                    </ul>
-                {% endfor %}
-            {% else %}
-                <p>You have no favorite recipes. Your grandma would be sad!</p>
-            {% endif %}
-        </div>
+  {% if fridge %}
+    <h2>{{ fridge.user }}'s fridge</h2>
+    <!-- Take care of spacing with CSS -->
+    <br/><br/>
+    <div class="fridge-recipes">
+      <h3>Recipes</h3>
+      {% if recipes %}
+        {% for recipe in recipes %}
+          <ul>
+            <li>
+              <a href="{{ recipe.get_absolute_url }}">
+                {{ recipe }}
+              </a>
+              <!-- Take care with CSS -->
+              &nbsp
+              <a href="{% url 'fridge:remove_recipe' recipe.pk %}">
+                Remove
+              </a>
+            </li>
+          </ul>
+        {% endfor %}
+      {% else %}
+        <p>You have no favorite recipes. Your grandma would be sad!</p>
+      {% endif %}
+    </div>
 
-        <!-- Take care of spacing with CSS -->
-        <!-- Is this div needed? -->
-        <br/><br/>
-        <div class="add-recipe">
-            <a href="{% url 'fridge:add_recipe' %}">
-                Add a recipe
-            </a>
-        </div>
-        <a href="{% url 'recipes:recipes' %}">Browse existing recipes</a>
+    <!-- Take care of spacing with CSS -->
+    <!-- Is this div needed? -->
+    <br/><br/>
+    <div class="add-recipe">
+      <a href="{% url 'fridge:add_recipe' %}">
+        Add a recipe
+      </a>
+    </div>
+    <a href="{% url 'recipes:recipes' %}">Browse existing recipes</a>
 
-        <!-- Take care of spacing with CSS -->
-        <br/><br/>
-        <h3>Ingredients</h3>
-        <div class="fridge-ingredients">
-            {% if ingredients %}
-                <!-- Should this div cover else statement as well? -->
-                    <ul>
-                        {% for ingredient in ingredients %}
-                            <li>
-                                {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
-                                of
-                                <a href="{{ ingredient.ingredient.get_absolute_url }}">
-                                    {{ ingredient.ingredient }}
-                                </a>
-                                <!-- Take care with CSS -->
-                                &nbsp
-                                <a href="{% url 'fridge:remove_ingredient' ingredient.pk %}">
-                                    Remove
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+    <!-- Take care of spacing with CSS -->
+    <br/><br/>
+    <h3>Ingredients</h3>
+    <div class="fridge-ingredients">
+      {% if ingredients %}
+        <!-- Should this div cover else statement as well? -->
+          <ul>
+            {% for ingredient in ingredients %}
+              <li>
+                {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
+                of
+                <a href="{{ ingredient.ingredient.get_absolute_url }}">
+                  {{ ingredient.ingredient }}
+                </a>
+                <!-- Take care with CSS -->
+                &nbsp
+                <a href="{% url 'fridge:remove_ingredient' ingredient.pk %}">
+                  Remove
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
 
-                    <a href="{% url 'fridge:possibilities' %}">
-                        Make something!
-                    </a>
+          <a href="{% url 'fridge:possibilities' %}">
+            Make something!
+          </a>
 
-                    <!-- URL to fridge recipes that have <= ingredients in
-                    a fridge. Needs a cleaner url name, though.
+          <!-- URL to fridge recipes that have <= ingredients in
+          a fridge. Needs a cleaner url name, though.
 
 like                    NOTE: remove BR with CSS.-->
-                    <br/>
-                    <a href="{% url 'fridge:fridge_recipes' %}">
-                        Make something I like!
-                    </a>
-            {% else %}
-                <p>
-                    There are no ingredients in the fridge. Perhaps it is
-                    time to do some shopping..?
-                </p>
-            {% endif %}
-        </div>
+          <br/>
+          <a href="{% url 'fridge:fridge_recipes' %}">
+            Make something I like!
+          </a>
+      {% else %}
+        <p>
+          There are no ingredients in the fridge. Perhaps it is
+          time to do some shopping..?
+        </p>
+      {% endif %}
+    </div>
 
-        <div id="add-ingredient">
-        <h3>Add Ingredient</h3>
-            <form action="{% url 'fridge:fridge_detail' %}" method="post"
-                  id="fridge-ingredient-form">
-                {% csrf_token %}
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>{{ form.ingredient }}</td>
-                            <td>{{ form.quantity }}</td>
-                            <td>{{ form.unit }}</td>
-                            <!-- Is it ok to put input in TD element? -->
-                            <td><input type="submit" value="Add" /></td>
-                        </tr>
-                        <tr>
-                            <td>{{ form.ingredient.errors }}</td>
-                            <td>{{ form.quantity.errors }}</td>
-                            <td>{{ form.unit.errors }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <!-- Where would this fit best? -->
-                {{ form.non_field_errors }}
-            </form>
-        </div>
-    {% else %}
-        No fridge was found. That is strange!
-    {% endif %}
+    <div id="add-ingredient">
+    <h3>Add Ingredient</h3>
+      <form action="{% url 'fridge:fridge_detail' %}" method="post"
+          id="fridge-ingredient-form">
+        {% csrf_token %}
+        <table>
+          <tbody>
+            <tr>
+              <td>{{ form.ingredient }}</td>
+              <td>{{ form.quantity }}</td>
+              <td>{{ form.unit }}</td>
+              <!-- Is it ok to put input in TD element? -->
+              <td><input type="submit" value="Add" /></td>
+            </tr>
+            <tr>
+              <td>{{ form.ingredient.errors }}</td>
+              <td>{{ form.quantity.errors }}</td>
+              <td>{{ form.unit.errors }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Where would this fit best? -->
+        {{ form.non_field_errors }}
+      </form>
+    </div>
+  {% else %}
+    No fridge was found. That is strange!
+  {% endif %}
 {% endblock %}
