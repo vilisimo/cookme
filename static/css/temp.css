@@ -88,29 +88,18 @@ form#search-bar {
 
 /* TOP FOUR RECIPES */
 
-.top-four:before, .top-four:after {
-    content: " ";
-    display: table;
-}
-
-.top-four:after {
-    clear: both;
+.top-four {
+    display: flex;
 }
 
 .four {
-    box-sizing: border-box;
     padding: 16px 18px 16px 18px;
-    display: block;
-    float: left;
-    width: 25%;
+    box-sizing: border-box;
+    flex-basis: 25%;
 }
 
-/* Problem: around ~ 600px some boxes go onto the right side */
 .four p {
     text-align: justify;
-    /*text-overflow: ellipsis;*/
-    /*white-space: nowrap;*/
-    /*overflow: hidden;*/
 }
 
 .four img {
@@ -122,9 +111,12 @@ form#search-bar {
 }
 
 @media all and (max-width: 1000px) {
+    .top-four {
+        flex-wrap: wrap;
+    }
+
     .four {
-        width: 50%;
-        padding-bottom: 50px;
+        flex-basis: 50%;
     }
 
     #id_q:focus {
@@ -134,12 +126,12 @@ form#search-bar {
 
 @media all and (max-width: 600px) {
     .four {
-        width: 100%;
         min-width: 250px;
     }
 
     .top-four {
-        width: 100%;
+        /*width: 100%;*/
+        flex-direction: column;
     }
 }
 

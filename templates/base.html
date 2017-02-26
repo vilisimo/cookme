@@ -62,8 +62,8 @@
         </form>
 
         {% if most_popular %}
+        <h2>Popular</h2>
         <div class="top-four most-popular">
-          <h2>Popular</h2>
           {% for recipe in most_popular %}
             <div class="four popular">
               <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
@@ -75,8 +75,8 @@
         {% endif %}
 
         {% if most_recent %}
+        <h2>Recent</h2>
         <div class="top-four most-recent">
-          <h2>Recent</h2>
           {% for recipe in most_recent %}
             <div class="four recent">
               <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
@@ -88,9 +88,9 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-        <div class="top-four user-additions">
           {% if user_additions %}
-            <h2>Your new additions</h2>
+          <h2>Your new additions</h2>
+          <div class="top-four user-additions">
             {% for recipe in user_additions %}
               <div class="four additions">
                 <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
