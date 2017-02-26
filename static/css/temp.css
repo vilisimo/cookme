@@ -11,6 +11,61 @@ ul, li {
     padding: 0;
 }
 
+
+
+/* ==================== */
+/*    Navigation bar    */
+/* ==================== */
+
+nav {
+    background-color: #009999;
+    font-family: 'Lato', serif;
+    text-transform: uppercase;
+    font-size: 20px;
+}
+
+nav ul {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+
+}
+
+nav li {
+    float: right;
+}
+
+nav li#home {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    padding: 24px 26px;
+    transition: all 0.5s ease;
+    color: ghostwhite;
+}
+
+nav li a:hover {
+    color: #2F4F4F;
+}
+
+
+
+@media (max-width: 600px) {
+    nav li {
+        border-bottom: 1px solid #aaaaaa;
+    }
+
+    nav li#home, nav li {
+        float: none;
+    }
+}
+
+
+
 /* ================== */
 /*      Main body     */
 /* ================== */
@@ -30,11 +85,42 @@ h2, h3 {
     text-align: center;
 }
 
+.encouragement {
+    justify-content: center;
+    display: flex;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1.2em;
+}
+
+.encouragement-text {
+    display: inline-block;
+}
+
+.get-creative, .feast {
+    color: #990000;
+    font-weight: 500;
+}
+
+.get-creative {
+    display:block;
+}
+
+@media all and (max-width: 414px) {
+    .encouragement {
+        display: none;
+    }
+}
+
+
+
 h2 {
-    font-family: 'Source Sans Pro', sans-serif;
-    text-transform: uppercase;
-    line-height: 1em;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
     font-size: 40px;
+    line-height: 1em;
+    text-transform: uppercase;
     margin: 76px 0 46px 0;
     padding-bottom: 20px;
 
@@ -58,7 +144,8 @@ form#search-bar {
 }
 
 #id_q {
-    width: 194px;
+    width: 193px;
+    min-width: 193px;
     -webkit-transition: width 0.5s ease-in-out;
     -moz-transition: width 0.5s ease-in-out;
     -o-transition: width 0.5s ease-in-out;
@@ -132,58 +219,6 @@ form#search-bar {
     .top-four {
         /*width: 100%;*/
         flex-direction: column;
-    }
-}
-
-
-/* ==================== */
-/*    Navigation bar    */
-/* ==================== */
-
-nav {
-    background-color: #009999;
-    font-family: 'Lato', serif;
-    text-transform: uppercase;
-    font-size: 20px;
-}
-
-nav ul {
-    overflow: hidden;
-    margin: 0;
-    padding: 0;
-
-}
-
-nav li {
-    float: right;
-}
-
-nav li#home {
-    float: left;
-}
-
-nav li a {
-    display: block;
-    text-decoration: none;
-    text-align: center;
-    padding: 24px 26px;
-    transition: all 0.5s ease;
-    color: ghostwhite;
-}
-
-nav li a:hover {
-    color: #2F4F4F;
-}
-
-
-
-@media (max-width: 600px) {
-    nav li {
-        border-bottom: 1px solid #aaaaaa;
-    }
-
-    nav li#home, nav li {
-        float: none;
     }
 }
 
