@@ -85,13 +85,19 @@ h2, h3 {
     text-align: center;
 }
 
+
+/* ENCOURAGEMENT LINE */
+
 .encouragement {
+    min-width: 300px;
     justify-content: center;
     display: flex;
     font-family: 'Montserrat', sans-serif;
     font-size: 32px;
     font-weight: 300;
     line-height: 1.2em;
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
 .encouragement-text {
@@ -99,7 +105,10 @@ h2, h3 {
 }
 
 .get-creative, .feast {
-    color: #990000;
+    /*color: #009900;*/
+    /*color: #996633;*/
+    color:  #FF6347;
+    /*color: 	#FF8C00;*/
     font-weight: 500;
 }
 
@@ -107,13 +116,13 @@ h2, h3 {
     display:block;
 }
 
-@media all and (max-width: 414px) {
-    .encouragement {
-        display: none;
-    }
-}
+/*@media all and (max-width: 414px) {*/
+    /*.encouragement {*/
+        /*display: none;*/
+    /*}*/
+/*}*/
 
-
+/* GENERAL RULES */
 
 h2 {
     font-family: 'Montserrat', sans-serif;
@@ -132,11 +141,11 @@ h3 {
     padding: 20px 0;
 }
 
+
 /* SEARCH BAR */
 
 form#search-bar {
-    height: 300px;
-    padding: 0;
+    height: 200px;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -144,7 +153,8 @@ form#search-bar {
 }
 
 #id_q {
-    width: 193px;
+    width: 65%;
+    max-width: 650px;
     min-width: 193px;
     -webkit-transition: width 0.5s ease-in-out;
     -moz-transition: width 0.5s ease-in-out;
@@ -163,6 +173,12 @@ form#search-bar {
     outline: none;
 }
 
+@media all and (max-width: 1000px) {
+    #id_q:focus {
+        width: 80%;
+    }
+}
+
 #search-bar input[type=submit] {
     position: relative;
     padding: 12px 15px;
@@ -172,6 +188,7 @@ form#search-bar {
     font-weight: bold;
     font-size: 16px;
 }
+
 
 /* TOP FOUR RECIPES */
 
@@ -205,10 +222,6 @@ form#search-bar {
     .four {
         flex-basis: 50%;
     }
-
-    #id_q:focus {
-        width: 80%;
-    }
 }
 
 @media all and (max-width: 600px) {
@@ -217,7 +230,6 @@ form#search-bar {
     }
 
     .top-four {
-        /*width: 100%;*/
         flex-direction: column;
     }
 }
