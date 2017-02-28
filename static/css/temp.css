@@ -105,10 +105,7 @@ h2, h3 {
 }
 
 .get-creative, .feast {
-    /*color: #009900;*/
-    /*color: #996633;*/
     color:  #FF6347;
-    /*color: 	#FF8C00;*/
     font-weight: 500;
 }
 
@@ -116,11 +113,7 @@ h2, h3 {
     display:block;
 }
 
-/*@media all and (max-width: 414px) {*/
-    /*.encouragement {*/
-        /*display: none;*/
-    /*}*/
-/*}*/
+
 
 /* GENERAL RULES */
 
@@ -153,41 +146,72 @@ form#search-bar {
 }
 
 #id_q {
-    width: 65%;
+    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 7px 11px;
+    padding: 12px 20px 12px 50px;
+    border: 2px solid #222c36;
+    box-sizing: border-box;
     max-width: 650px;
     min-width: 193px;
-    -webkit-transition: width 0.5s ease-in-out;
-    -moz-transition: width 0.5s ease-in-out;
-    -o-transition: width 0.5s ease-in-out;
-    transition: width 0.5s ease-in-out;
+    height: 60px;
+    width: 65%;
 
-    box-sizing: border-box;
-    border: 2px solid #222c36;
-    font-size: 16px;
-    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 5px 5px;
-    padding: 12px 20px 12px 40px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 24px;
 }
 
 #id_q:focus {
-    width: 40%;
     outline: none;
 }
 
+#search-bar input[type=submit] {
+    background-color: #222c36;
+    border: 2px solid #222c36;
+    position: relative;
+    height: 60px;
+    width: 120px;
+    color: #fafafa;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-align: center;
+    font-size: 24px;
+}
+
 @media all and (max-width: 1000px) {
+    #id_q {
+        background-position: 5px 5px;
+        height: 46px;
+
+        font-size: 20px;
+    }
+
     #id_q:focus {
+        -webkit-transition: width 0.5s ease-in-out;
+        -moz-transition: width 0.5s ease-in-out;
+        -o-transition: width 0.5s ease-in-out;
+        transition: width 0.5s ease-in-out;
         width: 80%;
+    }
+
+    #search-bar input[type=submit] {
+        height: 46px;
+        font-size: 20px;
     }
 }
 
-#search-bar input[type=submit] {
-    position: relative;
-    padding: 12px 15px;
-    border: 2px solid #222c36;
-    background-color: #222c36;
-    color: #fafafa;
-    font-weight: bold;
-    font-size: 16px;
+@media all and (max-width: 600px) {
+    #search-bar input[type=submit] {
+        font-size: 18px;
+        height: 46px;
+        width: 80px;
+    }
+
+    #id_q {
+        font-size: 16px;
+    }
 }
+
 
 
 /* TOP FOUR RECIPES */
