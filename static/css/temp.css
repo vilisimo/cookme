@@ -115,30 +115,10 @@ h2, h3 {
 
 
 
-/* GENERAL RULES */
-
-h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
-    font-size: 40px;
-    line-height: 1em;
-    text-transform: uppercase;
-    margin: 76px 0 46px 0;
-    padding-bottom: 20px;
-
-    background: linear-gradient(black, black) bottom no-repeat;
-    background-size: 75% 2px;
-}
-
-h3 {
-    padding: 20px 0;
-}
-
-
 /* SEARCH BAR */
 
 form#search-bar {
-    height: 200px;
+    height: 250px;
     justify-content: center;
     display: flex;
     align-items: center;
@@ -214,6 +194,24 @@ form#search-bar {
 
 
 
+/* HEADINGS */
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    line-height: 1em;
+    text-transform: uppercase;
+    margin: 76px 0 46px 0;
+    padding-bottom: 20px;
+}
+
+h3 {
+    padding: 20px 0;
+}
+
+
+
 /* TOP FOUR RECIPES */
 
 .top-four {
@@ -226,8 +224,9 @@ form#search-bar {
     flex-basis: 25%;
 }
 
-.four p {
-    text-align: justify;
+.four a {
+    text-decoration: none;
+    color: black;
 }
 
 .four img {
