@@ -33,3 +33,5 @@ pass on to templates, use in tests, etc., no need to change in multiple places.
 
 JavaScript:
 1. Highlight current page in navbar.
+2. Add a 'flag' to recipe corner, so that it can be clicked and added to the 
+fridge, eliminating the need for a button/reloading page/redirection.
