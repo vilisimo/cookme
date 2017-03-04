@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static 'css/temp.css' %}">
     <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,500" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   {% endblock %}
@@ -69,7 +69,7 @@
 
       {% if most_popular %}
       <h2>Popular</h2>
-      <div class="top-four most-popular">
+      <div class="four-recipes most-popular">
         {% for recipe in most_popular %}
           <div class="four popular">
               <a href="{{ recipe.get_absolute_url }}">
@@ -84,7 +84,7 @@
 
       {% if most_recent %}
       <h2>Recent</h2>
-      <div class="top-four most-recent">
+      <div class="four-recipes most-recent">
         {% for recipe in most_recent %}
           <div class="four recent">
               <a href="{{ recipe.get_absolute_url }}">
@@ -100,7 +100,7 @@
       {% if user.is_authenticated %}
         {% if user_additions %}
         <h2>Your new additions</h2>
-        <div class="top-four user-additions">
+        <div class="four-recipes user-additions">
           {% for recipe in user_additions %}
             <div class="four additions">
               <a href="{{ recipe.get_absolute_url }}">

@@ -129,7 +129,6 @@ form#search-bar {
     justify-content: center;
     display: flex;
     align-items: center;
-    /*background: no-repeat url('../files/images/searchbar-outside.jpg') center;*/
 }
 
 #id_q {
@@ -219,9 +218,9 @@ h3 {
 
 
 
-/* TOP FOUR RECIPES */
+/* FOUR RECIPE VIEW */
 
-.top-four {
+.four-recipes {
     display: flex;
 }
 
@@ -229,6 +228,7 @@ h3 {
     padding: 16px 18px 16px 18px;
     box-sizing: border-box;
     flex-basis: 25%;
+    position: relative;
 }
 
 .four a {
@@ -245,7 +245,7 @@ h3 {
 }
 
 @media all and (max-width: 1000px) {
-    .top-four {
+    .four-recipes {
         flex-wrap: wrap;
     }
 
@@ -259,9 +259,40 @@ h3 {
         min-width: 250px;
     }
 
-    .top-four {
+    .four-recipes {
         flex-direction: column;
     }
+}
+
+
+/* ============ */
+/* RECIPES.HTML */
+/* ============ */
+
+
+/* FRIDGE ICON */
+
+.add-fridge-image {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-align: center;
+
+    background: no-repeat white url('../files/icons/fridge28x28.png');
+    border: 5px solid transparent;
+    padding: 7px 0;
+    width: 24px;
+    height: 10px;
+}
+
+.add-fridge {
+    position: absolute;
+    top: 25px;
+}
+
+
+.add-fridge-image:hover {
+    background-color: #009999;
+    filter: invert(100%);
 }
 
 
