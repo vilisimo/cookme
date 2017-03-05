@@ -3,135 +3,142 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Cookme</title>
-    {% block mainstyle %}
-        <!-- In case the main stylesheet need to be overwritten. -->
-        <link rel="stylesheet" href="{% static 'css/main.css' %}">
-        <link href="https://fonts.googleapis.com/css?family=Lato:black"
-              rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Lato:black|Raleway"
-              rel="stylesheet">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    {% endblock %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Cookme</title>
+  {% block mainstyle %}
+    <!-- In case the main stylesheet need to be overwritten. -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500" rel="stylesheet">
 
-    {% block head %}
-        <!-- Put any additional stylesheets, JS, etc here. -->
-    {% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  {% endblock %}
+
+  {% block head %}
+    <!-- Put any additional stylesheets, JS, etc here. -->
+  {% endblock %}
 
 </head>
 
 <body>
-    <header>
+  <header>
+    <nav>
+      <ul>
+        <li id="home"><a href="{% url 'home' %}">Cook<span class="title-second-part">me</span></a></li>
+        {% if user.is_authenticated %}
+          <li><a href="{% url 'logout' %}">Logout</a></li>
+          <li><a href="{% url 'fridge:fridge_detail' %}">Fridge</a></li>
+        {% else %}
+          <!-- Hiding links when clicked on them avoids the problem of
+          redirection to the same page. -->
+          {% url 'login' as login_url %}
+          {% url 'register' as register_url %}
+          {% if request.path != login_url %}
+            <li><a href="{% url 'login' %}?next={{ request.path|urlencode }}">Login</a></li>
+          {% endif %}
+          {% if request.path != register_url %}
+            <li><a href="{% url 'register' %}?next={{ request.path|urlencode }}">Register</a></li>
+          {% endif %}
+        {% endif %}
+        <li><a href="{% url 'recipes:recipes' %}">Recipes</a></li>
+      </ul>
+    </nav>
 
-        <nav>
-            <!-- Perhaps some cleaner way to have Home on the left? -->
-            <li class="navigation-home">
-                <a href="{% url 'home' %}">Cookme</a>
-            </li>
+    {% block header %}
+    {% endblock %}
+  </header>
 
-            <!-- REMOVE LATER: ONLY TO MAKE USERNAME OBVIOUS IN PRODUCTION -->
-{#            {% if user.is_authenticated %}#}
-{#                <span id="welcome-user">Welcome, {{ user.username }}</span>#}
-{#            {% endif %}#}
-
-            <!-- Navigation bar (except Home) -->
-            <ul class="navigation-other">
-                <!-- RECIPES -->
-                <li><a href="{% url 'recipes:recipes' %}">Recipes</a></li>
-                <!-- FRIDGE & LOGOUT -->
-                {% if user.is_authenticated %}
-                    <li><a href="{% url 'fridge:fridge_detail' %}">Fridge</a></li>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                {% else %}
-                    <!-- Hiding links when clicked on them avoids the problem of
-                    redirection to the same page. -->
-                    <li>{% url 'login' as login_url %}</li>
-                    {% if request.path != login_url %}
-                        <li><a href="{% url 'login' %}?next={{ request.path|urlencode }}">Login</a></li>
-                    {% endif %}
-                    <li>{% url 'register' as register_url %}</li>
-                    {% if request.path != register_url %}
-                        <li><a href="{% url 'register' %}?next={{ request.path|urlencode }}">Register</a></li>
-                    {% endif %}
-                {% endif %}
-            </ul>
-        </nav>
-
-        {% block header %}
-        {% endblock %}
-    </header>
-
-    <main>
-        <!-- Need to use CSS to make the search bar wider. Placeholder
-        doesn't fit -->
-        {% block main %}
-            <form action="{% url 'home' %}" method="post" id="search-bar">
-                {% csrf_token %}
-                {{ form.q }}
-                <input type="submit" value="Search" />
-            </form>
-
-            {% if most_popular or most_recent or user_additions %}
-                <section>
-                    <h1>Inspiration</h1>
-                    {% if most_popular %}
-                        <article>
-                            <h2>Popular</h2>
-                            {% for recipe in most_popular %}
-                                <h3>{{ recipe.title }}</h3>
-                                <p>{{ recipe.description }}</p>
-                            {% endfor %}
-                        </article>
-                    {% endif %}
-
-                    {% if most_recent %}
-                        <article>
-                            <h2>Recent</h2>
-                            {% for recipe in most_recent %}
-                                <h3>{{ recipe.title }}</h3>
-                                <p>{{ recipe.description }}</p>
-                            {% endfor %}
-                        </article>
-                    {% endif %}
-
-                    {% if user.is_authenticated %}
-                        {% if user_additions %}
-                            <article>
-                                <h2>Your new additions</h2>
-                                {% for recipe in user_additions %}
-                                    <h3>{{ recipe.title }}</h3>
-                                    <p>{{ recipe.description }}</p>
-                                {% endfor %}
-                            </article>
-                        {% endif %}
-                    {% endif %}
-                </section>
-            {% endif %}
-        {% endblock %}
-    </main>
-
-    <footer>
-        <div id="copyright">
-            <p>No copyright whatsoever.</p>
-            <ul class="footer-links">
-                <li>
-                    <!-- Linebreak after a adds underscore... -->
-                    <a href="https://github.com/vilisimo/cookme" target="_blank">
-                        <img src="{% static 'files/icons/github32x32.png' %}"
-                             alt="Github icon"/></a>
-                </li>
-                <li><a href="https://uk.linkedin.com/in/simonasviliunas" target="_blank">
-                    <img src="{% static 'files/icons/linkedin37x28.png' %}"
-                         alt="LinkedIn icon"/></a>
-                </li>
-            </ul>
+  <main>
+    <!-- Need to use CSS to make the search bar wider. Placeholder
+    doesn't fit -->
+    {% block main %}
+      <!-- NOTE: placeholder needs to be changed when the screen size is small. JS? -->
+      <div class="encouragement">
+        <div class="encouragement-text">
+          <span class="get-creative">Get creative.</span> Use the ingredients you have to prepare a <span class="feast">feast</span>.
         </div>
-        {% block footer %}
-        {% endblock %}
-    </footer>
+      </div>
 
+      <form action="{% url 'home' %}" method="post" id="search-bar">
+        {% csrf_token %}
+        {{ form.q }}
+        <input type="submit" value="Search" />
+      </form>
+
+      {% if most_popular %}
+      <h2>Popular</h2>
+      <div class="four-recipes most-popular">
+        {% for recipe in most_popular %}
+          <div class="four popular">
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                <h3>{{ recipe.title }}</h3>
+                <p>{{ recipe.description }}</p>
+              </a>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if most_recent %}
+      <h2>Recent</h2>
+      <div class="four-recipes most-recent">
+        {% for recipe in most_recent %}
+          <div class="four recent">
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                <h3>{{ recipe.title }}</h3>
+                <p>{{ recipe.description }}</p>
+              </a>
+          </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+        {% if user_additions %}
+        <h2>Your new additions</h2>
+        <div class="four-recipes user-additions">
+          {% for recipe in user_additions %}
+            <div class="four additions">
+              <a href="{{ recipe.get_absolute_url }}">
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                <h3>{{ recipe.title }}</h3>
+                <p>{{ recipe.description }}</p>
+              </a>
+            </div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      {% endif %}
+    {% endblock %}
+  </main>
+
+  <footer>
+    <div id="copyright">
+      <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li>About</li>
+      </ul>
+      <p>No copyright whatsoever.</p>
+      <ul class="footer-links">
+        <li>
+          <!-- Linebreak after a adds underscore... -->
+          <a href="https://github.com/vilisimo/cookme" target="_blank">
+            <img src="{% static 'files/icons/github32x32.png' %}"
+               alt="Github icon"/></a>
+        </li>
+        <li><a href="https://uk.linkedin.com/in/simonasviliunas" target="_blank">
+          <img src="{% static 'files/icons/linkedin37x28.png' %}"
+             alt="LinkedIn icon"/></a>
+        </li>
+      </ul>
+    </div>
+    {% block footer %}
+    {% endblock %}
+  </footer>
 </body>
 
 </html>

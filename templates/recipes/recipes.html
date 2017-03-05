@@ -1,26 +1,27 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block main %}
-    {% if recipes %}
-        <ul>
-            {% for recipe in recipes %}
-                <li>
-                    <a href="{{ recipe.get_absolute_url }}">
-                        {{ recipe.title }} by <span id="author">{{ recipe.author }}</span>
-                    </a>
-                    <!-- Remove when working on CSS-->
-                    &nbsp
-                    <!-- No need to show 'add' if user is anonymous. -->
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'recipes:add_to_fridge' recipe.pk %}">
-                            Add
-                        </a>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <h3>You do not have any recipes.</h3>
-        <p>Please go and cook something!</p>
-    {% endif %}
+  {% if recipes %}
+    <ul>
+      <div class="four-recipes">
+        {% for recipe in recipes %}
+          <div class="four">
+            <a href="{{ recipe.get_absolute_url }}">
+              <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
+              <h3>{{ recipe.title }}  <br/>by <span id="author">{{ recipe.author }}</span></h3>
+            </a>
+            {% if user.is_authenticated %}
+              <a href="{% url 'recipes:add_to_fridge' recipe.pk %}" class="add-fridge">
+                <div class="add-fridge-image tooltip" title="Add to fridge"></div>
+              </a>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </ul>
+  {% else %}
+    <h3>You do not have any recipes.</h3>
+    <p>Please go and cook something!</p>
+  {% endif %}
 {% endblock %}
