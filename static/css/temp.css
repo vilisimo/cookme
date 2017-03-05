@@ -289,12 +289,10 @@ h3 {
     top: 25px;
 }
 
-
 .add-fridge-image:hover {
-    background-color: #009999;
-    filter: invert(100%);
+    background-color: #ff8c00;
+    /*filter: invert(100%);*/
 }
-
 
 /* ================== */
 /*   Footer insides   */
