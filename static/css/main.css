@@ -1,12 +1,17 @@
-/* ******************** GENERAL RULES ********************* */
-
 * {
     margin: 0;
 }
 
+header, footer, nav, article {
+    display: block;
+}
+
 html, body {
     height: 100%;
-    background: white;
+}
+
+main {
+    min-height: 100%;
 }
 
 ul, li {
@@ -14,197 +19,299 @@ ul, li {
     padding: 0;
 }
 
-img {
-    max-width: 100%;
-    height: auto;
-}
 
 
-/* ************************* TEXT ************************* */
-
-*::selection {
-    background: indianred;
-    color: white;
-}
-
-*::-moz-selection {
-    background: indianred;
-    color: white;
-}
-
-body {
-    font-family: 'Raleway', serif;
-    text-align: center;
-    line-height: 1.6em;
-    font-size: 16px;
-}
-
-a {
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
+/* ==================== */
+/*    Navigation bar    */
+/* ==================== */
 
 nav {
+    background-color: #009999;
     font-family: 'Lato', serif;
     text-transform: uppercase;
-    font-size: 17px;
-}
-
-nav a:hover {
-    text-decoration: none;
-}
-
-
-h1 {
-    text-transform: uppercase;
-    margin-bottom: 1em;
-    margin-top: 1em;
-}
-
-h2, h3, h4, h5, h6 {
-    margin-bottom: 0.5em;
-    margin-top: 0.5em;
-}
-
-h2 {
-    font-size: 28px;
-}
-
-p + p {
-    margin-top: 1em;
-}
-
-.recipe-description p + p {
-    margin-top: 0.3em;
-}
-
-.recipe-description {
     font-size: 20px;
 }
 
-.recipe-additional-information {
-    margin-bottom: 40px;
+nav ul {
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+
 }
-
-.recipe-additional-information ul {
-    font-size: 14px;
-}
-
-.recipe-additional-information li {
-    display: inline;
-    border-right: 1px solid #aaa;
-    padding-right: 5px;
-}
-
-.recipe-additional-information li:last-child {
-    border-right: none;
-    padding-right: 0;
-}
-
-.recipe-links li {
-    border:none;
-}
-
-.recipe-ingredients {
-    text-align: right;
-    color: #222c36;
-}
-
-.recipe-ingredients li {
-    line-height: 2em;
-    font-size: 18px;
-}
-
-.recipe-process {
-    text-align: justify;
-}
-
-
-/* ************************* BODY ************************* */
-
-.recipe-process {
-    counter-reset: step;
-    padding-bottom: 2em;
-}
-
-p.recipe-step {
-    padding-left: 3em;
-}
-
-p.recipe-step:before {
-    counter-increment: step;
-    content: counter(step);
-    font-size: 2.5em;
-    position: absolute;
-    margin-left: -45px;
-    margin-top: 0.1em;
-    z-index: 1;
-}
-
-
-/* ************************ HEADER ************************ */
-header {
-    background: inherit;
-    position: fixed;
-    height: 54px;
-    width: 100%;
-    top: 0;
-    border-bottom: solid 1px black;
-    z-index: 9999;
-}
-
-
-/* ********************* HEADER INSIDES ******************* */
 
 nav li {
-    float:left;
+    float: right;
+}
+
+nav li#home {
+    float: left;
 }
 
 nav li a {
-    padding: 14px 16px;
-    display:block;
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
+    display: block;
     text-decoration: none;
-    color: #ccc;
+    text-align: center;
+    padding: 24px 26px;
+    transition: all 0.5s ease;
+    color: ghostwhite;
 }
 
 nav li a:hover {
     color: #2F4F4F;
 }
 
-ul.navigation-other {
-    float: right;
+
+
+@media (max-width: 600px) {
+    nav li {
+        border-bottom: 1px solid #aaaaaa;
+    }
+
+    nav li#home, nav li {
+        float: none;
+    }
 }
 
-li.navigation-home {
-    float: left;
+
+
+/* ================== */
+/*      Main body     */
+/* ================== */
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    line-height: 1.6em;
+    font-size: 16px;
 }
 
-/* DELETE LATER */
-#welcome-user {
+main {
+    padding: 30px 40px;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+
+/* ENCOURAGEMENT LINE */
+
+.encouragement {
+    min-width: 300px;
+    justify-content: center;
+    display: flex;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 1.2em;
+    margin-top: 30px;
+}
+
+.encouragement-text {
+    display: inline-block;
+}
+
+.get-creative, .feast {
+    color:  #FF6347;
+    font-weight: 500;
+}
+
+.get-creative {
+    display:block;
+}
+
+
+
+/* SEARCH BAR */
+
+form#search-bar {
+    height: 250px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+#id_q {
+    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 7px 11px;
+    padding: 12px 20px 12px 50px;
+    border: 2px solid #222c36;
+    box-sizing: border-box;
+    max-width: 650px;
+    min-width: 193px;
+    height: 60px;
+    width: 65%;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 24px;
+}
+
+#id_q:focus {
+    outline: none;
+}
+
+#search-bar input[type=submit] {
+    background-color: #222c36;
+    border: 2px solid #222c36;
+    position: relative;
+    height: 60px;
+    width: 120px;
+    color: #fafafa;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    text-align: center;
+    font-size: 24px;
+}
+
+@media all and (max-width: 1000px) {
+    #id_q {
+        background-position: 5px 5px;
+        height: 46px;
+
+        font-size: 20px;
+    }
+
+    #id_q:focus {
+        -webkit-transition: width 0.5s ease-in-out;
+        -moz-transition: width 0.5s ease-in-out;
+        -o-transition: width 0.5s ease-in-out;
+        transition: width 0.5s ease-in-out;
+        width: 80%;
+    }
+
+    #search-bar input[type=submit] {
+        height: 46px;
+        font-size: 20px;
+    }
+}
+
+@media all and (max-width: 600px) {
+    #search-bar input[type=submit] {
+        font-size: 18px;
+        height: 46px;
+        width: 80px;
+    }
+
+    #id_q {
+        font-size: 16px;
+    }
+}
+
+
+
+/* HEADINGS */
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 40px;
+    line-height: 1em;
+    text-transform: uppercase;
+    margin: 76px 0 46px 0;
+    padding-bottom: 20px;
+}
+
+h3 {
+    padding: 20px 0;
+}
+
+
+
+/* FOUR RECIPE VIEW */
+
+.four-recipes {
+    display: flex;
+}
+
+.four {
+    padding: 16px 18px 16px 18px;
+    box-sizing: border-box;
+    flex-basis: 25%;
+    position: relative;
+}
+
+.four a {
+    text-decoration: none;
+    color: black;
+}
+
+.four img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
     display: block;
-    padding: 14px 16px;
-    float: left;
+    margin: auto;
+}
+
+@media all and (max-width: 1000px) {
+    .four-recipes {
+        flex-wrap: wrap;
+    }
+
+    .four {
+        flex-basis: 50%;
+    }
+}
+
+@media all and (max-width: 600px) {
+    .four {
+        min-width: 250px;
+    }
+
+    .four-recipes {
+        flex-direction: column;
+    }
 }
 
 
-/* ************************ FOOTER ************************ */
+/* ============ */
+/* RECIPES.HTML */
+/* ============ */
+
+
+/* FRIDGE ICON */
+
+.add-fridge-image {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-align: center;
+
+    background: no-repeat white url('../files/icons/fridge28x28.png');
+    border: 5px solid transparent;
+    padding: 7px 0;
+    width: 24px;
+    height: 10px;
+}
+
+.add-fridge {
+    position: absolute;
+    top: 25px;
+}
+
+.add-fridge-image:hover {
+    background-color: #ff8c00;
+    /*filter: invert(100%);*/
+}
+
+/* ================== */
+/*   Footer insides   */
+/* ================== */
 
 footer {
-    height: 60px;
-    margin: 0 2%;
-    border-top: solid black 2px;
+    border-top: 2px solid darkgrey;
+    text-align: center;
+    margin: 10px 2% 0 2%;
 }
 
 #copyright {
-    width: 100%;
-    height:100%;
     line-height: 30px;
-    font-size: 0.9em;
+    font-size: 12px;
+}
+
+#copyright li {
+    display: inline;
+    padding: 0 3px;
 }
 
 #copyright img[alt="Github icon"] {
@@ -212,127 +319,6 @@ footer {
     height: 28px;
 }
 
-
-/* ********************* FOOTER INSIDES ******************* */
-
-#copyright li {
-    display: inline;
+.footer-links {
+    padding-top: 5px;
 }
-
-
-/* ************************* MAIN ************************* */
-
-main {
-    width: 96%;
-    min-height: 100%;
-    /* Top, right, bottom, left */
-    padding: 2% 2% 6% 2%;
-    /* Some space to accommodate navigation bar */
-    margin: +55px auto auto auto;
-}
-
-hr {
-    width: 30%;
-    border-bottom: 1px solid;
-    position: relative;
-    left: 35%;
-    margin-bottom: 10px;
-}
-
-.recipe-essentials {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-}
-
-.recipe-ingredients {
-    order: 1;
-    flex-basis: 26%;
-    margin-right: 2%;
-    margin-left: 2%;
-}
-
-.recipe-ingredients li {
-    -webkit-transition: all 0.3s ease;
-    transition: all 0.3s ease;
-}
-
-.recipe-ingredients li:hover {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.recipe-process {
-    order: 2;
-    flex-basis: 68%;
-    margin-right: 1%;
-    margin-left: 1%;
-}
-
-
-/* ******************************************************** */
-/* ********************** main.html *********************** */
-/* ******************************************************** */
-
-form#search-bar {
-    height: 400px;
-    padding: 0;
-    margin-left: -2.09%;
-    margin-right: -2.09%;
-    margin-top: -2.1%;
-    justify-content: center;
-    display: flex;
-    align-items: center;
-    background: no-repeat url('../files/images/searchbar-outside.jpg') center;
-}
-
-#id_q {
-    width: 186px;
-    -webkit-transition: width 0.5s ease-in-out;
-    -moz-transition: width 0.5s ease-in-out;
-    -o-transition: width 0.5s ease-in-out;
-    transition: width 0.5s ease-in-out;
-
-    box-sizing: border-box;
-    border: 2px solid transparent;
-    font-size: 16px;
-    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 5px 5px;
-    padding: 12px 20px 12px 40px;
-}
-
-#id_q:focus {
-    width: 40%;
-    outline: none;
-}
-
-#search-bar input[type=submit] {
-    position: relative;
-    padding: 12px 15px;
-    /* vs #207cca? #008b8b #222c36 coral darkkhaki darkolivegreen */
-    border: 2px solid #222c36;
-    background-color: #222c36;
-    color: #fafafa;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-
-/* ******************************************************** */
-/* ******************** recipes.html ********************** */
-/* ******************************************************** */
-
-#author {
-    font-style: italic;
-}
-
-/*
-1. Padding/margin is still white if background is applied.
-2. Footer is not at the bottom of the screen when there is no text.
-   Need to scroll to see it.
-3. Z-index for absolute and relative. Maybe not the way to do it: I feel I do
-   not know enough about positioning and there may be a cleaner way. Needs
-   revisit once I have learned more about CSS.
-4. Navigation bar non-responsive at extremes (narrow windows).
-5. Navigation bar needs to be more colourful.
-
-*/

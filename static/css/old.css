@@ -1,0 +1,338 @@
+/* ******************** GENERAL RULES ********************* */
+
+* {
+    margin: 0;
+}
+
+html, body {
+    height: 100%;
+    background: white;
+}
+
+ul, li {
+    list-style-type: none;
+    padding: 0;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* ************************* TEXT ************************* */
+
+*::selection {
+    background: indianred;
+    color: white;
+}
+
+*::-moz-selection {
+    background: indianred;
+    color: white;
+}
+
+body {
+    font-family: 'Raleway', serif;
+    text-align: center;
+    line-height: 1.6em;
+    font-size: 16px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+nav {
+    font-family: 'Lato', serif;
+    text-transform: uppercase;
+    font-size: 17px;
+}
+
+nav a:hover {
+    text-decoration: none;
+}
+
+
+h1 {
+    text-transform: uppercase;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+
+h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}
+
+h2 {
+    font-size: 28px;
+}
+
+p + p {
+    margin-top: 1em;
+}
+
+.recipe-description p + p {
+    margin-top: 0.3em;
+}
+
+.recipe-description {
+    font-size: 20px;
+}
+
+.recipe-additional-information {
+    margin-bottom: 40px;
+}
+
+.recipe-additional-information ul {
+    font-size: 14px;
+}
+
+.recipe-additional-information li {
+    display: inline;
+    border-right: 1px solid #aaa;
+    padding-right: 5px;
+}
+
+.recipe-additional-information li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.recipe-links li {
+    border:none;
+}
+
+.recipe-ingredients {
+    text-align: right;
+    color: #222c36;
+}
+
+.recipe-ingredients li {
+    line-height: 2em;
+    font-size: 18px;
+}
+
+.recipe-process {
+    text-align: justify;
+}
+
+
+/* ************************* BODY ************************* */
+
+.recipe-process {
+    counter-reset: step;
+    padding-bottom: 2em;
+}
+
+p.recipe-step {
+    padding-left: 3em;
+}
+
+p.recipe-step:before {
+    counter-increment: step;
+    content: counter(step);
+    font-size: 2.5em;
+    position: absolute;
+    margin-left: -45px;
+    margin-top: 0.1em;
+    z-index: 1;
+}
+
+
+/* ************************ HEADER ************************ */
+header {
+    background: inherit;
+    position: fixed;
+    height: 54px;
+    width: 100%;
+    top: 0;
+    border-bottom: solid 1px black;
+    z-index: 9999;
+}
+
+
+/* ********************* HEADER INSIDES ******************* */
+
+nav li {
+    float:left;
+}
+
+nav li a {
+    padding: 14px 16px;
+    display:block;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
+    text-decoration: none;
+    color: #ccc;
+}
+
+nav li a:hover {
+    color: #2F4F4F;
+}
+
+ul.navigation-other {
+    float: right;
+}
+
+li.navigation-home {
+    float: left;
+}
+
+/* DELETE LATER */
+#welcome-user {
+    display: block;
+    padding: 14px 16px;
+    float: left;
+}
+
+
+/* ************************ FOOTER ************************ */
+
+footer {
+    height: 60px;
+    margin: 0 2%;
+    border-top: solid black 2px;
+}
+
+#copyright {
+    width: 100%;
+    height:100%;
+    line-height: 30px;
+    font-size: 0.9em;
+}
+
+#copyright img[alt="Github icon"] {
+    width: 28px;
+    height: 28px;
+}
+
+
+/* ********************* FOOTER INSIDES ******************* */
+
+#copyright li {
+    display: inline;
+}
+
+
+/* ************************* MAIN ************************* */
+
+main {
+    width: 96%;
+    min-height: 100%;
+    /* Top, right, bottom, left */
+    padding: 2% 2% 6% 2%;
+    /* Some space to accommodate navigation bar */
+    margin: +55px auto auto auto;
+}
+
+hr {
+    width: 30%;
+    border-bottom: 1px solid;
+    position: relative;
+    left: 35%;
+    margin-bottom: 10px;
+}
+
+.recipe-essentials {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.recipe-ingredients {
+    order: 1;
+    flex-basis: 26%;
+    margin-right: 2%;
+    margin-left: 2%;
+}
+
+.recipe-ingredients li {
+    -webkit-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.recipe-ingredients li:hover {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.recipe-process {
+    order: 2;
+    flex-basis: 68%;
+    margin-right: 1%;
+    margin-left: 1%;
+}
+
+
+/* ******************************************************** */
+/* ********************** main.html *********************** */
+/* ******************************************************** */
+
+form#search-bar {
+    height: 400px;
+    padding: 0;
+    margin-left: -2.09%;
+    margin-right: -2.09%;
+    margin-top: -2.1%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    background: no-repeat url('../files/images/searchbar-outside.jpg') center;
+}
+
+#id_q {
+    width: 186px;
+    -webkit-transition: width 0.5s ease-in-out;
+    -moz-transition: width 0.5s ease-in-out;
+    -o-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    font-size: 16px;
+    background: no-repeat rgba(255,255,255, 0.93) url('../files/icons/searchicon32x32.png') 5px 5px;
+    padding: 12px 20px 12px 40px;
+}
+
+#id_q:focus {
+    width: 40%;
+    outline: none;
+}
+
+#search-bar input[type=submit] {
+    position: relative;
+    padding: 12px 15px;
+    /* vs #207cca? #008b8b #222c36 coral darkkhaki darkolivegreen */
+    border: 2px solid #222c36;
+    background-color: #222c36;
+    color: #fafafa;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+/* ******************************************************** */
+/* ******************** recipes.html ********************** */
+/* ******************************************************** */
+
+#author {
+    font-style: italic;
+}
+
+/*
+1. Padding/margin is still white if background is applied.
+2. Footer is not at the bottom of the screen when there is no text.
+   Need to scroll to see it.
+3. Z-index for absolute and relative. Maybe not the way to do it: I feel I do
+   not know enough about positioning and there may be a cleaner way. Needs
+   revisit once I have learned more about CSS.
+4. Navigation bar non-responsive at extremes (narrow windows).
+5. Navigation bar needs to be more colourful.
+
+*/
