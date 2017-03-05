@@ -278,10 +278,13 @@ h3 {
     text-align: center;
 
     background: no-repeat white url('../files/icons/fridge28x28.png');
+    mix-blend-mode: screen;
     border: 5px solid transparent;
+    border-radius: 0 2px 2px 0;
     padding: 7px 0;
     width: 24px;
     height: 10px;
+    transition: all 0.5s ease;
 }
 
 .add-fridge {
@@ -291,8 +294,19 @@ h3 {
 
 .add-fridge-image:hover {
     background-color: #ff8c00;
-    /*filter: invert(100%);*/
+    mix-blend-mode: normal;
 }
+
+
+
+/* RECIPE DETAILS */
+
+#author {
+    /*font-style: italic;*/
+    color: #FF6347;
+}
+
+
 
 /* ================== */
 /*   Footer insides   */
