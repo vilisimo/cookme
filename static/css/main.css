@@ -284,7 +284,6 @@ h3 {
     padding: 7px 0;
     width: 24px;
     height: 10px;
-    transition: all 0.5s ease;
 }
 
 .add-fridge {
@@ -313,9 +312,16 @@ h3 {
 /* ================== */
 
 footer {
-    border-top: 2px solid darkgrey;
+    background-color: #339999;
     text-align: center;
-    margin: 10px 2% 0 2%;
+    margin-top: 10px;
+    padding-top: 10px;
+    color: black;
+
+}
+
+footer a {
+    text-decoration: none;
 }
 
 #copyright {
