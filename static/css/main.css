@@ -6,8 +6,10 @@ header, footer, nav, article {
     display: block;
 }
 
-html, body {
+html, body, input, h2 {
     height: 100%;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
 }
 
 main {
@@ -19,7 +21,12 @@ ul, li {
     padding: 0;
 }
 
+/* Different color upon selection of text */
 
+*::selection {
+    background: indianred;
+    color: white;
+}
 
 /* ==================== */
 /*    Navigation bar    */
@@ -78,12 +85,6 @@ nav li a:hover {
 /*      Main body     */
 /* ================== */
 
-body {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-weight: 400;
-    line-height: 1.6em;
-    font-size: 16px;
-}
 
 main {
     padding: 30px 40px;
@@ -93,6 +94,12 @@ h2, h3 {
     text-align: center;
 }
 
+p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    line-height: 1.6em;
+    font-size: 16px;
+}
 
 /* ENCOURAGEMENT LINE */
 
@@ -100,9 +107,7 @@ h2, h3 {
     min-width: 300px;
     justify-content: center;
     display: flex;
-    font-family: 'Montserrat', sans-serif;
     font-size: 32px;
-    font-weight: 300;
     line-height: 1.2em;
     margin-top: 30px;
 }
@@ -141,8 +146,6 @@ form#search-bar {
     height: 60px;
     width: 65%;
 
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
     font-size: 24px;
 }
 
@@ -158,8 +161,6 @@ form#search-bar {
     width: 120px;
     color: #fafafa;
 
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
     text-align: center;
     font-size: 24px;
 }
@@ -203,8 +204,6 @@ form#search-bar {
 /* HEADINGS */
 
 h2 {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
     font-size: 40px;
     line-height: 1em;
     text-transform: uppercase;
@@ -213,7 +212,7 @@ h2 {
 }
 
 h3 {
-    padding: 20px 0;
+    padding: 20px 0 10px 0;
 }
 
 
@@ -272,11 +271,7 @@ h3 {
 
 /* FRIDGE ICON */
 
-.add-fridge-image {
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 400;
-    text-align: center;
-
+.add-fridge-icon {
     background: no-repeat white url('../files/icons/fridge28x28.png');
     mix-blend-mode: screen;
     border: 5px solid transparent;
@@ -291,7 +286,7 @@ h3 {
     top: 25px;
 }
 
-.add-fridge-image:hover {
+.add-fridge-icon:hover {
     background-color: #ff8c00;
     mix-blend-mode: normal;
 }
@@ -301,7 +296,6 @@ h3 {
 /* RECIPE DETAILS */
 
 #author {
-    /*font-style: italic;*/
     color: #FF6347;
 }
 
