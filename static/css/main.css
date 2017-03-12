@@ -212,6 +212,8 @@ h2 {
 }
 
 h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: bold;
     padding: 20px 0 10px 0;
 }
 
