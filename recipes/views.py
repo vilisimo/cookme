@@ -57,6 +57,12 @@ def recipe_detail(request, slug):
         'pk': recipe.pk,
     }
 
+    user = request.user
+    if user.is_authenticated:
+        fridge = Fridge.objects.get(user=user)
+        user_recipes = fridge.recipes.all().values_list('id', flat=True)
+        context['user_recipes'] = user_recipes
+
     return render(request, 'recipes/recipe_detail.html', context)
 
 
