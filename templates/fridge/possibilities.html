@@ -2,20 +2,16 @@
 
 {% block main %}
   <h2>You have enough ingredients for...</h2>
-  {% if recipes %}
-    <ul>
-      {% for recipe in recipes %}
-        <li>
-          <a href="{{ recipe.get_absolute_url }}">
-            {{ recipe.title }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>
-      There are no recipes you can make with the ingredients in your
-      fridge! Perhaps it is time to go shopping?
-    </p>
-  {% endif %}
+  <ul>
+    {% for recipe in recipes %}
+      <li>
+        <a href="{{ recipe.get_absolute_url }}">
+          {{ recipe.title }}
+        </a>
+      </li>
+    {% empty %}
+      <li>There are no recipes you can make with the ingredients in your
+      fridge! Perhaps it is time to go shopping?</li>
+    {% endfor %}
+  </ul>
 {% endblock %}

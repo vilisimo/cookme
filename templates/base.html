@@ -68,50 +68,50 @@
       </form>
 
       {% if most_popular %}
-      <h2>Popular</h2>
-      <div class="four-recipes most-popular">
-        {% for recipe in most_popular %}
-          <div class="four popular">
-              <a href="{{ recipe.get_absolute_url }}">
-                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
-                <h3>{{ recipe.title }}</h3>
-                <p>{{ recipe.description }}</p>
-              </a>
-          </div>
-        {% endfor %}
-      </div>
+        <h2>Popular</h2>
+        <div class="four-recipes most-popular">
+          {% for recipe in most_popular %}
+            <div class="four popular">
+                <a href="{{ recipe.get_absolute_url }}">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description }}</p>
+                </a>
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
 
       {% if most_recent %}
-      <h2>Recent</h2>
-      <div class="four-recipes most-recent">
-        {% for recipe in most_recent %}
-          <div class="four recent">
-              <a href="{{ recipe.get_absolute_url }}">
-                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
-                <h3>{{ recipe.title }}</h3>
-                <p>{{ recipe.description }}</p>
-              </a>
-          </div>
-        {% endfor %}
-      </div>
+        <h2>Recent</h2>
+        <div class="four-recipes most-recent">
+          {% for recipe in most_recent %}
+            <div class="four recent">
+                <a href="{{ recipe.get_absolute_url }}">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description }}</p>
+                </a>
+            </div>
+          {% endfor %}
+        </div>
       {% endif %}
 
       {% if user.is_authenticated %}
         {% if user_additions %}
         <h2>Your new additions</h2>
-        <div class="four-recipes user-additions">
-          {% for recipe in user_additions %}
-            <div class="four additions">
-              <a href="{{ recipe.get_absolute_url }}">
-                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
-                <h3>{{ recipe.title }}</h3>
-                <p>{{ recipe.description }}</p>
-              </a>
-            </div>
-          {% endfor %}
+          <div class="four-recipes user-additions">
+            {% for recipe in user_additions %}
+              <div class="four additions">
+                <a href="{{ recipe.get_absolute_url }}">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description }}</p>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
         {% endif %}
-      </div>
       {% endif %}
     {% endblock %}
   </main>
@@ -125,14 +125,15 @@
       <p>No copyright whatsoever.</p>
       <ul class="footer-links">
         <li>
-          <!-- Linebreak after a adds underscore... -->
+          <!-- Linebreak after <a> adds underscore... -->
           <a href="https://github.com/vilisimo/cookme" target="_blank">
-            <img src="{% static 'files/icons/github32x32.png' %}"
-               alt="Github icon"/></a>
+            <img src="{% static 'files/icons/github32x32.png' %}" alt="Github icon"/>
+          </a>
         </li>
-        <li><a href="https://uk.linkedin.com/in/simonasviliunas" target="_blank">
-          <img src="{% static 'files/icons/linkedin37x28.png' %}"
-             alt="LinkedIn icon"/></a>
+        <li>
+          <a href="https://uk.linkedin.com/in/simonasviliunas" target="_blank">
+            <img src="{% static 'files/icons/linkedin37x28.png' %}" alt="LinkedIn icon"/>
+          </a>
         </li>
       </ul>
     </div>
