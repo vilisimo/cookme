@@ -20,6 +20,12 @@ def recipes(request):
         'user': request.user,
     }
 
+    user = request.user
+    if user.is_authenticated:
+        fridge = Fridge.objects.get(user=user)
+        user_recipes = fridge.recipes.all()
+        context['user_recipes'] = user_recipes
+
     return render(request, 'recipes/recipes.html', context)
 
 

@@ -39,20 +39,18 @@
   <div class="recipe-essentials">
     <div class="recipe-ingredients">
       <h2>Ingredients</h2>
-      {% if ingredients %}
-        <ul>
-          {% for ingredient in ingredients %}
-            <li>
-              {{ ingredient.quantity }}
-              {{ ingredient.unit.abbrev }}
-              of
-              {{ ingredient.ingredient }}
-            </li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>The recipe does not seem to have any ingredients!</p>
-      {% endif %}
+      <ul>
+        {% for ingredient in ingredients %}
+          <li>
+            {{ ingredient.quantity }}
+            {{ ingredient.unit.abbrev }}
+            of
+            {{ ingredient.ingredient }}
+          </li>
+        {% empty %}
+          <li>The recipe does not seem to have any ingredients! Curious...</li>
+        {% endfor %}
+      </ul>
     </div>
 
     <div class="recipe-process">
@@ -60,6 +58,8 @@
       <!-- Style paragraphs with CSS, so that there is some space between. -->
       {% for step in steps %}
         <p class="recipe-step">{{ step }}</p>
+      {% empty %}
+        <p>The recipe does not have any preparation steps. Time to flex your imagination!</p>
       {% endfor %}
     </div>
   </div>

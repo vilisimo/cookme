@@ -7,24 +7,18 @@
     <br/><br/>
     <div class="fridge-recipes">
       <h3>Recipes</h3>
-      {% if recipes %}
+      <ul>
         {% for recipe in recipes %}
-          <ul>
-            <li>
-              <a href="{{ recipe.get_absolute_url }}">
-                {{ recipe }}
-              </a>
-              <!-- Take care with CSS -->
-              &nbsp
-              <a href="{% url 'fridge:remove_recipe' recipe.pk %}">
-                Remove
-              </a>
-            </li>
-          </ul>
+          <li>
+            <a href="{{ recipe.get_absolute_url }}">{{ recipe }}</a>
+            <!-- Take care with CSS -->
+            &nbsp
+            <a href="{% url 'fridge:remove_recipe' recipe.pk %}">Remove</a>
+          </li>
+        {% empty %}
+          <li class="empty-list">You have no favorite recipes. Your grandma would be sad!</li>
         {% endfor %}
-      {% else %}
-        <p>You have no favorite recipes. Your grandma would be sad!</p>
-      {% endif %}
+      </ul>
     </div>
 
     <!-- Take care of spacing with CSS -->
@@ -41,42 +35,27 @@
     <br/><br/>
     <h3>Ingredients</h3>
     <div class="fridge-ingredients">
+      <ul>
+        {% for ingredient in ingredients %}
+          <li>
+            {{ ingredient.quantity }} {{ ingredient.unit.abbrev }} of
+            <a href="{{ ingredient.ingredient.get_absolute_url }}">
+              {{ ingredient.ingredient }}
+            </a>
+            &nbsp
+            <a href="{% url 'fridge:remove_ingredient' ingredient.pk %}">Remove</a>
+          </li>
+        {% empty %}
+          <li class="empty-list">There are no ingredients in the fridge. Perhaps it is time to do some shopping..?</li>
+        {% endfor %}
+      </ul>
+
       {% if ingredients %}
-        <!-- Should this div cover else statement as well? -->
-          <ul>
-            {% for ingredient in ingredients %}
-              <li>
-                {{ ingredient.quantity }} {{ ingredient.unit.abbrev }}
-                of
-                <a href="{{ ingredient.ingredient.get_absolute_url }}">
-                  {{ ingredient.ingredient }}
-                </a>
-                <!-- Take care with CSS -->
-                &nbsp
-                <a href="{% url 'fridge:remove_ingredient' ingredient.pk %}">
-                  Remove
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-
-          <a href="{% url 'fridge:possibilities' %}">
-            Make something!
-          </a>
-
-          <!-- URL to fridge recipes that have <= ingredients in
-          a fridge. Needs a cleaner url name, though.
-
-like                    NOTE: remove BR with CSS.-->
-          <br/>
-          <a href="{% url 'fridge:fridge_recipes' %}">
-            Make something I like!
-          </a>
-      {% else %}
-        <p>
-          There are no ingredients in the fridge. Perhaps it is
-          time to do some shopping..?
-        </p>
+        <a href="{% url 'fridge:possibilities' %}">Make something!</a>
+        <!-- URL to fridge recipes that have <= ingredients in a fridge. Needs a cleaner url name, though. -->
+        <!-- NOTE: remove BR with CSS.-->
+        <br/>
+        <a href="{% url 'fridge:fridge_recipes' %}">Make something I like!</a>
       {% endif %}
     </div>
 

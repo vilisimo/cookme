@@ -30,6 +30,8 @@ recipes found) could be written down. This way, can import them in views,
 pass on to templates, use in tests, etc., no need to change in multiple places.
 - On testing population script: see utilities/tests/test_populate.py.
 - Merge fridge_subset_recipes() with subset_recipes().
+- It is still possible to navigate to registration view after successfully 
+submitting registration details. It should not be possible.
 
 JavaScript:
 1. Highlight current page in navbar.
