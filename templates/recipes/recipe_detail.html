@@ -3,7 +3,7 @@
 {% block main %}
 
 
-  <img src="{{ image.url }}" alt="{{ recipe.title }}"/>
+  <img src="{{ image.url }}" alt="{{ recipe.title }}" class="large-recipe-pic"/>
   <h2>{{ title }}</h2>
   <hr>
 
@@ -21,13 +21,15 @@
       <li>Views: {{ views }}</li>
       <li>Uploaded by {{ author }} on {{ date|date:'d F Y' }}</li>
     </ul>
+  </div>
 
-    <ul class="recipe-links">
+  <div class="recipe-links">
+    <ul>
       <li>
         {% if user.is_authenticated and pk not in user_recipes %}
-          <a href="{% url 'recipes:add_to_fridge' pk %}">Add to the Fridge</a>
+          <a href="{% url 'recipes:add_to_fridge' pk %}">Add to your Fridge</a>
         {% else %}
-          <a href="{% url 'fridge:remove_recipe' pk %}">Remove from the Fridge</a>
+          <a href="{% url 'fridge:remove_recipe' pk %}">Remove from your Fridge</a>
         {% endif %}
       </li>
       <li>

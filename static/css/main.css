@@ -90,6 +90,12 @@ main {
     padding: 30px 40px;
 }
 
+@media all and (max-width: 450px) {
+    main {
+        padding: 30px 10px;
+    }
+}
+
 h2, h3 {
     text-align: center;
 }
@@ -293,15 +299,68 @@ h3 {
     mix-blend-mode: normal;
 }
 
-
-
-/* RECIPE DETAILS */
-
 #author {
     color: #FF6347;
 }
 
+/* ****************** */
+/* RECIPE_DETAIL.HTML */
+/* ****************** */
 
+.large-recipe-pic {
+    margin: 50px auto 50px auto;
+    padding: 3px;
+    border: double;
+    border-radius: 2px;
+    display: block;
+    width: 100%;
+    max-width: 800px;
+    min-width: 300px;
+}
+
+.recipe-description {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.recipe-description p {
+    font-size: 18px;
+}
+
+.recipe-additional-information, .recipe-links {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    text-align: center;
+}
+
+.recipe-additional-information li {
+    display: inline-block;
+}
+
+.recipe-additional-information li {
+    display: inline;
+    border-right: 1px solid #aaa;
+    padding-right: 7px;
+    padding-left: 5px;
+}
+
+.recipe-additional-information li:last-child {
+    border-right: none;
+    padding-right: 0;
+}
+
+.recipe-links {
+    margin: 10px 5px;
+}
+
+.recipe-links a {
+    text-decoration: none;
+}
+
+hr {
+    margin: 0 auto;
+    width: 75%;
+}
 
 /* ================== */
 /*   Footer insides   */
@@ -313,7 +372,7 @@ footer {
     margin-top: 10px;
     padding-top: 10px;
     color: black;
-
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 footer a {
