@@ -362,6 +362,88 @@ hr {
     width: 75%;
 }
 
+/* Recipe process and ingredients */
+
+.recipe-essentials {
+    margin: 50px auto;
+    display: flex;
+}
+
+.recipe-essentials h3 {
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.recipe-ingredients {
+    margin-right: 20px;
+    text-align: right;
+    flex-basis: 30%;
+}
+
+.recipe-ingredients h3 {
+    text-align: right;
+}
+
+.recipe-ingredients li {
+    margin: 0 0 15px 40px;
+    font-size: 18px;
+}
+
+.recipe-ingredients li:first-child {
+    padding-top: 5px;
+}
+
+.recipe-process {
+    flex-basis: 70%;
+    margin-left: 40px;
+    counter-reset: step;
+}
+
+.recipe-process h3 {
+    text-align: left;
+}
+
+p.recipe-step {
+    margin: 0 40px 15px 40px;
+    max-width: 700px;
+    letter-spacing: 0.0625em;
+    line-height: 2em;
+}
+
+p.recipe-step:before {
+    counter-increment: step;
+    content: counter(step);
+    font-size: 2.5em;
+    position: absolute;
+    margin-left: -45px;
+    margin-top: 7px;
+}
+
+@media all and (max-width: 800px) {
+    .recipe-essentials {
+        flex-wrap: wrap;
+    }
+
+    .recipe-ingredients, .recipe-ingredients h3 {
+        flex-basis: 100%;
+        text-align: center;
+    }
+
+    .recipe-ingredients li {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .recipe-process {
+        flex-basis: 100%;
+    }
+
+}
+
+
+
 /* ================== */
 /*   Footer insides   */
 /* ================== */
