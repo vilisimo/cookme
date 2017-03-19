@@ -1,30 +1,35 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  {% if ingredients %}
-    <p>You searched for:</p>
-    <ul>
-      {% for ingredient in ingredients %}
-        <li>{{ ingredient }}</li>
-      {% endfor %}
-    </ul>
+  <div class="search-results">
+    {% if ingredients %}
+      <div class="searched_ingredients">
+        <ul>
+          {% for ingredient in ingredients %}
+            <li>{{ ingredient }}</li>
+          {% endfor %}
+        </ul>
+      </div>
 
-    {% if recipes %}
-      <h2>Search results:</h2>
-      <ul>
-        {% for recipe in recipes %}
-          <li>
-            <a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a>
-          </li>
-        {% endfor %}
-      </ul>
+      {% if recipes %}
+        <h2>Matching recipes:</h2>
+        <ul>
+          <div class="four-recipes">
+            {% for recipe in recipes %}
+                <div class="four">
+                  <a href="{{ recipe.get_absolute_url }}">
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
+                    <h3>{{ recipe.title }}  <br/>by <span id="author">{{ recipe.author }}</span></h3>
+                  </a>
+                </div>
+            {% endfor %}
+          </div>
+        </ul>
+      {% else %}
+        <p>No ingredients matched your query. Sad, sad day.</p>
+      {% endif %}
     {% else %}
-      <p>Unfortunately, no ingredients matched your query. Please
-        ensure that it is as accurate as possible. After all, we are
-        not running a business here, only a practice project!
-      </p>
+      <p>You did not enter any ingredients! Naughty.</p>
     {% endif %}
-  {% else %}
-    <p>You did not enter any ingredients! Naughty.</p>
-  {% endif %}
+  </div>
 {% endblock %}

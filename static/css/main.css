@@ -446,7 +446,26 @@ p.recipe-step:before {
 
 }
 
+/* =================== */
+/* SEARCH_RESULTS.HTML */
+/* =================== */
 
+.searched_ingredients {
+    margin: 70px 0;
+}
+
+.searched_ingredients li {
+    display: inline-block;
+    background-color: goldenrod;
+    font-size: 24px;
+    padding: 5px 8px;
+    margin: 10px;
+}
+
+.search-results p {
+    font-size: 20px;
+    margin: 30px 0;
+}
 
 /* ================== */
 /*   Footer insides   */
