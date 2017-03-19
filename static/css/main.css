@@ -472,7 +472,12 @@ footer a {
 
 #copyright li {
     display: inline;
-    padding: 0 3px;
+    padding: 0 5px;
+}
+
+#copyright p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 12px;
 }
 
 #copyright img[alt="Github icon"] {
@@ -480,6 +485,7 @@ footer a {
     height: 28px;
 }
 
-.footer-links {
-    padding-top: 5px;
+#copyright ul.footer-links {
+    padding: 20px 0;
 }
+
