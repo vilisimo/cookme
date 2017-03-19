@@ -90,6 +90,21 @@ def migrate():
     terminal_out('Migrations were carried out successfully.')
 
 
+def create_super_user(username, password):
+    """ Creates super user for testing purposes """
+
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        user = User.objects.create_user(username=username, password=password)
+
+    user.is_superuser = True
+    user.is_staff = True
+    user.save()
+    terminal_out('Super user created successfully.')
+    terminal_out(f'Login: {username} \nPassword: {password}')
+
+
 @transaction.atomic
 def populate_units(units_txt=None):
     """
@@ -106,7 +121,8 @@ def populate_units(units_txt=None):
                 # than populate it from scratch.
                 Unit.objects.get_or_create(name=line[0],
                                            abbrev=line[1],
-                                           description=line[2])
+                                           plural=line[2],
+                                           description=line[3])
         terminal_out('Unit population is done.')
     except (FileNotFoundError, TypeError):
         terminal_out('Input file not recognized.', error=True)
@@ -149,6 +165,8 @@ def commit_recipe(values):
         d = values['description']
         c = values['cuisine']
         s = values['steps']
+        p = values['picture']
+
         step_list = []
         for step in s:
             step_list.append(values['steps'][step].strip())
@@ -156,7 +174,8 @@ def commit_recipe(values):
         u = get_user(username=a, password=a)
         recipe = Recipe.objects.get_or_create(author=u, title=t, cuisine=c,
                                               description=d,
-                                              steps="\n".join(step_list))[0]
+                                              steps="\n".join(step_list),
+                                              image=p)[0]
         return recipe
     except KeyError:
         raise
@@ -247,4 +266,6 @@ if __name__ == '__main__':
     populate_units(units_txt=units_file)
     populate_ingredients(ingredients_txt=ingredients_file)
     populate_recipes(recipe_folder=recipes_path)
+    create_super_user(username="admin", password="admin")
+
 

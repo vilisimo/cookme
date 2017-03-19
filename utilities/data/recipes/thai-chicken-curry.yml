@@ -6,11 +6,11 @@ description: 'A hearty and easy to make Thai curry. Original author: BBC Good Fo
 cuisine: 'th'
 
 ingredients:
-  onion: "1 unit(s)"
-  lemongrass: "1 stalk(s)"
+  onion: "1 unit"
+  lemongrass: "1 stalk"
   vegetable oil: "1 tbsp"
   thai curry paste: "4 tsp"
-  kaffir lime leaves: "4 unit(s)"
+  kaffir lime leaves: "4 unit"
   coconut milk: "400 mL"
   fresh coriander: "20 g"
 
@@ -20,3 +20,4 @@ steps:
   3: "Add chicken pieces and stir until they are coated. Add the lemongrass, fish sauce, sugar, kaffir lime leaves and coconut milk. Bring slowly to the boil, then reduce heat and simmer, uncovered, for 15 mins until the chicken is cooked. Stir the curry a few times while it cooks, to stop it sticking and to keep the chicken submerged."
   4: "While the chicken is cooking, strip the leaves from the coriander stalks, gather into a pile and chop very roughly. Taste the curry and add a little more curry paste and salt if you think it needs it. Stir half the coriander into the curry and sprinkle the rest over the top. Serve with Thai jasmine or basmati rice."
 
+picture: "recipes/small-curry.jpeg"

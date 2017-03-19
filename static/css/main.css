@@ -421,6 +421,10 @@ p.recipe-step:before {
     margin-top: 7px;
 }
 
+#quantity {
+    font-weight: 400;
+}
+
 @media all and (max-width: 800px) {
     .recipe-essentials {
         flex-wrap: wrap;

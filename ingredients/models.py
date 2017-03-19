@@ -75,6 +75,7 @@ class Unit(models.Model):
 
     name = models.CharField(max_length=30, blank=False, null=False, unique=True)
     abbrev = models.CharField(max_length=10, blank=True, null=True)
+    plural = models.CharField(max_length=20, blank=True, null=True)
     description = models.CharField(max_length=1000, blank=True, null=True)
 
     def __str__(self):

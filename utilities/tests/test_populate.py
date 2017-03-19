@@ -73,10 +73,12 @@ class PopulateUnitsTests(TestCase):
 
         name = first[0]
         abbrev = first[1]
-        description = first[2]
+        plural = first[2]
+        description = first[3]
 
         populate_units(units_txt=self.units_txt)
-        u = Unit.objects.get(name=name, abbrev=abbrev, description=description)
+        u = Unit.objects.get(name=name, abbrev=abbrev, description=description,
+                             plural=plural)
 
         self.assertTrue(u)
 
@@ -229,7 +231,8 @@ class CommitRecipeTests(TestCase):
             'steps': {
                 '1': 'First',
                 '2': 'Second'
-            }
+            },
+            'picture': 'recipes/small-pot.jpeg'
         }
         recipe = commit_recipe(values)
 
@@ -249,6 +252,7 @@ class CommitRecipeTests(TestCase):
 
         self.assertFalse(recipe)
 
+    # Check this test later - not sure what it does?..
     def test_does_not_have_one_value(self):
         """
         Ensures that when all but one value (key) is provided, exception is
@@ -260,14 +264,12 @@ class CommitRecipeTests(TestCase):
             'description': 'Test',
             'cuisine': 'Test',
             'steps': {'1': 'First',
-                      '2': 'Second'}
+                      '2': 'Second'},
+            'picture': 'recipes/small-pot.jpeg'
         }
 
-        recipe = None
         with self.assertRaises(KeyError):
-            recipe = commit_recipe(values)
-
-        self.assertFalse(recipe)
+            commit_recipe(values)
 
 
 class CommitRecipeIngredientTests(TestCase):

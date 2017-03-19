@@ -44,10 +44,15 @@
       <ul>
         {% for ingredient in ingredients %}
           <li>
+            <span id="quantity">
             {{ ingredient.quantity }}
-            {{ ingredient.unit.abbrev }}
-            of
-            {{ ingredient.ingredient }}
+            {% if ingredient.quantity >= 2.0 %}
+              {{ ingredient.unit.plural }}
+            {% else %}
+              {{ ingredient.unit.abbrev }}
+            {% endif %}
+            </span>
+            of {{ ingredient.ingredient }}
           </li>
         {% empty %}
           <li>The recipe does not seem to have any ingredients! Curious...</li>
