@@ -22,7 +22,7 @@ def recipes(request):
 
     user = request.user
     if user.is_authenticated:
-        fridge = Fridge.objects.get(user=user)
+        fridge = Fridge.objects.get_or_create(user=user)[0]
         user_recipes = fridge.recipes.all()
         context['user_recipes'] = user_recipes
 
@@ -59,7 +59,7 @@ def recipe_detail(request, slug):
 
     user = request.user
     if user.is_authenticated:
-        fridge = Fridge.objects.get(user=user)
+        fridge = Fridge.objects.get_or_create(user=user)[0]
         user_recipes = fridge.recipes.all().values_list('id', flat=True)
         context['user_recipes'] = user_recipes
 
