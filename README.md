@@ -1,4 +1,4 @@
-##Idea
+## Idea
 The website is designed to be a simple recipe holder with not-too-ugly 
 front-end. The user is presented with a clean interface that allows to 
 browse recipes that have been added to the 'global' recipe book - just 
@@ -16,16 +16,16 @@ making main things work first, getting exposure to different technologies,
 rather than providing people with groundbreaking cooking experience or every 
 feature that can be thought of.  
 
-##About the project
+## About the project
 The website is being created on Ubuntu 16.04 and OS X. Testing is done on 
 Chrome/Firefox. Focus is more in the area of proof of concept, thus 
 compatibility with other browsers is not (at least not yet) the main concern. 
 
-###Installation
+### Installation
 For installation instructions, please refer 
 [here](../../tree/master/docs/installation.md).
 
-###Progress
+### Progress
 At the moment, project is in front-end stage. That is, the website needs 
 CSS/HTML editing. Bare minimum of functionality has been achieved, but the 
 look of the website is not acceptable yet.
@@ -36,17 +36,17 @@ look of the website is not acceptable yet.
    - _(Optional)_ Implementation of optional requirements.
    - Deployment.
 
-###Design documents 
+### Design documents 
 To see the thought process behind the project, refer to the 
 [docs](../../tree/master/docs). An attempt was made to follow agile-ish
 practices, TDD, etc.
 
-###Tools used
+### Tools used
 The project was created using PyCharm 16.2 Professional Edition 
 (education) and Sublime Text 3. All work was done on Mac OSX (El 
 Capitan) and Linux (Ubuntu 16.04).
 
-###Languages/tools used
+### Languages/tools used
 So far, these major languages/frameworks/tools have been used:
 - Python 3.6
 - Django 1.10
@@ -54,6 +54,6 @@ So far, these major languages/frameworks/tools have been used:
 - CSS3
 
 
-###Images used
+### Images used
 - Search bar magnifying glass: [Yannic Lung](https://www.iconfinder.com/yanlu). 
 Icon [link](https://www.iconfinder.com/icons/314478/search_icon#size=24)
