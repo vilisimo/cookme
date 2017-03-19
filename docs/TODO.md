@@ -10,7 +10,6 @@ me if not documented).
 one with relevant functionality only.
 - RecipeIngredientForm: how to inherit the form from Fridge and change 
 exclude, etc., so that I do not have to repeat almost all of the code in it?
-- Somehow deal with plurals? Have two values for each unit?
 - Different quantities: what if recipe requires 2 cups of sugar, whereas you 
 have 500g? Also, what if user has 500g of sugar in a fridge, but decides to 
 add another helping of 3 tablespoons? One possible solution: have functions 

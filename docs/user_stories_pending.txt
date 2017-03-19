@@ -30,6 +30,15 @@ Status: NOT STARTED
 
 
 ***************************************************************************
+User can see recipes associated with an ingredient.
+    - Test: select ingredient that is used in at least one recipe.
+      Outcome: recipes associated with the ingredient are shown.
+    - Test: select ingredient that is not used anywhere.
+      Outcome: no recipes are shown.
+***************************************************************************
+
+
+***************************************************************************
 User can edit the recipes he/she has uploaded.
   - Test: edit his/her own recipe.
     Outcome: recipe is edited.
