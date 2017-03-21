@@ -467,6 +467,37 @@ p.recipe-step:before {
     margin: 30px 0;
 }
 
+/* ========== */
+/* LOGIN FORM */
+/* ========== */
+
+#login_form {
+    text-align: center;
+}
+
+#login_form input {
+    display: block;
+    min-width: 200px;
+    margin: 10px auto;
+    height: 40px;
+
+    font-size: 16px;
+}
+
+#login_form input[type=submit] {
+    background-color: #009999;
+    border: 2px solid #009999;
+    position: relative;
+    height: 40px;
+    width: 120px;
+    color: #fafafa;
+    margin: 20px auto;
+
+    text-align: center;
+    font-size: 20px;
+}
+
+
 /* ================== */
 /*   Footer insides   */
 /* ================== */
