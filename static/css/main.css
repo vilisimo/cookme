@@ -450,11 +450,11 @@ p.recipe-step:before {
 /* SEARCH_RESULTS.HTML */
 /* =================== */
 
-.searched_ingredients {
+.searched-ingredients {
     margin: 70px 0;
 }
 
-.searched_ingredients li {
+.searched-ingredients li {
     display: inline-block;
     background-color: goldenrod;
     font-size: 24px;
@@ -471,32 +471,64 @@ p.recipe-step:before {
 /* LOGIN FORM */
 /* ========== */
 
-#login_form {
-    text-align: center;
+form#login-form {
+    margin-top: 40px;
 }
 
-#login_form input {
+.login-details {
+    width: 250px;
+    margin: 0 auto;
+
+}
+
+.login-details label {
+    margin: 0 8px;
+}
+
+#login-form input {
     display: block;
-    min-width: 200px;
-    margin: 10px auto;
+    min-width: 190px;
+    max-width: 190px;
+    margin: 20px auto 20px auto;
     height: 40px;
+    padding: 5px 20px;
 
     font-size: 16px;
 }
 
-#login_form input[type=submit] {
-    background-color: #009999;
-    border: 2px solid #009999;
+input#login-submit {
+    background-color: #00994d;
+    border: 2px solid #00994d;
     position: relative;
-    height: 40px;
-    width: 120px;
+    max-width: 100px;
+    min-width: 100px;
+    padding: 0;
+    margin: 0 8px;
     color: #fafafa;
-    margin: 20px auto;
+    display: block;
 
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
 }
 
+.submit-details {
+    float: right;
+}
+
+input[type=submit]#login-submit:hover {
+    background-color: #009900;
+    border: 2px solid #009900;
+}
+
+#id_password {
+    font: small-caption;
+}
+
+.form-errors {
+    text-align: center;
+    padding: 100px;
+    clear: right;
+}
 
 /* ================== */
 /*   Footer insides   */
