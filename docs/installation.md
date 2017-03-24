@@ -1,4 +1,4 @@
-##Installation
+## Installation
 As the project is fairly simple and only a few packages were used, installation 
 should be pretty straightforward on all OS'es. Instructions are for OS X & Linux
 distributions, though Windows should be fairly similar as well.

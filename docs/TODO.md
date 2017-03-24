@@ -1,11 +1,11 @@
-##About
+## About
 Contains tasks that need attention sometime in the future. This is not 
 meant to be a document that lists ALL the tasks that need to be done. 
 The purpose of the document is simply to help me keep a track of tasks
 that should eventually be done (and that are likely to be forgotten by
 me if not documented).
 
-###Tasks
+### Tasks
 - Extract relevant parts of jquery.formset.js script and create another 
 one with relevant functionality only.
 - RecipeIngredientForm: how to inherit the form from Fridge and change 

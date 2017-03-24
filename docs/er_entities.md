@@ -1,8 +1,8 @@
-##About
+## About
 The document contains extension of ER diagram: fields that belong to 
 models/entities.
 
-###Ingredient
+### Ingredient
 | Field | Description |
 | --- | --- |
 | *name* | Name of the ingredient |
@@ -10,14 +10,15 @@ models/entities.
 | *description* | Description of the ingredient. |
 | *slug* | Ingredient's slug, derived from its name. |
 
-###Unit
+### Unit
 | Field | Description |
 | --- | --- |
 | *name* | Full name of the measurement unit (ounce/kilogram/etc.). |
-| *abbrev* | Abbreviation of the measurement unit (oz/kg/ml/etc.) |
+| *abbrev* | Abbreviation of the measurement unit (oz/kg/ml/etc.). |
+| *plural* | Plural form of unit name. |
 | *description* | Description of the measurement. |
 
-###Recipe
+### Recipe
 | Field | Description |
 | --- | --- |
 | *author (FK)* | User that has created the recipe. |
@@ -31,7 +32,7 @@ models/entities.
 | *slug* | Field that is used to compute URL. |
 | *image* | Image representing the recipe |
 
-###RecipeIngredient
+### RecipeIngredient
 | Field | Description |
 | --- | --- |
 | *recipe (FK)* | Recipe that has ingredient. |
@@ -39,7 +40,7 @@ models/entities.
 | *unit (FK)* | Quantity that has amount. |
 | *quantity* | Amount of the ingredient (float). |
 
-###Rating (currently not used)
+### Rating (currently not used)
 | Field | Description |
 | --- | --- |
 | *stars* | How many stars user has given the recipe. |
@@ -47,7 +48,7 @@ models/entities.
 | *recipe (FK)* | Which recipe was rated.
 | *date* | When the rating was created.
 
-###Fridge
+### Fridge
 | Field | Description |
 | --- | --- |
 | *owner (FK)* | Fridge's owner (User). |
@@ -55,7 +56,7 @@ models/entities.
 | *ingredients* | Ingredients in a fridge. |
 | *recipes (M2M)* | Recipes in a fridge. |
 
-###FridgeIngredient
+### FridgeIngredient
 | Field | Description |
 | --- | --- |
 | *fridge (FK)* | Fridge that has ingredient. |
@@ -63,6 +64,6 @@ models/entities.
 | *unit (FK)* | Quantity that has amount. |
 | *quantity* | Amount of the ingredient (float). |
 
-###User
+### User
 | Field | Description |
 | --- | --- |
