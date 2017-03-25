@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  <form method="post" action="{% url 'login' %}" id="login-form">
-    <div class="login-details">
+  <form id="login-form" method="post" action="{% url 'login' %}">
       {% csrf_token %}
       {{ form.username.label_tag }}
       {{ form.username }}
@@ -11,11 +10,8 @@
       {{ form.password.label_tag }}
       {{ form.password }}
       {{ form.password.error }}
-      <div class="submit-details">
-        <input id="login-submit" type="submit" value="Login" />
-      </div>
+      <input id="login-submit" type="submit" value="Login" />
       <input type="hidden" name="next" value="{{ request.GET.next }}" />
-    </div>
   </form>
 
   {% if form.errors %}

@@ -471,21 +471,16 @@ p.recipe-step:before {
 /* LOGIN FORM */
 /* ========== */
 
-form#login-form {
-    margin-top: 40px;
-}
-
-.login-details {
+form#login-form, form#register-form {
+    margin: 40px auto 0 auto;
     width: 250px;
-    margin: 0 auto;
-
 }
 
-.login-details label {
+#login-form label, #register-form label {
     margin: 0 8px;
 }
 
-#login-form input {
+#login-form input, #register-form input {
     display: block;
     min-width: 190px;
     max-width: 190px;
@@ -496,12 +491,13 @@ form#login-form {
     font-size: 16px;
 }
 
-input#login-submit {
+input#login-submit, input#register-submit {
     background-color: #00994d;
     border: 2px solid #00994d;
     position: relative;
     max-width: 100px;
     min-width: 100px;
+    float: right;
     padding: 0;
     margin: 0 8px;
     color: #fafafa;
@@ -509,10 +505,6 @@ input#login-submit {
 
     text-align: center;
     font-size: 18px;
-}
-
-.submit-details {
-    float: right;
 }
 
 input[type=submit]#login-submit:hover {
