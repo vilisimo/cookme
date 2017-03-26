@@ -27,7 +27,7 @@ class FridgeIngredientForm(ModelForm):
     """
 
     ingredient = CharField(widget=TextInput(
-        attrs={'required': 'true', 'placeholder': 'Enter ingredient'})
+        attrs={'required': 'true', 'placeholder': 'Ingredient name'})
     )
     unit = ModelChoiceField(Unit.objects.all(), empty_label=None)
 
@@ -38,7 +38,7 @@ class FridgeIngredientForm(ModelForm):
         widgets = {
             'unit': Select(attrs={'required': 'true'}),
             'quantity': NumberInput(attrs={'required': 'true', 'min': '0',
-                                           'placeholder': 'Enter quantity'})
+                                           'placeholder': 'Quantity'})
         }
 
     def save(self, commit=True):

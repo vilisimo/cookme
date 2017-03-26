@@ -468,7 +468,7 @@ p.recipe-step:before {
 }
 
 /* ========== */
-/* LOGIN FORM */
+/* LOGIN.HTML */
 /* ========== */
 
 form#login-form, form#register-form {
@@ -521,6 +521,73 @@ input[type=submit]#login-submit:hover {
     padding: 100px;
     clear: right;
 }
+
+
+/* ================== */
+/* FRIDGE_DETAIL.HTML */
+/* ================== */
+
+.fridge {
+    display: flex;
+}
+
+.fridge a {
+    text-decoration: none;
+}
+
+.fridge-ingredients, .fridge-recipes {
+    /* These should not be too wide, at least with text. Ideally, a wide screen
+     would allow to show images of recipes, not only titles & descriptions. */
+    max-width: 450px;
+    margin: 0 auto;
+    flex-basis: 50%;
+}
+
+.fridge-ingredients {
+    margin-right: 50px;
+}
+
+.fridge-recipes {
+    margin-left: 50px;
+}
+
+.fridge-ingredients h3, .fridge-recipes h3 {
+    text-align: left;
+    text-transform: uppercase;
+}
+
+.fridge-ingredients li, .fridge-recipes li {
+    margin: 10px 0;
+}
+
+.fridge-recipes li {
+    margin-bottom: 30px;
+}
+
+.fridge-recipe-title {
+    text-transform: uppercase;
+}
+
+.fridge-remove {
+    margin: 0 10px;
+    font-size: 12px;
+
+}
+
+
+@media all and (max-width: 800px) {
+    .fridge {
+        flex-flow: wrap;
+    }
+
+    .fridge-ingredients, .fridge-recipes {
+        flex-basis: 100%;
+        min-width: 400px;
+        margin: 0;
+    }
+}
+
+
 
 /* ================== */
 /*   Footer insides   */
