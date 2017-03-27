@@ -2,24 +2,28 @@
 
 {% block main %}
   {% if fridge %}
+
+    <div class="add-ingredient">
+      <h3>Add more ingredients to your fridge...</h3>
+      <form action="{% url 'fridge:fridge_detail' %}" method="post" id="fridge-ingredient-form">
+        {% csrf_token %}
+        {{ form.ingredient }}
+        <div class="quantity-unit">
+          {{ form.quantity }}
+          {{ form.unit }}
+          <input type="submit" value="Add" />
+        </div>
+
+        {{ form.ingredient.errors }}
+        {{ form.quantity.errors }}
+        {{ form.unit.errors }}
+        <!-- Where would this fit best? -->
+        {{ form.non_field_errors }}
+      </form>
+    </div>
+
     <div class="fridge">
       <div class="fridge-ingredients">
-        <div id="add-ingredient">
-          <h3>Add another ingredient...</h3>
-          <form action="{% url 'fridge:fridge_detail' %}" method="post" id="fridge-ingredient-form">
-            {% csrf_token %}
-            {{ form.ingredient }}
-            {{ form.quantity }}
-            {{ form.unit }}
-            <input type="submit" value="Add" />
-
-            {{ form.ingredient.errors }}
-            {{ form.quantity.errors }}
-            {{ form.unit.errors }}
-            <!-- Where would this fit best? -->
-            {{ form.non_field_errors }}
-          </form>
-        </div>
         <h3>Ingredients</h3>
         <ul>
           {% for ingredient in ingredients %}

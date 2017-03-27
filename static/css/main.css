@@ -166,6 +166,7 @@ form#search-bar {
     height: 60px;
     width: 120px;
     color: #fafafa;
+    cursor: pointer;
 
     text-align: center;
     font-size: 24px;
@@ -502,6 +503,7 @@ input#login-submit, input#register-submit {
     margin: 0 8px;
     color: #fafafa;
     display: block;
+    cursor: pointer;
 
     text-align: center;
     font-size: 18px;
@@ -526,6 +528,67 @@ input[type=submit]#login-submit:hover {
 /* ================== */
 /* FRIDGE_DETAIL.HTML */
 /* ================== */
+
+/* Add ingredient form */
+
+.add-ingredient {
+    margin: 20px auto;
+    text-align: center;
+}
+
+input#id_ingredient, input#id_quantity, .quantity-unit input, select#id_unit {
+    border: 1px solid black;
+    vertical-align: bottom;
+    font-size: 18px;
+    background: transparent;
+}
+
+input#id_ingredient, input#id_quantity {
+    padding: 5px 15px 6px 15px;
+    height: 30px;
+}
+
+input#id_ingredient {
+    width: 300px;
+    min-width: 300px;
+}
+
+input#id_quantity {
+    width: 100px;
+    min-width: 100px;
+    margin-left: -5px
+}
+
+.quantity-unit {
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.quantity-unit input, select#id_unit {
+    height: 43px;
+    padding: 5px;
+}
+
+.quantity-unit input {
+    width: 60px;
+    font-size: 16px;
+}
+
+select#id_unit {
+    width: 80px;
+}
+
+
+
+@media all and (max-width: 400px) {
+    .quantity-unit {
+        display: block;
+        min-width: 300px;
+    }
+}
+
+
+/* Fridge contents */
 
 .fridge {
     display: flex;
