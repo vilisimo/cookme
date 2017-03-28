@@ -556,7 +556,7 @@ input#id_ingredient {
 input#id_quantity {
     width: 100px;
     min-width: 100px;
-    margin-left: -5px
+    margin-left: -5px;
 }
 
 .quantity-unit {
@@ -569,9 +569,13 @@ input#id_quantity {
     padding: 5px;
 }
 
-.quantity-unit input {
+#add-ingredient {
     width: 60px;
     font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: #222c36;
+    color: white;
 }
 
 select#id_unit {
@@ -582,7 +586,7 @@ select#id_unit {
 
 @media all and (max-width: 400px) {
     .quantity-unit {
-        display: block;
+        display: inline-block;
         min-width: 300px;
     }
 }
@@ -621,6 +625,10 @@ select#id_unit {
 
 .fridge-ingredients li, .fridge-recipes li {
     margin: 10px 0;
+}
+
+.ingredient-make a {
+    display: block;
 }
 
 .fridge-recipes li {
