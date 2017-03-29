@@ -549,14 +549,13 @@ input#id_ingredient, input#id_quantity {
 }
 
 input#id_ingredient {
-    width: 300px;
-    min-width: 300px;
+    width: 250px;
+    min-width: 250px;
 }
 
 input#id_quantity {
     width: 100px;
     min-width: 100px;
-    margin-left: -5px;
 }
 
 .quantity-unit {
@@ -578,6 +577,14 @@ input#id_quantity {
     color: white;
 }
 
+#add-ingredient:hover {
+    background-color: #2c3946;
+}
+
+input#add-ingredient {
+
+}
+
 select#id_unit {
     width: 80px;
 }
@@ -587,7 +594,8 @@ select#id_unit {
 @media all and (max-width: 400px) {
     .quantity-unit {
         display: inline-block;
-        min-width: 300px;
+        min-width: 282px;
+        margin: 10px auto 0 auto;
     }
 }
 
@@ -612,6 +620,7 @@ select#id_unit {
 
 .fridge-ingredients {
     margin-right: 50px;
+    text-align: right;
 }
 
 .fridge-recipes {
@@ -619,20 +628,33 @@ select#id_unit {
 }
 
 .fridge-ingredients h3, .fridge-recipes h3 {
-    text-align: left;
     text-transform: uppercase;
 }
 
-.fridge-ingredients li, .fridge-recipes li {
+.fridge-ingredients h3 {
+    text-align: right;
+}
+
+.fridge-recipes h3 {
+    text-align: left;
+}
+
+.fridge-ingredients li {
     margin: 10px 0;
 }
 
-.ingredient-make a {
-    display: block;
+.ingredient-make, .fridge-recipe-suggestions {
+    margin: 30px 0;
 }
 
 .fridge-recipes li {
     margin-bottom: 30px;
+}
+
+/* Above and below are quite ugly, fix */
+
+.fridge-recipe-suggestions li {
+    margin: 10px 0;
 }
 
 .fridge-recipe-title {
@@ -642,8 +664,8 @@ select#id_unit {
 .fridge-remove {
     margin: 0 10px;
     font-size: 12px;
-
 }
+
 
 
 @media all and (max-width: 800px) {
@@ -655,6 +677,14 @@ select#id_unit {
         flex-basis: 100%;
         min-width: 400px;
         margin: 0;
+    }
+
+    .fridge-ingredients, .fridge-ingredients h3 {
+        text-align: left;
+    }
+
+    .fridge-recipes h3 {
+        margin: 60px 0 30px 0;
     }
 }
 

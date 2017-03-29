@@ -27,9 +27,11 @@
         <h3>Ingredients</h3>
         {% if ingredients %}
           <div class="ingredient-make">
-            <a href="{% url 'fridge:possibilities' %}">Make something!</a>
+            <ul>
+              <li><a href="{% url 'fridge:possibilities' %}">Make something!</a></li>
+              <li><a href="{% url 'fridge:fridge_recipes' %}">Make something I like!</a></li>
+            </ul>
             <!-- URL to fridge recipes that have <= ingredients in a fridge. Needs a cleaner url name, though. -->
-            <a href="{% url 'fridge:fridge_recipes' %}">Make something I like!</a>
           </div>
         {% endif %}
         <ul>
@@ -44,9 +46,7 @@
                 {% endif %}
               </span>
               of
-              <a href="{{ ingredient.ingredient.get_absolute_url }}">
-                {{ ingredient.ingredient }}
-              </a>
+              <a href="{{ ingredient.ingredient.get_absolute_url }}">{{ ingredient.ingredient }}</a>
               <a class="fridge-remove" href="{% url 'fridge:remove_ingredient' ingredient.pk %}">Remove</a>
             </li>
           {% empty %}
@@ -57,12 +57,12 @@
 
       <div class="fridge-recipes">
         <h3>Recipes</h3>
-        <div class="add-recipe">
-          <a href="{% url 'fridge:add_recipe' %}">
-            Add a recipe
-          </a>
-        </div>
-        <a href="{% url 'recipes:recipes' %}">Browse existing recipes</a>
+          <div class="fridge-recipe-suggestions">
+            <ul>
+              <li><a href="{% url 'fridge:add_recipe' %}">Add a recipe</a></li>
+              <li><a href="{% url 'recipes:recipes' %}">Browse existing recipes</a></li>
+            </ul>
+          </div>
         <ul>
           {% for recipe in recipes %}
             <li>
