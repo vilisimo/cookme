@@ -25,7 +25,7 @@
       <li>
         {% if user.is_authenticated and pk not in user_recipes %}
           <a href="{% url 'recipes:add_to_fridge' pk %}">Add to your Fridge</a>
-        {% else %}
+        {% elif user.is_authenticated %}
           <a href="{% url 'fridge:remove_recipe' pk %}">Remove from your Fridge</a>
         {% endif %}
       </li>
