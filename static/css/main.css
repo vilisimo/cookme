@@ -282,7 +282,7 @@ h3 {
 
 .add-fridge-icon {
     background: no-repeat white url('../files/icons/fridge28x28.png');
-    mix-blend-mode: screen;
+    /*mix-blend-mode: screen;*/
     border: 5px solid transparent;
     border-radius: 0 2px 2px 0;
     padding: 7px 0;
@@ -468,6 +468,14 @@ p.recipe-step:before {
     margin: 30px 0;
 }
 
+.search-results > h3 {
+    text-align: left;
+    font-weight: 400;
+    margin: 30px 0;
+    font-size: 24px;
+
+}
+
 /* ========== */
 /* LOGIN.HTML */
 /* ========== */
@@ -619,12 +627,12 @@ select#id_unit {
 }
 
 .fridge-ingredients {
-    margin-right: 50px;
+    margin-right: 25px;
     text-align: right;
 }
 
 .fridge-recipes {
-    margin-left: 50px;
+    margin-left: 25px;
 }
 
 .fridge-ingredients h3, .fridge-recipes h3 {
@@ -668,7 +676,7 @@ select#id_unit {
 
 
 
-@media all and (max-width: 800px) {
+@media all and (max-width: 650px) {
     .fridge {
         flex-flow: wrap;
     }
@@ -676,11 +684,12 @@ select#id_unit {
     .fridge-ingredients, .fridge-recipes {
         flex-basis: 100%;
         min-width: 400px;
-        margin: 0;
+        margin: 0 auto;
     }
 
-    .fridge-ingredients, .fridge-ingredients h3 {
-        text-align: left;
+    .fridge-ingredients, .fridge-recipes,
+    .fridge-recipes h3, .fridge-ingredients h3 {
+        text-align: center;
     }
 
     .fridge-recipes h3 {

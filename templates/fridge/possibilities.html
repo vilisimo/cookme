@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  <h2>You have enough ingredients for...</h2>
-  <ul>
-    {% for recipe in recipes %}
-      <li>
-        <a href="{{ recipe.get_absolute_url }}">
-          {{ recipe.title }}
-        </a>
-      </li>
+  <div class="search-results">
+    {% if recipes %}
+      <h3>You have enough ingredients for:</h3>
+    {% endif %}
+    <div class="four-recipes">
+      {% for recipe in recipes %}
+        <div class="four">
+          <a href="{{ recipe.get_absolute_url }}">
+            <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
+            <h3>{{ recipe.title }}  <br/>by <span id="author">{{ recipe.author }}</span></h3>
+          </a>
+        </div>
+      </div>
     {% empty %}
-      <li>There are no recipes you can make with the ingredients in your
-      fridge! Perhaps it is time to go shopping?</li>
+      <p>There are no recipes you can make with the ingredients in your
+      fridge! Perhaps it is time to go shopping?</p>
     {% endfor %}
-  </ul>
+  </div>
 {% endblock %}

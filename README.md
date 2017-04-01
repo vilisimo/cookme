@@ -27,11 +27,11 @@ At the moment, project is in front-end stage. That is, the website needs
 CSS/HTML editing. Bare minimum of functionality has been achieved, but the 
 look of the website is not acceptable yet.
    
-   - ~~Basic functionality implementation~~.
-   - Front-end: HTML/CSS __(in progress)__.
-   - JavaScript enhancements.
-   - _(Optional)_ Implementation of optional requirements.
-   - Deployment.
+   - ~~Basic functionality implementation~~
+   - Front-end: HTML/CSS __(in progress)__
+   - JavaScript enhancements
+   - _(Optional)_ Implementation of optional requirements
+   - Deployment
 
 ### Design documents 
 To see the thought process behind the project, refer to the 
