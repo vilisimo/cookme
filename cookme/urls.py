@@ -21,10 +21,11 @@ from django.conf import settings
 
 from django.conf.urls.static import static
 
-from .views import home, register
+from .views import home, register, about
 
 urlpatterns = [
     url(r'^$', home, name='home'),
+    url(r'^about/$', about, name='about'),
     # Needed authentication views. Minimal amount; intentionally so.
     url('^accounts/login/$', auth_views.login,
         kwargs={'redirect_authenticated_user': True}, name='login'),

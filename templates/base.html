@@ -52,8 +52,7 @@
   </header>
 
   <main>
-    <!-- Need to use CSS to make the search bar wider. Placeholder
-    doesn't fit -->
+    <!-- Need to use CSS to make the search bar wider. Placeholder doesn't fit -->
     {% block main %}
       <!-- NOTE: placeholder needs to be changed when the screen size is small. JS? -->
       <div class="encouragement">
@@ -121,7 +120,7 @@
     <div id="copyright">
       <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
-        <li>About</li>
+        <li><a href="{% url 'about' %}">About</a></li>
       </ul>
       <p>No copyright whatsoever.</p>
       <ul class="footer-links">

@@ -9,6 +9,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, HttpResponseRedirect
 
+import mistune
+
 from recipes.models import Recipe
 from fridge.models import Fridge
 from search.forms import SearchForm
@@ -18,9 +20,6 @@ from utilities.search_helpers import encode
 def home(request):
     """
     Quick and dirty way of implementing a home view that has a fridge.
-
-    :param request: default request object.
-    :return: default HttpResponse object.
     """
 
     content = dict()
@@ -73,9 +72,6 @@ def register(request):
     important to get the fridge. Email, social accounts, etc do not matter, as
     the app is not designed to scale or to be a serious competitor to proper
     websites.
-
-    :param request: standard request object.
-    :return: standard HttpResponse object.
     """
 
     # Don't want a registered user accessing the view.
@@ -96,3 +92,26 @@ def register(request):
         form = UserCreationForm()
 
     return render(request, 'registration/register.html', {'form': form})
+
+
+def about(request):
+    """
+    A view of About page. The page contains information about the website, 
+    which is taken from a README.md file on GitHub. 
+    
+    At the moment, local version is used, but preferably a remote resource 
+    should be used, as it is doubtful that README file will be on the server. 
+    If it will, local one would be more reliable/faster.
+    """
+
+    with open("README.md", "r") as f:
+        data = f.read()
+        text = mistune.markdown(data)
+        text = text.replace('../../', 'https://github.com/vilisimo/cookme/')
+        text = f'<div class="about">{text}</div>'
+
+    context = {
+        'text': text,
+    }
+
+    return render(request, 'home/about.html', context)
