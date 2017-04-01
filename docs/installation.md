@@ -11,13 +11,14 @@ path/to/where/the/project/should/be`.
 5. Enter: `>>> git clone https://github.com/vilisimo/cookme`.
 6. __(Recommended)__ Ensure virtualenvwrapper is installed: `>>> pip list`. 
   * If it is not, enter `>>> pip install virtualenvwrapper`.
-7. __(Recommended)__ Create virtual environment for the project: `>>> mkvirtualenv -p python3.5 cookme`.
+7. __(Recommended)__ Create virtual environment for the project: 
+`>>> mkvirtualenv -p python3.5 cookme`.
 8. Once cloned, move to project's directory: `>>> cd cookme`.
 9. Install required packages: `>>> pip install -r requirements.txt`.
-10. Move to `utilities` directory: `cd utilities/`
-11. Once there, run `python populate.py`.
-12. Once population is done, move back to the root folder: `cd ..`
-13. __(Optional)__ Create superuser by entering `python manage.py 
+10. Move to `utilities` directory: `>>> cd utilities/`
+11. Once there, run `>>> python populate.py`.
+12. Once population is done, move back to the root folder: `>>> cd ..`
+13. __(Optional)__ Create superuser by entering `>>> python manage.py 
 createsuperuser` and following instructions.
 14. Run the server: `>>> python manage.py runserver`.
 15. Access the website by entering `127.0.0.1:8000` in the browser.

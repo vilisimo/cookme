@@ -27,8 +27,8 @@ At the moment, project is in front-end stage. That is, the website needs
 CSS/HTML editing. Bare minimum of functionality has been achieved, but the 
 look of the website is not acceptable yet.
    
-   - Basic functionality implementation _(done)_.
-   - Front-end: HTML/CSS __(in process)__.
+   - ~~Basic functionality implementation~~.
+   - Front-end: HTML/CSS __(in progress)__.
    - JavaScript enhancements.
    - _(Optional)_ Implementation of optional requirements.
    - Deployment.
@@ -43,10 +43,11 @@ done on latest Mac OSX and Ubuntu 16.04.
 
 ### Languages/tools used
 So far, these major languages/frameworks/tools have been used:
-- Python 3.6
-- Django 1.10
-- HTML5
-- CSS3
+
+   - Python 3.6
+   - Django 1.10
+   - HTML5
+   - CSS3
 
 
 ### Images used

@@ -31,6 +31,12 @@ pass on to templates, use in tests, etc., no need to change in multiple places.
 - Merge fridge_subset_recipes() with subset_recipes().
 - It is still possible to navigate to registration view after successfully 
 submitting registration details. It should not be possible.
+- Cache about view so that it does not need to be computed every time 
+(reading file is expensive).
+- Consider downloading README file from GitHub, as it most likely won't be on 
+live server.
+- Add a cron job to update the file once in a while (when it is updated on 
+GitHub).
 
 JavaScript:
 1. Highlight current page in navbar.
