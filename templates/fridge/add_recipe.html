@@ -9,56 +9,58 @@
 
 {% block main %}
   <!-- Needs to be made prettier by CSS -->
-  <form enctype="multipart/form-data" action="{% url 'fridge:add_recipe' %}"
-      method="post" id="myForm">
-    {% csrf_token %}
+  <div class="add-recipe">
+    <form enctype="multipart/form-data" action="{% url 'fridge:add_recipe' %}"
+        method="post" id="myForm">
+      {% csrf_token %}
 
-    <div id="fridge_add_recipe">
-      {{ form.as_p }}
-    </div>
+      <div id="fridge_add_recipe">
+        {{ form.as_p }}
+      </div>
 
-    <!-- Looks quite ugly, in part due to form errors, in part due
-    to the table that is used. Need to refactor once front-end is being
-    developed, along with a new way of adding ingredients. Best would be
-    to show tooltips for errors, if possible. -->
-    <div id="fridge_add_ingredients">
-      <h3>Ingredients</h3>
-      <table class="add_ingredients">
-        <tbody>
-            {% for form in formset.forms %}
-              <tr>
-                <td>{{ form.ingredient }}</td>
-                <td>{{ form.quantity }}</td>
-                <td>{{ form.unit }}</td>
-              </tr>
-              <tr>
-              {% for field in form %}
-                <td>
-                {% if field.errors %}
-                  {{ field.errors.as_text|slice:"1:" }}<br/>
-                {% endif %}
-                </td>
+      <!-- Looks quite ugly, in part due to form errors, in part due
+      to the table that is used. Need to refactor once front-end is being
+      developed, along with a new way of adding ingredients. Best would be
+      to show tooltips for errors, if possible. -->
+      <div id="fridge_add_ingredients">
+        <h3>Ingredients</h3>
+        <table class="add_ingredients">
+          <tbody>
+              {% for form in formset.forms %}
+                <tr>
+                  <td>{{ form.ingredient }}</td>
+                  <td>{{ form.quantity }}</td>
+                  <td>{{ form.unit }}</td>
+                </tr>
+                <tr>
+                {% for field in form %}
+                  <td>
+                  {% if field.errors %}
+                    {{ field.errors.as_text|slice:"1:" }}
+                  {% endif %}
+                  </td>
+                {% endfor %}
+                </tr>
               {% endfor %}
-              </tr>
-            {% endfor %}
-        </tbody>
-      </table>
-    </div>
+          </tbody>
+        </table>
+      </div>
 
-    <!-- The script eventually needs to go. Need to figure out a minimal
-    way to achieve what is needed, instead of using code that has more
-    functionality than is needed. -->
-    <script type="text/javascript">
-      $(function() {
-        $('#myForm tbody tr').formset({
-          addText: 'Add Ingredient',
-          deleteText: 'Remove',
+      <!-- The script eventually needs to go. Need to figure out a minimal
+      way to achieve what is needed, instead of using code that has more
+      functionality than is needed. -->
+      <script type="text/javascript">
+        $(function() {
+          $('#myForm tbody tr').formset({
+            addText: 'Add Ingredient',
+            deleteText: 'Remove',
+          })
         })
-      })
-    </script>
-    {{ formset.management_form }}
-    {{ formset.non_form_errors.as_text|slice:"1:" }}<br/>
+      </script>
+      {{ formset.management_form }}
+      {{ formset.non_form_errors.as_text|slice:"1:" }}
 
-    <input type="submit" value="Create Recipe" />
-  </form>
+      <input type="submit" value="Create Recipe" />
+    </form>
+  </div>
 {% endblock %}

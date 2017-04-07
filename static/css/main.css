@@ -732,6 +732,44 @@ select#id_unit {
 }
 
 
+/* =============== */
+/* ADD_RECIPE.HTML */
+/* =============== */
+
+.add-recipe {
+    margin: 0 auto;
+    text-align: center;
+}
+
+textarea#id_description, textarea#id_steps, input#id_title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 16px;
+
+    border: 1px solid darkgrey;
+    padding: 5px 10px 5px 10px;
+    margin: 15px auto;
+    width: 530px;
+}
+
+input#id_title {
+    height: 30px;
+}
+
+textarea#id_description, textarea#id_steps {
+    height: 200px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+@media all and (max-width: 600px) {
+    textarea#id_description, textarea#id_steps, input#id_title {
+        width: 350px;
+    }
+}
+
+
+
 
 /* ================== */
 /*   Footer insides   */
