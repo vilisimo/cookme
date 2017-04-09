@@ -741,15 +741,20 @@ select#id_unit {
     text-align: center;
 }
 
-textarea#id_description, textarea#id_steps, input#id_title {
+textarea#id_description, textarea#id_steps, input#id_title,
+.recipe-additional-info, #fridge_add_ingredients {
+    text-align: left;
+    display: block;
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
     font-size: 16px;
-
-    border: 1px solid darkgrey;
     padding: 5px 10px 5px 10px;
     margin: 15px auto;
     width: 530px;
+}
+
+textarea#id_description, textarea#id_steps, input#id_title {
+    border: 1px solid darkgrey;
 }
 
 input#id_title {
@@ -762,9 +767,83 @@ textarea#id_description, textarea#id_steps {
     padding-bottom: 10px;
 }
 
+.add-recipe label {
+    display: inline-block;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.recipe-additional-info {
+    margin: 30px auto;
+    display: block;
+    width: 550px;
+    padding: 0;
+}
+
+select#id_cuisine {
+    background-color: transparent;
+    /* Used to remove chrome specific styling: */
+    /*-webkit-appearance: none;*/
+    /*-webkit-border-radius: 0;*/
+    display: block;
+    margin: 10px auto;
+    height: 30px;
+    width: 100%;
+
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.cuisine, .recipe-image {
+    margin: 30px 0;
+}
+
+input#id_image {
+    display: block;
+    width: 160px;
+    margin-top: 10px;
+}
+
+table.add_ingredients {
+    margin: 0 auto;
+}
+
+.dynamic-form td, .dynamic-form select {
+    height: 24px;
+}
+
+.dynamic-form a, .dynamic-form img {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+input#create-recipe {
+    background-color: #009900;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    width: 150px;
+    height: 40px;
+    margin: 60px auto;
+
+    font-size: 16px;
+    font-weight: 300;
+    color: #ffffff;
+}
+
+
 @media all and (max-width: 600px) {
     textarea#id_description, textarea#id_steps, input#id_title {
         width: 350px;
+    }
+
+    .recipe-additional-info {
+        width: 370px;
+    }
+
+    #fridge_add_ingredients {
+        width: 370px;
     }
 }
 

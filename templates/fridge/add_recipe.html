@@ -15,7 +15,23 @@
       {% csrf_token %}
 
       <div id="fridge_add_recipe">
-        {{ form.as_p }}
+        {{ form.title }}
+        {{ form.description }}
+        {{ form.steps }}
+        <div class="recipe-additional-info">
+          <div class="cuisine">
+            Cuisine: {{ form.cuisine }}
+          </div>
+          <div class="recipe-image">
+            Image: {{ form.image }}
+          </div>
+        </div>
+
+        {% for field in form %}
+          {% if field.errors %}
+            {{ field.error.as_text|slice:"1 :" }}
+          {% endif %}
+        {% endfor %}
       </div>
 
       <!-- Looks quite ugly, in part due to form errors, in part due
@@ -53,14 +69,14 @@
         $(function() {
           $('#myForm tbody tr').formset({
             addText: 'Add Ingredient',
-            deleteText: 'Remove',
+            deleteText: '<img src={% static "files/icons/remove24x24.png" %} } title="Remove ingredient">'
           })
         })
       </script>
       {{ formset.management_form }}
       {{ formset.non_form_errors.as_text|slice:"1:" }}
 
-      <input type="submit" value="Create Recipe" />
+      <input type="submit" value="Create Recipe" id="create-recipe" />
     </form>
   </div>
 {% endblock %}
