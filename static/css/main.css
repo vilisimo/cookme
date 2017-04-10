@@ -739,6 +739,7 @@ select#id_unit {
 .add-recipe {
     margin: 0 auto;
     text-align: center;
+    text-decoration: none;
 }
 
 textarea#id_description, textarea#id_steps, input#id_title,
@@ -753,7 +754,7 @@ textarea#id_description, textarea#id_steps, input#id_title,
     width: 530px;
 }
 
-textarea#id_description, textarea#id_steps, input#id_title {
+.add-recipe input:not(#id_image), .add-recipe textarea, .add-recipe select {
     border: 1px solid darkgrey;
 }
 
@@ -805,17 +806,36 @@ input#id_image {
     margin-top: 10px;
 }
 
+.add-recipe h3 {
+    margin: 20px auto 30px auto;
+}
+
 table.add_ingredients {
     margin: 0 auto;
+    width: 550px;
 }
 
 .dynamic-form td, .dynamic-form select {
     height: 24px;
 }
 
+tr.dynamic-form > td:first-child input {
+    width: 235px;
+}
+
 .dynamic-form a, .dynamic-form img {
     vertical-align: middle;
     display: inline-block;
+}
+
+.dynamic-form input, .dynamic-form img {
+    padding: 3px 10px 3px 10px;
+    font-size: 14px;
+}
+
+.dynamic-form select {
+    font-size: 14px;
+    height: 34px;
 }
 
 input#create-recipe {
@@ -844,7 +864,35 @@ input#create-recipe {
 
     #fridge_add_ingredients {
         width: 370px;
+        padding: 0;
     }
+
+    table.add_ingredients {
+        width: 370px;
+    }
+
+    .dynamic-form td {
+        display: block;
+        margin: 10px 0;
+    }
+
+    .dynamic-form td input {
+        width: 350px;
+        display: inline;
+        padding: 3px 9px;
+        margin-left: -3px;
+    }
+
+    .dynamic-form select {
+        display: inline-block;
+        margin-left: -3px;
+        width: 326px;
+    }
+
+    tr.dynamic-form td:first-child input {
+        width: 350px;
+    }
+
 }
 
 
