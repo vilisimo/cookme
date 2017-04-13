@@ -896,6 +896,39 @@ input#create-recipe {
 }
 
 
+/* ========================= */
+/*   INGREDIENT_DETAIL.HTM   */
+/* ========================= */
+
+.ingredient-info {
+    margin: 30px auto 100px auto;
+}
+
+.ingredient-info h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    text-transform: uppercase;
+    border-bottom: 1px solid black;
+    display: inline-block;
+    margin: 20px auto 10px auto;
+    padding: 0;
+}
+
+.ingredient-title {
+    text-align: center;
+}
+
+.ingredient-info h4 {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    margin: 0 auto 20px auto;
+}
+
+
+
+
+
 
 
 /* ================== */

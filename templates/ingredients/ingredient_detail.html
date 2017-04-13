@@ -1,19 +1,37 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  {% if ingredient %}
-    <h3>{{ ingredient.name }} ({{ ingredient.type }})</h3>
-    <p>{{ ingredient.description }}</p>
-  {% else %}
-    No such ingredient found! Strange!
-  {% endif %}
+  <div class="ingredient-info">
+    {% if ingredient %}
+      <div class="ingredient-title">
+        <h3>{{ ingredient.name }}</h3>
+      </div>
+      <h4>{{ ingredient.type }}</h4>
+      <p>{{ ingredient.description }}</p>
+    {% else %}
+      <p>No such ingredient found! Strange!</p>
+    {% endif %}
+  </div>
 
-  <h3>Recipes that use this ingredient:</h3>
   <ul>
-    {% for recipe in recipes %}
-      <li><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></li>
-    {% empty %}
-      <li>This ingredient is not used in any recipes!</li>
-    {% endfor %}
+    <div class="four-recipes">
+      {% for recipe in recipes %}
+          <div class="four">
+            <a href="{{ recipe.get_absolute_url }}">
+              <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
+              <h3>{{ recipe.title }}  <br/>by <span id="author">{{ recipe.author }}</span></h3>
+            </a>
+            {% if user.is_authenticated and recipe not in user_recipes %}
+              <a href="{% url 'recipes:add_to_fridge' recipe.pk %}" class="add-fridge">
+                <div class="add-fridge-icon" title="Add to your fridge"></div>
+              </a>
+            {% endif %}
+          </div>
+      {% empty %}
+        <p>There are no recipes with this ingredient. Why not be the first one to
+          <a href="{% url 'fridge:add_recipe' %}">add one?</a>
+        </p>
+      {% endfor %}
+    </div>
   </ul>
 {% endblock %}
