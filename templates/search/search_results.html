@@ -14,18 +14,7 @@
       {% if recipes %}
         <h3>Recipes with given ingredients:</h3>
       {% endif %}
-      <div class="four-recipes">
-        {% for recipe in recipes %}
-          <div class="four">
-            <a href="{{ recipe.get_absolute_url }}">
-              <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
-              <h3>{{ recipe.title }}  <br/>by <span id="author">{{ recipe.author }}</span></h3>
-            </a>
-          </div>
-        {% empty %}
-          <p>No ingredients matched your query. Sad, sad day.</p>
-        {% endfor %}
-      </div>
+      {% include 'four_recipes.html' %}
     {% else %}
       <p>You did not enter any ingredients! Naughty.</p>
     {% endif %}

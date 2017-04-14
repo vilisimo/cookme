@@ -13,25 +13,6 @@
     {% endif %}
   </div>
 
-  <ul>
-    <div class="four-recipes">
-      {% for recipe in recipes %}
-          <div class="four">
-            <a href="{{ recipe.get_absolute_url }}">
-              <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" />
-              <h3>{{ recipe.title }}  <br/>by <span id="author">{{ recipe.author }}</span></h3>
-            </a>
-            {% if user.is_authenticated and recipe not in user_recipes %}
-              <a href="{% url 'recipes:add_to_fridge' recipe.pk %}" class="add-fridge">
-                <div class="add-fridge-icon" title="Add to your fridge"></div>
-              </a>
-            {% endif %}
-          </div>
-      {% empty %}
-        <p>There are no recipes with this ingredient. Why not be the first one to
-          <a href="{% url 'fridge:add_recipe' %}">add one?</a>
-        </p>
-      {% endfor %}
-    </div>
-  </ul>
+  {% include 'four_recipes.html' %}
+
 {% endblock %}
