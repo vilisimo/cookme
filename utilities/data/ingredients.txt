@@ -1,26 +1,26 @@
 Name; Type; Description
 Boneless Chicken Breast; Poultry; Chicken is one of the most common type of poultry in the world. Popular in Asian cuisine, curries. It is a good source of proteins.
-Brown Sugar; Sugars; A sugar that is either unrefined or partially refined and has a distinctive brown color due to molasses.
+Brown Sugar; Sugar; A sugar that is either unrefined or partially refined and has a distinctive brown color due to molasses.
 Coconut Milk; Unspecified; Liquid that is produced by grating meat of a mature coconut. It has a high oil content, most of which is saturated fat. Coconut milk is very popular in Southeast Asian, Caribbean and South American cuisine.
-Fish Sauce; Sauces; A seasoning often used in Asian (particularly Thai and Vietnamese) cuisine. In ancient days, Europeans also included fish sauce in their dishes, but nowadays it is rare. It can be made from shrimp, fermentation of fish with sea salt. Has a strong salty flavor.
-Fresh Coriander; Herbs; Sometimes referred to as cilantro or Chinese parsley. Seeds and fresh leaves are often used in cooking. The taste of coriander is usually either very much appreciated, or disliked intensely.
-Kaffir Lime Leaves; Herbs; Leaves of kaffir lime (otherwise known as makrut lime or Mauritius papeda). The leaves are often used in Southeast Asian cuisine.
-Lemongrass; Herbs; A culinary herb widely used in Asian cuisines. Commonly used in teas, soups, and curries. Their scent resembles lemons.
-Onion; Vegetables; Commonly chopped and used as an ingredient in various dishes. Sometimes it may be the main ingredient, too. There are many types of onions, such as red, yellow, brown.
-Vegetable Oil; Oils; Oils can be heated to be used in cooking. They are also often used as ingredients in various dishes, such as salads or pasta.
+Fish Sauce; Sauce; A seasoning often used in Asian (particularly Thai and Vietnamese) cuisine. In ancient days, Europeans also included fish sauce in their dishes, but nowadays it is rare. It can be made from shrimp, fermentation of fish with sea salt. Has a strong salty flavor.
+Fresh Coriander; Herb; Sometimes referred to as cilantro or Chinese parsley. Seeds and fresh leaves are often used in cooking. The taste of coriander is usually either very much appreciated, or disliked intensely.
+Kaffir Lime Leaves; Herb; Leaves of kaffir lime (otherwise known as makrut lime or Mauritius papeda). The leaves are often used in Southeast Asian cuisine.
+Lemongrass; Herb; A culinary herb widely used in Asian cuisines. Commonly used in teas, soups, and curries. Their scent resembles lemons.
+Onion; Vegetable; Commonly chopped and used as an ingredient in various dishes. Sometimes it may be the main ingredient, too. There are many types of onions, such as red, yellow, brown.
+Vegetable Oil; Oil; Oils can be heated to be used in cooking. They are also often used as ingredients in various dishes, such as salads or pasta.
 Thai Curry Paste; Paste; A paste that is used in many Thai dishes. Usually, ingredients are: shrimp paste, chillies, onions or shallots, garlic, lemongrass, and coriander root.
-Olive Oil; Oils; A fat obtained from the olive. Produced by pressing the whole olives. Often used in cooking or preparation of salads.
-Red Pepper; Vegetables; A type of bell pepper, sometimes referred as sweet peppers. Peppers are native to Mexico, Central America, northern South Africa . Used in cooking, salads.
-Garlic Clove; Vegetables; A close relative to onions, shallots. Garlic is native to central Asia. For a long time it has been a staple of Mediterranean food, frequently used in Asia, Africa. Used for seasoning and condiment.
-Hot Chili Powder; Spices; Dried, pulverized fruit of chili pepper. Used for seasoning.
-Paprika; Spices; Ground spice made from red air-dried bell peppers. Used for seasoning.
-Ground Cumin; Spices; Cumin is a flower, native to the east Mediterranean to South Asia. Ground cumin can be used for seasoning.
+Olive Oil; Oil; A fat obtained from the olive. Produced by pressing the whole olives. Often used in cooking or preparation of salads.
+Red Pepper; Vegetable; A type of bell pepper, sometimes referred as sweet peppers. Peppers are native to Mexico, Central America, northern South Africa . Used in cooking, salads.
+Garlic Clove; Vegetable; A close relative to onions, shallots. Garlic is native to central Asia. For a long time it has been a staple of Mediterranean food, frequently used in Asia, Africa. Used for seasoning and condiment.
+Hot Chili Powder; Spice; Dried, pulverized fruit of chili pepper. Used for seasoning.
+Paprika; Spice; Ground spice made from red air-dried bell peppers. Used for seasoning.
+Ground Cumin; Spice; Cumin is a flower, native to the east Mediterranean to South Asia. Ground cumin can be used for seasoning.
 Minced Beef; Meat; Ground meat made of beef. Used in many dishes, for example, burgers.
 Beef Stock Cube; Unspecified; Otherwise known as beef bouillon cube. Dehydrated bouillon. Typically made from vegetables, meat stock, salt, seasonings. Can be used in soups.
 Chopped Tomatoes; Canned; Chopped tomatoes that are sealed into a can. Used in variety of dishes, such as chillis.
-Dried Marjoram; Herbs; Sometimes used as a synonym to oregano. Used for seasoning.
+Dried Marjoram; Herb; Sometimes used as a synonym to oregano. Used for seasoning.
 Sugar; Sugars; Sweet, soluble carbohydrates. Sugar is usually extracted from sugar canes or sugar beets. Used as a condiment.
 Tomato Purée; Unspecified; Thick liquid, made by cooking and straining tomatoes. Can be used in various stews, soups, sauces.
-Red Kidney Beans; Beans; Variety of a common bean. Commonly used in soups, chilis.
+Red Kidney Beans; Bean; Variety of a common bean. Commonly used in soups, chilis.
 Long Grain Rice; Rice; Slim type of rice. When cooked, usually does not clump as much as other varieties of rice may do. Used as a side dish in many cultures.
 Soured Cream; Dairy; Obtained by fermenting regular cream. Can be added to soups, as condiment, topping, in cakes, salad dressings.
