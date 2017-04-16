@@ -802,7 +802,7 @@ select#id_cuisine {
 
 input#id_image {
     display: block;
-    width: 160px;
+    width: 200px;
     margin-top: 10px;
 }
 
@@ -821,6 +821,10 @@ table.add_ingredients {
 
 tr.dynamic-form > td:first-child input {
     width: 235px;
+}
+
+tr.dynamic-form > td:not(first-child) input {
+    width: 162px;
 }
 
 .dynamic-form a, .dynamic-form img {
