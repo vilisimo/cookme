@@ -1,10 +1,10 @@
 ## Idea
-The website is designed to be a simple recipe holder with a simple, completely
-frontend. The user is presented with a clean interface that allows to browse 
-recipes that have been added to by the users. Additionally, user can search for 
-ingredient(s) that he/she would like to use: recipes containing those them will 
-be shown. Furthermore, user can add recipes and ingredients to his/her fridge. 
-Once ingredients and recipes are added, user can instruct the website to search 
+The website is designed to be a simple recipe holder with a simple frontend. 
+The user is presented with a clean interface that allows to browse recipes that 
+have been added to by the users. Additionally, user can search for ingredient(s) 
+that he/she would like to use: recipes containing those them will be shown. 
+Furthermore, user can add recipes and ingredients to his/her fridge. Once 
+ingredients and recipes are added, user can instruct the website to search 
 the fridge for liked recipes that can be made with ingredients in the fridge. 
 
 This is a practice project to get a better grip of Django, Python, CSS, HTML, 
@@ -30,8 +30,8 @@ look of the website is not acceptable yet.
    - ~~Basic functionality implementation~~
    - Front-end: HTML/CSS __(in progress)__
    - JavaScript enhancements
-   - _(Optional)_ Implementation of optional requirements
    - Deployment
+   - _(Optional)_ Implementation of optional requirements
 
 ### Design documents 
 To see the thought process behind the project, refer to the 
@@ -44,7 +44,7 @@ done on latest Mac OSX and Ubuntu 16.04.
 ### Languages/tools used
 So far, these major languages/frameworks/tools have been used:
 
-   - Python 3.6
+   - Python 3.6.1
    - Django 1.10
    - HTML5
    - CSS3

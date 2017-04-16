@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block main %}
   {% if fridge %}
@@ -47,7 +48,9 @@
               </span>
               of
               <a href="{{ ingredient.ingredient.get_absolute_url }}">{{ ingredient.ingredient }}</a>
-              <a class="fridge-remove" href="{% url 'fridge:remove_ingredient' ingredient.pk %}">Remove</a>
+              <a class="fridge-remove" href="{% url 'fridge:remove_ingredient' ingredient.pk %}">
+                <img src="{% static 'files/icons/remove24x24.png' %}" title="Remove recipe" />
+              </a>
             </li>
           {% empty %}
             <li class="empty-list">There are no ingredients in the fridge. Perhaps it is time to do some shopping..?</li>
@@ -67,7 +70,9 @@
           {% for recipe in recipes %}
             <li>
               <a class="fridge-recipe-title" href="{{ recipe.get_absolute_url }}">{{ recipe }}</a>
-              <a class="fridge-remove" href="{% url 'fridge:remove_recipe' recipe.pk %}">Remove</a>
+              <a class="fridge-remove" href="{% url 'fridge:remove_recipe' recipe.pk %}">
+                <img src="{% static 'files/icons/remove24x24.png' %}" title="Remove recipe" />
+              </a>
               <p>{{ recipe.description }}</p>
             </li>
           {% empty %}

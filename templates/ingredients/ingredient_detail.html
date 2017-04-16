@@ -7,7 +7,11 @@
         <h3>{{ ingredient.name }}</h3>
       </div>
       <h4>{{ ingredient.type }}</h4>
-      <p>{{ ingredient.description }}</p>
+      {% if ingredient.description %}
+        <p>{{ ingredient.description }}</p>
+      {% else %}
+        <p>No description available. Truly unlucky day!</p>
+      {% endif %}
     {% else %}
       <p>No such ingredient found! Strange!</p>
     {% endif %}

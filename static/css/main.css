@@ -590,14 +590,9 @@ input#id_quantity {
     background-color: #2c3946;
 }
 
-input#add-ingredient-button {
-
-}
-
 select#id_unit {
     width: 80px;
 }
-
 
 
 @media all and (max-width: 400px) {
@@ -649,6 +644,14 @@ select#id_unit {
 
 .fridge-ingredients li {
     margin: 10px 0;
+}
+
+.fridge-remove img {
+    vertical-align: middle;
+    display: inline-block;
+    height: 18px;
+    width: 18px;
+    margin-top: -4px;
 }
 
 .ingredient-make, .fridge-recipe-suggestions {
@@ -802,7 +805,7 @@ select#id_cuisine {
 
 input#id_image {
     display: block;
-    width: 200px;
+    /*width: 100%;*/
     margin-top: 10px;
 }
 
