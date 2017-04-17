@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block main %}
+        <!-- NOTE: placeholder needs to be changed when the screen size is small. JS? -->
+      <div class="encouragement">
+        <div class="encouragement-text">
+          <span class="get-creative">Get creative.</span> Use the ingredients you have to prepare a <span class="feast">feast</span>.
+        </div>
+      </div>
+
+      <form action="{% url 'home' %}" method="post" id="search-bar">
+        {% csrf_token %}
+        {{ form.q }}
+        <input type="submit" value="Search" />
+      </form>
+
+      {% if most_popular %}
+        <h2>Popular</h2>
+        <div class="four-recipes most-popular">
+          {% for recipe in most_popular %}
+            <div class="four popular">
+                <a href="{{ recipe.get_absolute_url }}">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description }}</p>
+                </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if most_recent %}
+        <h2>Recent</h2>
+        <div class="four-recipes most-recent">
+          {% for recipe in most_recent %}
+            <div class="four recent">
+                <a href="{{ recipe.get_absolute_url }}">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description }}</p>
+                </a>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if user.is_authenticated %}
+        {% if user_additions %}
+        <h2>Your new additions</h2>
+          <div class="four-recipes user-additions">
+            {% for recipe in user_additions %}
+              <div class="four additions">
+                <a href="{{ recipe.get_absolute_url }}">
+                  <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
+                  <h3>{{ recipe.title }}</h3>
+                  <p>{{ recipe.description }}</p>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endif %}
+{% endblock %}

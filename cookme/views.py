@@ -60,7 +60,7 @@ def home(request):
     content['most_popular'] = most_popular
     content['most_recent'] = most_recent
 
-    return render(request, 'base.html', content)
+    return render(request, 'home/home.html', content)
 
 
 def register(request):
