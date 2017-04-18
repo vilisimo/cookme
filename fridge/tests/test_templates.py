@@ -175,7 +175,7 @@ class FridgeDetailFridgeIngredientFormTests(TestCase):
         url = reverse('fridge:fridge_detail')
         response = self.client.get(url)
 
-        self.assertContains(response, 'Add Ingredient')
+        self.assertContains(response, 'Add')
 
 
 class FridgeDetailTests(TestCase):
@@ -264,10 +264,10 @@ class FridgeDetailTests(TestCase):
         fi1 = FI.objects.create(fridge=self.fridge, unit=unit, ingredient=i1,
                                 quantity=1)
         remove_url = reverse('fridge:remove_ingredient', kwargs={'pk': fi1.pk})
-        expected_html = f'<a href="{remove_url}">Remove</a>'
+        expected_html = f'<a class="fridge-remove" href="{remove_url}">'
         response = self.client.get(self.url)
 
-        self.assertContains(response, expected_html, html=True)
+        self.assertContains(response, expected_html)
 
     def test_shows_remove_recipe(self):
         """ Ensures that a template shows a remove recipe function. """
@@ -277,9 +277,9 @@ class FridgeDetailTests(TestCase):
         self.fridge.recipes.add(r1)
         response = self.client.get(self.url)
         remove_url = reverse('fridge:remove_recipe', kwargs={'pk': r1.pk})
-        expected_href = f'<a href="{remove_url}">Remove</a>'
+        expected_href = f'<a class="fridge-remove" href="{remove_url}">'
 
-        self.assertContains(response, expected_href, html=True)
+        self.assertContains(response, expected_href)
 
     def test_shows_possibilities_link_in_template(self):
         """
@@ -340,10 +340,9 @@ class PossibilitiesTests(TestCase):
         response = self.client.get(self.url)
         expected_title = self.recipes[0].title
         expected_url = self.recipes[0].get_absolute_url()
-        expected_html = f'<a href={expected_url}>{expected_title}</a>'
 
         self.assertContains(response, expected_title, status_code=200)
-        self.assertContains(response, expected_html, html=True)
+        self.assertContains(response, f'<a href="{expected_url}">')
 
     def test_fridge_recipes_not_shown_without_fridge_ingredients(self):
         """
@@ -405,9 +404,9 @@ class FridgeRecipesTests(TestCase):
         response = self.client.get(self.url)
         expected_title = self.recipes[0].title
         expected_url = self.recipes[0].get_absolute_url()
-        expected_html = f'<a href={expected_url}>{expected_title}</a>'
+        expected_html = f'<a href="{expected_url}">'
         self.assertContains(response, expected_title, status_code=200)
-        self.assertContains(response, expected_html, html=True)
+        self.assertContains(response, expected_html)
 
     def test_fridge_recipes_not_shown_without_fridge_ingredients(self):
         """
