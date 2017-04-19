@@ -55,11 +55,11 @@ class RecipeTemplateTests(TestCase):
         """
 
         add_link = reverse('recipes:add_to_fridge', kwargs={'pk': self.r1.pk})
-        expected_html = f'<a href="{add_link}">Add</a>'
+        expected_html = f'<a href="{add_link}" class="add-fridge">'
         self.client.login(username='test', password='test')
         response = self.client.get(self.url)
 
-        self.assertContains(response, expected_html, html=True)
+        self.assertContains(response, expected_html)
 
     def test_add_link_not_shown_to_anonymous(self):
         """ Ensures add link is not shown for anonymous user. """

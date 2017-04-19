@@ -68,11 +68,10 @@ class IngredientDetailTemplateTests(TestCase):
         """
 
         response = self.client.get(self.url)
-        expected_text = 'This ingredient is not used in any recipes!'
-        expected_html = f'<p>{expected_text}</p>'
+        expected_html = '<p>There are no recipes. Why not be the first one to'
 
         self.assertContains(response, self.i.name)
-        self.assertContains(response, expected_html, html=True)
+        self.assertContains(response, expected_html)
 
     def test_no_such_ingredient(self):
         """

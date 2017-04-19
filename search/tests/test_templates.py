@@ -44,7 +44,7 @@ class SearchResultsTests(TestCase):
         response = self.client.get(url)
         expected_ingredient = capwords(self.m)
         expected_recipe = r.title
-        expected_url = f'<a href="{r.get_absolute_url()}">{expected_recipe}</a>'
+        expected_url = f'<a href="{r.get_absolute_url()}">'
 
         self.assertContains(response, expected_ingredient, status_code=200)
         self.assertContains(response, expected_recipe)
