@@ -805,7 +805,6 @@ select#id_cuisine {
 
 input#id_image {
     display: block;
-    /*width: 100%;*/
     margin-top: 10px;
 }
 
@@ -823,7 +822,7 @@ table.add_ingredients {
 }
 
 tr.dynamic-form > td:first-child input {
-    width: 235px;
+    width: 225px;
 }
 
 tr.dynamic-form > td:not(first-child) input {
@@ -884,7 +883,7 @@ input#create-recipe {
     }
 
     .dynamic-form td input {
-        width: 350px;
+        min-width: 350px;
         display: inline;
         padding: 3px 9px;
         margin-left: -3px;
@@ -895,11 +894,6 @@ input#create-recipe {
         margin-left: -3px;
         width: 326px;
     }
-
-    tr.dynamic-form td:first-child input {
-        width: 350px;
-    }
-
 }
 
 
