@@ -842,6 +842,7 @@ tr.dynamic-form > td:not(first-child) input {
 .dynamic-form select {
     font-size: 14px;
     height: 34px;
+    width: 46px;
 }
 
 input#create-recipe {
@@ -925,10 +926,6 @@ input#create-recipe {
     font-weight: 300;
     margin: 0 auto 20px auto;
 }
-
-
-
-
 
 
 
