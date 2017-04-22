@@ -757,6 +757,10 @@ textarea#id_description, textarea#id_steps, input#id_title,
     width: 530px;
 }
 
+#fridge_add_ingredients {
+    width: 550px;
+}
+
 .add-recipe input:not(#id_image), .add-recipe textarea, .add-recipe select {
     border: 1px solid darkgrey;
 }
@@ -814,7 +818,6 @@ input#id_image {
 
 table.add_ingredients {
     margin: 0 auto;
-    width: 550px;
 }
 
 .dynamic-form td, .dynamic-form select {
@@ -842,7 +845,6 @@ tr.dynamic-form > td:not(first-child) input {
 .dynamic-form select {
     font-size: 14px;
     height: 34px;
-    width: 46px;
 }
 
 input#create-recipe {
