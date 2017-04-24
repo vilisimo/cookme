@@ -2,14 +2,20 @@
     margin: 0;
 }
 
+*::selection {
+    background: indianred;
+    color: white;
+}
+
 header, footer, nav, article {
     display: block;
 }
 
-html, body, input, h2 {
+html, body, input, h2, textarea {
     height: 100%;
     font-family: 'Montserrat', sans-serif;
     font-weight: 300;
+    font-size: 16px;
 }
 
 main {
@@ -21,12 +27,10 @@ ul {
     padding: 0;
 }
 
-/* Different color upon selection of text */
-
-*::selection {
-    background: indianred;
-    color: white;
+a {
+    text-decoration: none;
 }
+
 
 /* ==================== */
 /*    Navigation bar    */
@@ -42,7 +46,6 @@ nav {
 nav ul {
     overflow: hidden;
     margin: 0;
-    padding: 0;
 
 }
 
@@ -56,7 +59,6 @@ nav li#home {
 
 nav li a {
     display: block;
-    text-decoration: none;
     text-align: center;
     padding: 24px 26px;
     transition: all 0.5s ease;
@@ -240,7 +242,6 @@ h3 {
 }
 
 .four a {
-    text-decoration: none;
     color: black;
 }
 
@@ -335,10 +336,6 @@ h3 {
 }
 
 .recipe-additional-information li {
-    display: inline-block;
-}
-
-.recipe-additional-information li {
     display: inline;
     border-right: 1px solid #aaa;
     padding-right: 7px;
@@ -352,10 +349,6 @@ h3 {
 
 .recipe-links {
     margin: 10px 5px;
-}
-
-.recipe-links a {
-    text-decoration: none;
 }
 
 hr {
@@ -496,8 +489,6 @@ form#login-form, form#register-form {
     margin: 20px auto 20px auto;
     height: 40px;
     padding: 5px 20px;
-
-    font-size: 16px;
 }
 
 input#login-submit, input#register-submit {
@@ -579,7 +570,6 @@ input#id_quantity {
 #add-ingredient-button {
     border-radius: 2px;
     width: 60px;
-    font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     background-color: #222c36;
@@ -607,10 +597,6 @@ select#id_unit {
 
 .fridge {
     display: flex;
-}
-
-.fridge a {
-    text-decoration: none;
 }
 
 .fridge-ingredients, .fridge-recipes {
@@ -726,7 +712,7 @@ select#id_unit {
 }
 
 .about ul {
-    list-style: circle;
+    list-style-type: circle;
     margin-left: 30px;
 }
 
@@ -742,16 +728,12 @@ select#id_unit {
 .add-recipe {
     margin: 0 auto;
     text-align: center;
-    text-decoration: none;
 }
 
 textarea#id_description, textarea#id_steps, input#id_title,
 .recipe-additional-info, #fridge_add_ingredients {
     text-align: left;
     display: block;
-    font-family: 'Montserrat', sans-serif;
-    font-weight: 300;
-    font-size: 16px;
     padding: 5px 10px 5px 10px;
     margin: 15px auto;
     width: 530px;
@@ -856,8 +838,6 @@ input#create-recipe {
     height: 40px;
     margin: 60px auto;
 
-    font-size: 16px;
-    font-weight: 300;
     color: #ffffff;
 }
 
@@ -944,10 +924,6 @@ footer {
     font-family: 'Source Sans Pro', sans-serif;
 }
 
-footer a {
-    text-decoration: none;
-}
-
 #copyright {
     line-height: 30px;
     font-size: 12px;
@@ -955,11 +931,10 @@ footer a {
 
 #copyright li {
     display: inline;
-    padding: 0 5px;
+    margin: 0 5px;
 }
 
 #copyright p {
-    font-family: 'Source Sans Pro', sans-serif;
     font-size: 12px;
 }
 
