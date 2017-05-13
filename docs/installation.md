@@ -4,7 +4,7 @@ should be pretty straightforward on all OS'es. Instructions are for OS X & Linux
 distributions, though Windows should be fairly similar as well.
 
 1. Open terminal.
-2. Ensure that Python 3.5 is installed: `>>> python --version`.
+2. Ensure that Python 3.6 is installed: `>>> python --version`.
 3. Ensure Git is installed: `>>> git --version`.
 4. Navigate to the folder where `cookme` project should live: `>>> cd 
 path/to/where/the/project/should/be`.
@@ -12,7 +12,7 @@ path/to/where/the/project/should/be`.
 6. __(Recommended)__ Ensure virtualenvwrapper is installed: `>>> pip list`. 
   * If it is not, enter `>>> pip install virtualenvwrapper`.
 7. __(Recommended)__ Create virtual environment for the project: 
-`>>> mkvirtualenv -p python3.5 cookme`.
+`>>> mkvirtualenv -p python3.6 cookme`.
 8. Once cloned, move to project's directory: `>>> cd cookme`.
 9. Install required packages: `>>> pip install -r requirements.txt`.
 10. Move to `utilities` directory: `>>> cd utilities/`
