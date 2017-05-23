@@ -24,3 +24,6 @@ Tomato Purée; Unspecified; Thick liquid, made by cooking and straining tomatoes
 Red Kidney Beans; Bean; Variety of a common bean. Commonly used in soups, chilis.
 Long Grain Rice; Rice; Slim type of rice. When cooked, usually does not clump as much as other varieties of rice may do. Used as a side dish in many cultures.
 Soured Cream; Dairy; Obtained by fermenting regular cream. Can be added to soups, as condiment, topping, in cakes, salad dressings.
+Lemon; Fruit; A yellow fruit used for culinary and non-culinary purposes. Has a distinct, sour taste, which makes it especially valuable in both alcoholic and non-alcoholic drinks, as well as baking and general cooking.
+Water; Unspecified; An odorless and tasteless fluid that enjoys a wide use across the world. Somewhat essential for living beings, and quite useful in cooking, too.
+Mint Leaves; Herb; Leaves of a green perennial herb. Valued for their aroma and peculiar taste they can be used in drinks, desserts, sauces. Both fresh and dried leaves are widely available and used.

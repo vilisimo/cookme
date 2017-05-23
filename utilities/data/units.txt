@@ -1,4 +1,4 @@
-Name; Abbreviation; Description; Plural
+Name; Abbreviation; Plural; Description
 unit; unit; units; Used for easily countable things, such as onions or carrots.
 can; can; cans; Container for distribution or storage of various goods.
 cup; cup; cups; Used to measure volume. Roughly 1/4 of L. Weights vary for dry goods.
@@ -6,6 +6,6 @@ gram; g; g; Used to measure weight. 1/1000 of kg.
 kilogram; kg; kg; Used to measure weight.
 litre; L; L; Used to measure volume.
 millilitre; mL; mL; Used to measure volume. 1/1000 of L.
-tablespoon; tbsp; tbsp; Used to measure volume. Roughly 15 mL.
-teaspoon; tsp; tsp; Used to measure volume. Equals to 5 mL.
+tablespoon; tbsps; tbsp; Used to measure volume. Roughly 15 mL.
+teaspoon; tsp; tsps; Used to measure volume. Equals to 5 mL.
 stalk; stalk; stalks; The main stem of a herbaceous plant.

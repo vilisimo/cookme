@@ -11,6 +11,8 @@ import os
 import sys
 import yaml
 
+from django.db.utils import IntegrityError
+
 project_path = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cookme.settings")
 sys.path.append(project_path)
@@ -239,7 +241,12 @@ def populate_recipes(recipe_folder=None):
 
             values = yaml.load(open(path, 'r'))
             recipe = commit_recipe(values)
-            commit_recipe_ingredient(values, recipe)
+
+            try:
+                commit_recipe_ingredient(values, recipe)
+            except IntegrityError:
+                # It's ok if it already exists, just skip it
+                continue
 
         terminal_out('Recipe population is done.')
 
