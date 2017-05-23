@@ -6,6 +6,6 @@ gram; g; g; Used to measure weight. 1/1000 of kg.
 kilogram; kg; kg; Used to measure weight.
 litre; L; L; Used to measure volume.
 millilitre; mL; mL; Used to measure volume. 1/1000 of L.
-tablespoon; tbsps; tbsp; Used to measure volume. Roughly 15 mL.
+tablespoon; tbsp; tbsps; Used to measure volume. Roughly 15 mL.
 teaspoon; tsp; tsps; Used to measure volume. Equals to 5 mL.
 stalk; stalk; stalks; The main stem of a herbaceous plant.

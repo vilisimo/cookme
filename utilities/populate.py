@@ -92,19 +92,32 @@ def migrate():
     terminal_out('Migrations were carried out successfully.')
 
 
-def create_super_user(username, password):
+def create_super_user(username):
     """ Creates super user for testing purposes """
+
+    user = _create_user_if_doesnt_exist(username)
+    _give_privileges_to(user)
+
+    terminal_out('Super user created successfully.')
+    terminal_out(f'Login: {username} \nPassword: {username}')
+
+
+def _create_user_if_doesnt_exist(username):
+    """ Checks if the user exists. If not, creates it with a weak password. """
 
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
-        user = User.objects.create_user(username=username, password=password)
+        user = User.objects.create_user(username=username, password=username)
+    return user
+
+
+def _give_privileges_to(user):
+    """ Assign admin and staff privileges to given user """
 
     user.is_superuser = True
     user.is_staff = True
     user.save()
-    terminal_out('Super user created successfully.')
-    terminal_out(f'Login: {username} \nPassword: {password}')
 
 
 @transaction.atomic
@@ -118,17 +131,21 @@ def populate_units(units_txt=None):
         with open(units_txt) as f:
             f.readline()  # Get rid of the title line
             for line in f:
-                line = [item.strip() for item in line.strip().split(';')]
-                # Get or create is used in case we need to update the DB rather
-                # than populate it from scratch.
-                Unit.objects.get_or_create(name=line[0],
-                                           abbrev=line[1],
-                                           plural=line[2],
-                                           description=line[3])
+                _populate_unit_from_input_line(line)
         terminal_out('Unit population is done.')
     except (FileNotFoundError, TypeError):
         terminal_out('Input file not recognized.', error=True)
         raise
+
+
+def _populate_unit_from_input_line(line):
+    """ Creates a Unit entity using an input line extracted from Units.txt """
+
+    line = [item.strip() for item in line.strip().split(';')]
+    # Get or create is used in case we need to update the DB rather
+    # than populate it from scratch.
+    Unit.objects.get_or_create(name=line[0], abbrev=line[1], plural=line[2],
+                               description=line[3])
 
 
 @transaction.atomic
@@ -142,14 +159,88 @@ def populate_ingredients(ingredients_txt=None):
         with open(ingredients_txt) as f:
             f.readline()
             for line in f:
-                line = [item.strip() for item in line.split(';')]
-                Ingredient.objects.get_or_create(name=line[0].strip(),
-                                                 type=line[1].strip(),
-                                                 description=line[2].strip())
+                _populate_ingredient_from_input_line(line)
         terminal_out('Ingredient population is done.')
     except (FileNotFoundError, TypeError):
         terminal_out('Input file was not recognized.', error=True)
         raise
+
+
+def _populate_ingredient_from_input_line(line):
+    """ Creates Ingredient entity from a line of text """
+
+    line = [item.strip() for item in line.split(';')]
+    name = line[0].strip()
+    ing_type = line[1].strip()
+    desc = line[2].strip()
+    Ingredient.objects.get_or_create(name=name, type=ing_type, description=desc)
+
+
+@transaction.atomic
+def populate_recipes(recipe_folder=None):
+    """
+    Populates the database with recipe instances.
+    """
+
+    _check_path_exists(recipe_folder)
+    _check_not_empty(recipe_folder)
+
+    try:
+        # Each file represents a recipe
+        files = os.listdir(recipe_folder)
+        for index, f in enumerate(files):
+            _report_process(index, f, files)
+            path = f'{recipe_folder}/{f}'
+
+            # If file is empty - more useful for myself to warn, instead crash
+            if os.stat(path).st_size <= 0:
+                message = f'File nr.{index+1} is empty.'
+                terminal_out(message, error=True, terminate=False)
+                continue
+
+            values = yaml.load(open(path, 'r'))
+            recipe = commit_recipe(values)
+
+            commit_recipe_ingredient(values, recipe)
+
+        terminal_out('Recipe population is done.')
+
+    except (FileNotFoundError, TypeError):
+        terminal_out('Input path was not recognized.', error=True)
+        raise
+
+    except User.DoesNotExist:
+        terminal_out('Such username does not exist. Please create a user.',
+                     error=True)
+        raise
+
+    except KeyError as e:
+        terminal_out(f"'{e.args[0]}' field was not found. Please ensure that "
+                     f"YML file contains it.", error=True)
+
+
+def _check_path_exists(recipe_folder):
+    """ Ensure the given path to folder exists """
+
+    if recipe_folder is None:
+        terminal_out('Path was not provided.', error=True)
+        raise FileNotFoundError('Path was not provided.')
+
+
+def _check_not_empty(recipe_folder):
+    """ Ensure recipe folder is not empty. Otherwise population is useless"""
+
+    if not os.listdir(recipe_folder):
+        terminal_out('Folder is empty. Please add recipes.', error=True)
+        raise FileNotFoundError('No files found in the directory.')
+
+
+def _report_process(index, file_, files):
+    """ Report recipe creation process on the console """
+
+    if __name__ == '__main__':
+        processed = file_.split('/')[-1]
+        print(f'Processing {index+1}/{len(files)} file: {processed}')
 
 
 def commit_recipe(values):
@@ -210,60 +301,6 @@ def commit_recipe_ingredient(values, recipe):
         raise
 
 
-@transaction.atomic
-def populate_recipes(recipe_folder=None):
-    """
-    Populate the database with recipe instances.
-    """
-
-    if recipe_folder is None:
-        terminal_out('Path was not provided.', error=True)
-        raise FileNotFoundError('Path was not provided.')
-
-    if not os.listdir(recipe_folder):
-        terminal_out('Folder is empty. Please add recipes.', error=True)
-        raise FileNotFoundError('No files found in the directory.')
-
-    try:
-        # Each file represents a recipe
-        files = os.listdir(recipe_folder)
-        for index, f in enumerate(files):
-            if __name__ == '__main__':
-                processed = f.split('/')[-1]
-                print(f'Processing {index+1}/{len(files)} file: {processed}')
-            path = f'{recipe_folder}/{f}'
-
-            # If file is empty - more useful for myself to warn, instead crash
-            if os.stat(path).st_size <= 0:
-                message = f'File nr.{index+1} is empty.'
-                terminal_out(message, error=True, terminate=False)
-                continue
-
-            values = yaml.load(open(path, 'r'))
-            recipe = commit_recipe(values)
-
-            try:
-                commit_recipe_ingredient(values, recipe)
-            except IntegrityError:
-                # It's ok if it already exists, just skip it
-                continue
-
-        terminal_out('Recipe population is done.')
-
-    except (FileNotFoundError, TypeError):
-        terminal_out('Input path was not recognized.', error=True)
-        raise
-
-    except User.DoesNotExist:
-        terminal_out('Such username does not exist. Please create a user.',
-                     error=True)
-        raise
-
-    except KeyError as e:
-        terminal_out(f"'{e.args[0]}' field was not found. Please ensure that "
-                     f"YML file contains it.", error=True)
-
-
 if __name__ == '__main__':
     current = os.path.normpath(os.getcwd())
     units_file = os.path.join(current, 'data', 'units.txt')
@@ -273,6 +310,6 @@ if __name__ == '__main__':
     populate_units(units_txt=units_file)
     populate_ingredients(ingredients_txt=ingredients_file)
     populate_recipes(recipe_folder=recipes_path)
-    create_super_user(username="admin", password="admin")
+    create_super_user(username="admin")
 
 
