@@ -400,7 +400,7 @@ hr {
 }
 
 p.recipe-step {
-    margin: 0 40px 15px 40px;
+    margin: 15px 40px 15px 40px;
     max-width: 700px;
     letter-spacing: 0.0625em;
     line-height: 2em;
@@ -409,7 +409,7 @@ p.recipe-step {
 p.recipe-step:before {
     counter-increment: step;
     content: counter(step);
-    font-size: 2.5em;
+    font-size: 2em;
     position: absolute;
     margin-left: -45px;
     margin-top: 9px;
