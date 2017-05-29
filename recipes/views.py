@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from fridge.models import Fridge
 from .models import Recipe, RecipeIngredient
@@ -14,7 +15,17 @@ def recipes(request):
     :return: standard HttpResponse object.
     """
 
-    recipe_list = Recipe.objects.all()
+    all_recipes = Recipe.objects.all()
+    paginator = Paginator(all_recipes, 2)
+    page = request.GET.get('page')
+
+    try:
+        recipe_list = paginator.page(page)
+    except PageNotAnInteger:
+        recipe_list = paginator.page(1)
+    except EmptyPage:
+        recipe_list = paginator.page(paginator.num_pages)
+
     context = {
         'recipes': recipe_list,
         'user': request.user,
