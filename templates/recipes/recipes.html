@@ -5,46 +5,4 @@
 
   {% include 'four_recipes.html' %}
 
-  <span class="current">
-    {% if recipes.has_previous %}
-      <a href="?page={{ recipes.previous_page_number }}">previous</a>
-    {% endif %}
-
-    <span class="current">
-      Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}
-    </span>
-
-    {% if recipes.has_next %}
-      <a href="?page={{ recipes.next_page_number }}">next</a>
-    {% endif %}
-  </span>
-
-{#  {% if recipes.has_other_pages %}#}
-{#    <ul class="pagination">#}
-{##}
-{#      {% if recipes.has_previous %}#}
-{#        <li><a href="?page={{ recipes.previous_page_number }}">&laquo;</a></li>#}
-{#      {% else %}#}
-{#        <li class="disabled"><span>&laquo;</span></li>#}
-{#      {% endif %}#}
-{##}
-{#      {% for page in recipes.paginator.page_range %}#}
-{#        {% if recipes.number == page %}#}
-{#           <li class="active">#}
-{#             <span>{{ page }}<span class="sr-only">(current)</span></span>#}
-{#           </li>#}
-{#        {% else %}#}
-{#          <li><a href="?page={{ page }}">{{ page }}</a></li>#}
-{#        {% endif %}#}
-{#      {% endfor %}#}
-{##}
-{#      {% if recipes.has_next %}#}
-{#        <li><a href="?page={{ recipes.next_page_number }}">&raquo;</a></li>#}
-{#      {% else %}#}
-{#        <li class="disabled"><span>&raquo;</span></li>#}
-{#      {% endif %}#}
-{##}
-{#    </ul>#}
-{#  {% endif %}#}
-
 {% endblock %}

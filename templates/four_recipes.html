@@ -17,3 +17,19 @@
     </p>
   {% endfor %}
 </div>
+
+<div class="current">
+  <span class="pages">
+    {% if recipes.has_previous %}
+      <a href="?page={{ recipes.previous_page_number }}">previous</a>
+    {% endif %}
+
+{#    <span class="current">#}
+      Page {{ recipes.number }} of {{ recipes.paginator.num_pages }}
+{#    </span>#}
+
+    {% if recipes.has_next %}
+      <a href="?page={{ recipes.next_page_number }}">next</a>
+    {% endif %}
+  </span>
+</div>

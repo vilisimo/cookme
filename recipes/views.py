@@ -6,6 +6,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from fridge.models import Fridge
 from .models import Recipe, RecipeIngredient
 
+RECIPES_PER_PAGE = 12
+
 
 def recipes(request):
     """
@@ -16,7 +18,7 @@ def recipes(request):
     """
 
     all_recipes = Recipe.objects.all()
-    paginator = Paginator(all_recipes, 2)
+    paginator = Paginator(all_recipes, RECIPES_PER_PAGE)
     page = request.GET.get('page')
 
     try:

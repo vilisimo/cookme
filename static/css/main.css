@@ -253,6 +253,16 @@ h3 {
     margin: auto;
 }
 
+.current {
+    width: 100%;
+    margin: 20px auto;
+}
+
+.pages {
+    display: table;
+    margin: 0 auto;
+}
+
 @media all and (max-width: 1000px) {
     .four-recipes {
         flex-wrap: wrap;

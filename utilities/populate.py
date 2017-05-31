@@ -9,9 +9,8 @@ from command line
 
 import os
 import sys
-import yaml
 
-from django.db.utils import IntegrityError
+import yaml
 
 project_path = os.path.normpath(os.getcwd() + os.sep + os.pardir)
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cookme.settings")
