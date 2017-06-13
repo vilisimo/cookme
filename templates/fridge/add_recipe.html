@@ -8,7 +8,6 @@
 
 
 {% block main %}
-  <!-- Needs to be made prettier by CSS -->
   <div class="add-recipe">
     <form enctype="multipart/form-data" action="{% url 'fridge:add_recipe' %}"
         method="post" id="myForm">
@@ -16,6 +15,7 @@
 
       <div id="fridge_add_recipe">
         {{ form.title }}
+        <div id="title_chars_left"></div>
         {{ form.description }}
         {{ form.steps }}
         <div class="recipe-additional-info">
@@ -34,10 +34,6 @@
         {% endfor %}
       </div>
 
-      <!-- Looks quite ugly, in part due to form errors, in part due
-      to the table that is used. Need to refactor once front-end is being
-      developed, along with a new way of adding ingredients. Best would be
-      to show tooltips for errors, if possible. -->
       <div id="fridge_add_ingredients">
         <h3>Ingredients</h3>
         <table class="add_ingredients">
