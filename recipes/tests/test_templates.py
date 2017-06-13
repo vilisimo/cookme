@@ -1,6 +1,6 @@
-from django.test import TestCase, Client
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.test import TestCase, Client
 
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe, RecipeIngredient

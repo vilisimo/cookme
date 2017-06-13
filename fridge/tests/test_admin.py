@@ -3,14 +3,14 @@ Test suite for custom admin functions.
 """
 
 
-from django.test import TestCase
-from django.contrib.auth.models import User
 from django.contrib.admin.sites import AdminSite
+from django.contrib.auth.models import User
+from django.test import TestCase
 
+from fridge.admin import FridgeAdmin
+from fridge.models import Fridge, FridgeIngredient
 from ingredients.models import Ingredient, Unit
 from recipes.models import Recipe
-from fridge.models import Fridge, FridgeIngredient
-from fridge.admin import FridgeAdmin
 
 
 class FridgeAdminTests(TestCase):

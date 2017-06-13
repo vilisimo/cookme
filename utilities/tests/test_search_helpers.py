@@ -2,13 +2,12 @@
 Tests to ensure that helper functions are fully operational.
 """
 
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 
-from recipes.models import Recipe, RecipeIngredient as RI
-from ingredients.models import Ingredient, Unit
 from fridge.models import Fridge
-
+from ingredients.models import Ingredient, Unit
+from recipes.models import Recipe, RecipeIngredient as RI
 from utilities.mock_db import (
     populate_recipes, populate_fridge_recipes, get_user
 )

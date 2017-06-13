@@ -1,14 +1,12 @@
 import re
 from string import capwords
 
-from django.db import models
-from django.utils import timezone
-from django.urls import reverse
-
-from django.template.defaultfilters import slugify
-from django.utils.text import slugify
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.text import slugify
 
 from ingredients.models import Ingredient, Unit
 

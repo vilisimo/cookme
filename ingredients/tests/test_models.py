@@ -4,9 +4,9 @@ Test suite for custom model functionality.
 
 from string import capwords
 
+from django.core.urlresolvers import resolve
 from django.test import TestCase
 from django.utils.text import slugify
-from django.core.urlresolvers import resolve
 
 from ingredients.models import Ingredient, Unit
 

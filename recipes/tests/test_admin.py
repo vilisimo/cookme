@@ -3,13 +3,13 @@ Test suite for custom admin functions.
 """
 
 
-from django.test import TestCase
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth.models import User
+from django.test import TestCase
 
 from ingredients.models import Ingredient, Unit
-from recipes.models import Recipe, RecipeIngredient
 from recipes.admin import RecipeAdmin
+from recipes.models import Recipe, RecipeIngredient
 
 
 class RecipeAdminTests(TestCase):

@@ -1,7 +1,7 @@
 from string import capwords
 
-from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
+from django.test import TestCase, Client
 
 from utilities.mock_db import populate_recipes
 

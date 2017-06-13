@@ -2,15 +2,15 @@
 Test suite for views, urls.
 """
 
+from django.contrib.auth.models import User
 from django.core.urlresolvers import resolve, reverse
 from django.test import TestCase
 from django.test.client import Client
-from django.contrib.auth.models import User
 
-from utilities.mock_db import logged_in_client
 from ingredients.models import Ingredient, Unit
 from ingredients.views import ingredient_detail
 from recipes.models import Recipe, RecipeIngredient
+from utilities.mock_db import logged_in_client
 
 
 class IngredientDetailViewsURLsTests(TestCase):

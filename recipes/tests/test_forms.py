@@ -4,18 +4,18 @@ Test suite for custom form functionality.
 
 from string import capwords
 
-from django.test import TestCase
-from django.forms import formset_factory
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.forms import formset_factory
+from django.test import TestCase
 
 from ingredients.models import Ingredient, Unit
-from recipes.models import Recipe
 from recipes.forms import (
     BaseRecipeIngredientFormSet,
     RecipeIngredientForm,
     AddRecipeForm,
 )
+from recipes.models import Recipe
 
 
 class AddRecipeFormTests(TestCase):

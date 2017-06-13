@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from ingredients.models import Ingredient, Unit
 from fridge.forms import FridgeIngredientForm
+from ingredients.models import Ingredient, Unit
 
 
 class FridgeIngredientFormTests(TestCase):

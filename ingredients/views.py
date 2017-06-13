@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 
-from .models import Ingredient
 from recipes.models import Recipe
+from .models import Ingredient
 
 
 def ingredient_detail(request, slug):

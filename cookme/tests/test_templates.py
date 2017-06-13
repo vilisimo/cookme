@@ -5,9 +5,9 @@ These tests are not supposed to test every little bit of it, but just the
 essential parts which would be present no matter what.
 """
 
-from django.test import TestCase, Client
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.test import TestCase, Client
 
 from recipes.models import Recipe
 

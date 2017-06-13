@@ -3,9 +3,8 @@ Test suite for views, urls & templates.
 """
 
 
-from django.test import TestCase
-
 from django.core.urlresolvers import resolve
+from django.test import TestCase
 from django.test.client import Client
 
 from fridge.models import Fridge

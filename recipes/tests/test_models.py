@@ -4,13 +4,13 @@ Tests suite for custom model functionality.
 
 from string import capwords
 
-from django.utils import timezone
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
+from django.utils import timezone
 from django.utils.text import slugify
 
-from recipes.models import Recipe, Rating, RecipeIngredient, user_directory_path
 from ingredients.models import Ingredient, Unit
+from recipes.models import Recipe, Rating, RecipeIngredient, user_directory_path
 
 
 class RecipeTestCase(TestCase):

@@ -1,9 +1,9 @@
 import os
-from unittest import mock
 from tempfile import NamedTemporaryFile
+from unittest import mock
 
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe

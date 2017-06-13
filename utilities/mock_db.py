@@ -8,10 +8,9 @@ the future.
 
 from django.test import Client
 
+from fridge.models import Fridge, FridgeIngredient as FI
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe, RecipeIngredient as RI
-from fridge.models import Fridge, FridgeIngredient as FI
-
 from .populate import get_user
 
 

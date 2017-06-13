@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 
 from fridge.models import Fridge
 from .models import Recipe, RecipeIngredient
@@ -17,7 +17,7 @@ def recipes(request):
     :return: standard HttpResponse object.
     """
 
-    all_recipes = Recipe.objects.all()
+    all_recipes = Recipe.objects.all().order_by('date')
     paginator = Paginator(all_recipes, RECIPES_PER_PAGE)
     page = request.GET.get('page')
 

@@ -1,7 +1,7 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.forms import formset_factory
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 
 from recipes.forms import (
     BaseRecipeIngredientFormSet,
@@ -9,9 +9,9 @@ from recipes.forms import (
     AddRecipeForm,
 )
 from recipes.models import Recipe
-from .models import FridgeIngredient, Fridge
-from .forms import FridgeIngredientForm
 from utilities.search_helpers import subset_recipes
+from .forms import FridgeIngredientForm
+from .models import FridgeIngredient, Fridge
 
 
 @login_required

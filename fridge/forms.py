@@ -37,7 +37,7 @@ class FridgeIngredientForm(ModelForm):
 
         widgets = {
             'unit': Select(attrs={'required': 'true'}),
-            'quantity': NumberInput(attrs={'required': 'true', 'min': '0',
+            'quantity': NumberInput(attrs={'required': 'true', 'min': '0.01',
                                            'placeholder': 'Quantity'})
         }
 

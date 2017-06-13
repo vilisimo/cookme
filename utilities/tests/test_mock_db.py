@@ -1,10 +1,9 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
+from django.test import TestCase
 
-from recipes.models import Recipe
-from ingredients.models import Ingredient, Unit
 from fridge.models import FridgeIngredient, Fridge
-
+from ingredients.models import Ingredient, Unit
+from recipes.models import Recipe
 from utilities.mock_db import (
     populate_recipes, populate_ingredients, populate_units,
     populate_fridge_ingredients, populate_fridge_recipes, logged_in_client,

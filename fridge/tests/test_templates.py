@@ -3,13 +3,13 @@ Test suite for templates to ensure that they contain information that must be
 shown never mind the style used.
 """
 
-from django.test import TestCase
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from django.test import TestCase
 
+from fridge.models import Fridge, FridgeIngredient as FI
 from ingredients.models import Unit, Ingredient
 from recipes.models import Recipe
-from fridge.models import Fridge, FridgeIngredient as FI
 from utilities.mock_db import (
     logged_in_client, populate_recipes, populate_fridge_ingredients,
 )

@@ -4,9 +4,9 @@ str representations.
 """
 
 
-from django.test import TestCase
-from django.core.urlresolvers import resolve
 from django.contrib.auth.models import User
+from django.core.urlresolvers import resolve
+from django.test import TestCase
 
 from fridge.models import Fridge, FridgeIngredient
 from ingredients.models import Ingredient, Unit

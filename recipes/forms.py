@@ -1,6 +1,5 @@
 from string import capwords
 
-from django.utils.translation import gettext as _
 from django.forms import (
     TextInput,
     NumberInput,
@@ -12,6 +11,7 @@ from django.forms import (
     ValidationError,
     CharField,
 )
+from django.utils.translation import gettext as _
 
 from ingredients.models import Ingredient, Unit
 from .models import RecipeIngredient, Recipe

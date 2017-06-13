@@ -11,8 +11,8 @@ from django.test import TestCase
 from django.test.client import Client
 
 from cookme.views import home, register
-from utilities.search_helpers import encode
 from recipes.models import Recipe
+from utilities.search_helpers import encode
 
 
 class HomePageTests(TestCase):

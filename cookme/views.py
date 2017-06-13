@@ -4,15 +4,14 @@ Test suite to ensure that views work correctly.
 
 import urllib.parse
 
+import mistune
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, HttpResponseRedirect
 
-import mistune
-
-from recipes.models import Recipe
 from fridge.models import Fridge
+from recipes.models import Recipe
 from search.forms import SearchForm
 from utilities.search_helpers import encode
 
