@@ -75,9 +75,11 @@ class RecipeIngredientForm(ModelForm):
     """
 
     unit = ModelChoiceField(queryset=Unit.objects.all(), empty_label=None)
-    ingredient = CharField(widget=TextInput(
-        attrs={'required': 'true', 'placeholder': 'Enter ingredient'})
-    )
+    ingredientFieldAttributes = {
+        'required': 'true',
+        'placeholder': 'Enter ingredient'
+    }
+    ingredient = CharField(widget=TextInput(attrs=ingredientFieldAttributes))
 
     class Meta:
         model = RecipeIngredient
