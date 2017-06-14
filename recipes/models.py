@@ -43,9 +43,9 @@ class Recipe(models.Model):
     )
 
     author = models.ForeignKey(User)
-    title = models.CharField(max_length=250, null=False)
-    description = models.TextField(null=False, blank=False)
-    steps = models.TextField(null=False, blank=False)
+    title = models.CharField(max_length=100, null=False)
+    description = models.TextField(max_length=250, null=False, blank=False)
+    steps = models.TextField(max_length=3000, null=False, blank=False)
     cuisine = models.CharField(max_length=2, choices=CUISINES, default='ot',
                                blank=False, null=False)
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
