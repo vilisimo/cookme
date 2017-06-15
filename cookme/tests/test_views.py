@@ -3,6 +3,7 @@ Tests to ensure everything in cookme.views works correctly.
 """
 
 import urllib.parse
+from http import HTTPStatus
 
 from django.contrib import auth
 from django.contrib.auth.models import User
@@ -39,7 +40,7 @@ class HomePageTests(TestCase):
 
         response = Client().get(self.url)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertNotContains(response, 'Fridge')
 
     def test_logged_visit(self):
@@ -47,7 +48,7 @@ class HomePageTests(TestCase):
 
         response = self.logged.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertContains(response, 'Fridge')
 
     def test_most_popular_exist(self):
@@ -56,11 +57,7 @@ class HomePageTests(TestCase):
         There should be 4 most popular recipes shown on the front page.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
-        Recipe.objects.create(author=self.user, title='test2', views=2)
-        Recipe.objects.create(author=self.user, title='test3', views=3)
-        Recipe.objects.create(author=self.user, title='test4', views=4)
-        r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
+        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
 
         response = Client().get(self.url)
         recipes = response.context['most_popular']
@@ -86,9 +83,7 @@ class HomePageTests(TestCase):
         shown.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
-        r2 = Recipe.objects.create(author=self.user, title='test2', views=2)
-        r3 = Recipe.objects.create(author=self.user, title='test3', views=3)
+        r1, r2, r3 = self.create_recipes_asc_views(repeat=3)
 
         response = Client().get(self.url)
         recipes = response.context['most_popular']
@@ -101,9 +96,7 @@ class HomePageTests(TestCase):
         recipes have the same amount of views.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
-        r2 = Recipe.objects.create(author=self.user, title='test2', views=1)
-        r3 = Recipe.objects.create(author=self.user, title='test3', views=1)
+        r1, r2, r3 = self.create_recipes_const_views(repeat=3, views=1)
 
         response = Client().get(self.url)
         recipes = response.context['most_popular']
@@ -115,11 +108,7 @@ class HomePageTests(TestCase):
         Ensures that the most recent recipes are shown on the front page.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test')
-        Recipe.objects.create(author=self.user, title='test2')
-        Recipe.objects.create(author=self.user, title='test3')
-        Recipe.objects.create(author=self.user, title='test4')
-        r5 = Recipe.objects.create(author=self.user, title='test5')
+        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
 
         response = Client().get(self.url)
         recipes = response.context['most_recent']
@@ -136,10 +125,7 @@ class HomePageTests(TestCase):
 
         user2 = User.objects.create_user(username='test2', password='test')
         r1 = Recipe.objects.create(author=user2, title='test')
-        Recipe.objects.create(author=self.user, title='test2')
-        Recipe.objects.create(author=self.user, title='test3')
-        Recipe.objects.create(author=self.user, title='test4')
-        r5 = Recipe.objects.create(author=self.user, title='test5')
+        *_, r5 = self.create_recipes_asc_views(repeat=4)
 
         response = self.logged.get(self.url)
         recipes = response.context['user_additions']
@@ -166,11 +152,7 @@ class HomePageTests(TestCase):
         recently added AND that they are ordered from newest to oldest.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test')
-        Recipe.objects.create(author=self.user, title='test2')
-        Recipe.objects.create(author=self.user, title='test3')
-        Recipe.objects.create(author=self.user, title='test4')
-        r5 = Recipe.objects.create(author=self.user, title='test5')
+        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
 
         response = self.logged.get(self.url)
         recipes = response.context['user_additions']
@@ -178,6 +160,23 @@ class HomePageTests(TestCase):
         self.assertIn(r5, recipes)
         self.assertNotIn(r1, recipes)
         self.assertEqual(len(recipes), 4)
+
+    # Helper functions
+    def create_recipes_asc_views(self, repeat):
+        recipes = []
+        for views in range(repeat):
+            title = f'test{views}'
+            recipes.append(Recipe.objects.create(author=self.user, title=title,
+                                                 views=views))
+        return recipes
+
+    def create_recipes_const_views(self, repeat, views):
+        recipes = []
+        for nr in range(repeat):
+            title = f'test{nr}'
+            recipes.append(Recipe.objects.create(author=self.user, title=title,
+                                                 views=views))
+        return recipes
 
 
 class SearchFunctionTests(TestCase):
@@ -237,6 +236,11 @@ class RegisterViewTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.url = reverse('register')
+        self.data = {
+            'username': 'ElaborateUsername',
+            'password1': 'VerySecretPassword',
+            'password2': 'VerySecretPassword'
+        }
 
     def test_correct_url(self):
         """ Ensures that a correct URL is mapped to a view. """
@@ -251,7 +255,7 @@ class RegisterViewTests(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_has_form(self):
         """ Ensures a register form is shown. """
@@ -268,29 +272,19 @@ class RegisterViewTests(TestCase):
         client.login(username='test', password='test')
         response = client.get(self.url)
 
-        self.assertRedirects(response, reverse('home'), status_code=302)
+        self.assertRedirects(response, reverse('home'), status_code=HTTPStatus.FOUND)
 
     def test_valid_data_redirect(self):
         """ Ensures that upon valid data submission user is redirected. """
 
-        data = {
-            'username': 'ElaborateUsername',
-            'password1': 'VerySecretPassword',
-            'password2': 'VerySecretPassword'
-        }
-        response = self.client.post(self.url, data=data)
+        response = self.client.post(self.url, data=self.data)
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
     def test_valid_data_user_created(self):
         """ Ensures a user is created when valid data is submitted. """
 
-        data = {
-            'username': 'ElaborateUsername',
-            'password1': 'VerySecretPassword',
-            'password2': 'VerySecretPassword'
-        }
-        self.client.post(self.url, data=data)
+        self.client.post(self.url, data=self.data)
         user = User.objects.get(username='ElaborateUsername')
 
         self.assertTrue(user)
@@ -298,32 +292,23 @@ class RegisterViewTests(TestCase):
     def test_valid_data_user_logged_in(self):
         """ Ensures that upon submission of valid data, user is logged in. """
 
-        data = {
-            'username': 'ElaborateUsername',
-            'password1': 'VerySecretPassword',
-            'password2': 'VerySecretPassword',
-        }
-        self.client.post(self.url, data=data)
+        self.client.post(self.url, data=self.data)
         user = auth.get_user(self.client)
         response = self.client.get(reverse('fridge:fridge_detail'))
 
         self.assertTrue(user.is_authenticated())
         # Just to make sure we are really logged in.
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_username_exists(self):
         """ Ensures that no duplicate accounts can be created. """
 
-        User.objects.create_user(username='ElaborateUsername',
-                                 password='VerySecretPassword')
-        data = {
-            'username': 'ElaborateUsername',
-            'password1': 'VerySecretPassword',
-            'password2': 'VerySecretPassword',
-        }
-        response = self.client.post(self.url, data=data)
+        User.objects.create_user(username=self.data['username'],
+                                 password=self.data['password1'])
 
-        self.assertTrue(response.status_code != 302)
+        response = self.client.post(self.url, data=self.data)
+
+        self.assertTrue(response.status_code != HTTPStatus.FOUND)
 
 
 class LoginTests(TestCase):
@@ -351,7 +336,7 @@ class LoginTests(TestCase):
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
-        self.assertNotEqual(response.status_code, 302)
+        self.assertNotEqual(response.status_code, HTTPStatus.FOUND)
         self.assertFalse(user.is_authenticated())
 
     def test_valid_data(self):
@@ -365,7 +350,7 @@ class LoginTests(TestCase):
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertTrue(user.is_authenticated())
 
     def test_missing_password(self):
@@ -375,7 +360,7 @@ class LoginTests(TestCase):
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
-        self.assertNotEqual(response.status_code, 302)
+        self.assertNotEqual(response.status_code, HTTPStatus.FOUND)
         self.assertFalse(user.is_authenticated())
 
     def test_missing_username(self):
@@ -385,6 +370,6 @@ class LoginTests(TestCase):
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
-        self.assertNotEqual(response.status_code, 302)
+        self.assertNotEqual(response.status_code, HTTPStatus.FOUND)
         self.assertFalse(user.is_authenticated())
 
