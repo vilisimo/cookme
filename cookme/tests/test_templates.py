@@ -39,11 +39,7 @@ class HomePageTests(TestCase):
         Ensures that the most popular recipes are shown on the front page.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
-        Recipe.objects.create(author=self.user, title='test2', views=2)
-        Recipe.objects.create(author=self.user, title='test3', views=3)
-        Recipe.objects.create(author=self.user, title='test4', views=4)
-        r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
+        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
         expected = f'<h3>{r5.title}</h3>'
         should_not_be = f'<h3>{r1.title}</h3>'
         response = self.client.get(self.url)
@@ -67,11 +63,7 @@ class HomePageTests(TestCase):
         Ensures that the most recent recipes are shown on the front page.
         """
 
-        r1 = Recipe.objects.create(author=self.user, title='test', views=1)
-        Recipe.objects.create(author=self.user, title='test2', views=2)
-        Recipe.objects.create(author=self.user, title='test3', views=3)
-        Recipe.objects.create(author=self.user, title='test4', views=4)
-        r5 = Recipe.objects.create(author=self.user, title='test5', views=5)
+        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
         expected = f'<h3>{r5.title}</h3>'
         should_not_be = f'<h3>{r1.title}</h3>'
         response = self.client.get(self.url)
@@ -96,11 +88,7 @@ class HomePageTests(TestCase):
         """
 
         user2 = User.objects.create_user(username='test2', password='test')
-        r1 = Recipe.objects.create(author=user2, title='test', views=1)
-        Recipe.objects.create(author=user2, title='test2', views=2)
-        Recipe.objects.create(author=user2, title='test3', views=3)
-        Recipe.objects.create(author=user2, title='test4', views=4)
-        Recipe.objects.create(author=user2, title='test5', views=5)
+        r1, *_ = self.create_recipes_asc_views_with_user(repeat=5, user=user2)
         r6 = Recipe.objects.create(author=self.user, title='test6', views=1)
         expected = f'<h3>{r6.title}</h3>'
         should_not_be = f'<h3>{r1.title}</h3>'
@@ -119,6 +107,24 @@ class HomePageTests(TestCase):
         response = self.client.get(self.url)
 
         self.assertNotContains(response, should_not_be, html=True)
+
+    # Helper functions
+    def create_recipes_asc_views(self, repeat):
+        recipes = []
+        for views in range(repeat):
+            title = f'test{views}'
+            recipes.append(Recipe.objects.create(author=self.user, title=title,
+                                                 views=views))
+        return recipes
+
+    @staticmethod
+    def create_recipes_asc_views_with_user(repeat, user):
+        recipes = []
+        for views in range(repeat):
+            title = f'test{views}'
+            recipes.append(Recipe.objects.create(author=user, title=title,
+                                                 views=views))
+        return recipes
 
 
 class RegisterTests(TestCase):

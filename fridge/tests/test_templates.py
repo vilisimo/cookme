@@ -3,6 +3,8 @@ Test suite for templates to ensure that they contain information that must be
 shown never mind the style used.
 """
 
+from http import HTTPStatus
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -141,7 +143,7 @@ class FridgeDetailFridgeIngredientFormTests(TestCase):
         data = {'ingredient': '', 'unit': self.unit, 'quantity': 1}
         response = self.client.post(url, data)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertContains(response, 'This field is required.')
 
     def test_form_no_unit(self):
@@ -151,7 +153,7 @@ class FridgeDetailFridgeIngredientFormTests(TestCase):
         data = {'ingredient': 'test', 'unit': '', 'quantity': 1}
         response = self.client.post(url, data)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertContains(response, 'This field is required.')
 
     def test_form_no_quantity(self):
@@ -161,7 +163,7 @@ class FridgeDetailFridgeIngredientFormTests(TestCase):
         data = {'ingredient': 'test', 'unit': self.unit.pk}
         response = self.client.post(url, data)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)
         # why is 'ingredient': None allowed? Different error than required?
         self.assertContains(response, 'This field is required.')
 
@@ -331,7 +333,7 @@ class PossibilitiesTests(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'fridge/possibilities.html')
 
     def test_recipes_are_shown(self):
@@ -341,7 +343,7 @@ class PossibilitiesTests(TestCase):
         expected_title = self.recipes[0].title
         expected_url = self.recipes[0].get_absolute_url()
 
-        self.assertContains(response, expected_title, status_code=200)
+        self.assertContains(response, expected_title, status_code=HTTPStatus.OK)
         self.assertContains(response, f'<a href="{expected_url}">')
 
     def test_fridge_recipes_not_shown_without_fridge_ingredients(self):
@@ -376,7 +378,7 @@ class FridgeRecipesTests(TestCase):
 
         response = self.client.get(self.url)
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, HTTPStatus.OK)
         self.assertTemplateUsed(response, 'fridge/fridge_recipes.html')
 
     def test_fridge_recipes_are_shown_except_those_not_in_fridge(self):
@@ -390,7 +392,7 @@ class FridgeRecipesTests(TestCase):
         expected_title = self.recipes[3].title
         expected_url = self.recipes[3].get_absolute_url()
         expected_html = f'<a href={expected_url}>{expected_title}</a>'
-        self.assertNotContains(response, expected_title, status_code=200)
+        self.assertNotContains(response, expected_title, status_code=HTTPStatus.OK)
         self.assertNotContains(response, expected_html, html=True)
 
     def test_fridge_recipes_are_shown(self):
@@ -405,7 +407,7 @@ class FridgeRecipesTests(TestCase):
         expected_title = self.recipes[0].title
         expected_url = self.recipes[0].get_absolute_url()
         expected_html = f'<a href="{expected_url}">'
-        self.assertContains(response, expected_title, status_code=200)
+        self.assertContains(response, expected_title, status_code=HTTPStatus.OK)
         self.assertContains(response, expected_html)
 
     def test_fridge_recipes_not_shown_without_fridge_ingredients(self):
