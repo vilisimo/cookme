@@ -1,7 +1,3 @@
-"""
-Tests to ensure everything in cookme.views works correctly.
-"""
-
 import urllib.parse
 from http import HTTPStatus
 
@@ -17,7 +13,7 @@ from utilities.search_helpers import encode
 
 
 class HomePageTests(TestCase):
-    """ Test suite to ensure that home page functions properly. """
+    """ Ensures that home page functions properly. """
 
     def setUp(self):
         self.url = reverse('home')
@@ -26,37 +22,24 @@ class HomePageTests(TestCase):
         self.logged.login(username='test', password='test')
 
     def test_correct_root_url_resolves_to_home_function(self):
-        """
-        Test suite to ensure that the root URL is mapped to a correct view.
-        """
-
         view = resolve('/')
 
         self.assertEqual(view.view_name, 'home')
         self.assertEqual(view.func, home)
 
-    def test_anonymous_visit(self):
-        """ Ensures anonymous users do not see a link to a fridge. """
-
+    def test_anonymous_does_not_see_fridge(self):
         response = Client().get(self.url)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertNotContains(response, 'Fridge')
 
-    def test_logged_visit(self):
-        """ Ensures that logged in user sees a fridge. """
-
+    def test_logged_sees_fridge(self):
         response = self.logged.get(self.url)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
         self.assertContains(response, 'Fridge')
 
-    def test_most_popular_exist(self):
-        """
-        Ensures that the most popular recipes are shown on the front page.
-        There should be 4 most popular recipes shown on the front page.
-        """
-
+    def test_most_popular_shown_on_front_page(self):
         r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
 
         response = Client().get(self.url)
@@ -66,23 +49,13 @@ class HomePageTests(TestCase):
         self.assertNotIn(r1, recipes)
         self.assertEquals(len(recipes), 4)
 
-    def test_most_popular_do_not_exist(self):
-        """
-        Ensures that when there are no most popular recipes, no recipes are
-        passed to response's context.
-        """
-
+    def test_most_popular_not_shown(self):
         response = Client().get(self.url)
         recipes = response.context['most_popular']
 
         self.assertFalse(recipes)
 
     def test_most_popular_less_than_four(self):
-        """
-        Ensures that when there are less than four recipes, all of them are
-        shown.
-        """
-
         r1, r2, r3 = self.create_recipes_asc_views(repeat=3)
 
         response = Client().get(self.url)
@@ -90,12 +63,7 @@ class HomePageTests(TestCase):
 
         self.assertEquals([r3, r2, r1], list(recipes))
 
-    def test_recipes_equal_views(self):
-        """
-        Ensures that the oldest recipes are shown first if all most popular
-        recipes have the same amount of views.
-        """
-
+    def test_recipes_equal_views_oldest_first(self):
         r1, r2, r3 = self.create_recipes_const_views(repeat=3, views=1)
 
         response = Client().get(self.url)
@@ -103,43 +71,29 @@ class HomePageTests(TestCase):
 
         self.assertEquals([r1, r2, r3], list(recipes))
 
-    def test_recipes_most_recent(self):
-        """
-        Ensures that the most recent recipes are shown on the front page.
-        """
-
-        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
+    def test_recipes_most_recent_shown(self):
+        old, *_, recent = self.create_recipes_asc_views(repeat=5)
 
         response = Client().get(self.url)
         recipes = response.context['most_recent']
 
-        self.assertIn(r5, recipes)
-        self.assertNotIn(r1, recipes)
+        self.assertIn(recent, recipes)
+        self.assertNotIn(old, recipes)
         self.assertEqual(len(recipes), 4)
 
     def test_recent_additions_by_user(self):
-        """
-        Ensures that the front page is passed recipes that a user has 
-        recently added.
-        """
-
         user2 = User.objects.create_user(username='test2', password='test')
-        r1 = Recipe.objects.create(author=user2, title='test')
-        *_, r5 = self.create_recipes_asc_views(repeat=4)
+        other_user_old = Recipe.objects.create(author=user2, title='test')
+        *_, new_addition = self.create_recipes_asc_views(repeat=4)
 
         response = self.logged.get(self.url)
         recipes = response.context['user_additions']
 
-        self.assertIn(r5, recipes)
-        self.assertNotIn(r1, recipes)
+        self.assertIn(new_addition, recipes)
+        self.assertNotIn(other_user_old, recipes)
         self.assertEqual(len(recipes), 4)
 
-    def test_recent_additions_by_user_anonymous_onlooker(self):
-        """
-        Ensures that recent additions are not shown for users that are not
-        logged in.
-        """
-
+    def test_recent_additions_not_shown_for_anonymous(self):
         with self.assertRaises(KeyError):
             response = Client().get(self.url)
             recipes = response.context['user_additions']
@@ -147,18 +101,13 @@ class HomePageTests(TestCase):
             self.assertFalse(recipes)
 
     def test_recent_additions_by_user_order_descending(self):
-        """
-        Ensures that the front page is passed recipes that a user has
-        recently added AND that they are ordered from newest to oldest.
-        """
-
-        r1, *_, r5 = self.create_recipes_asc_views(repeat=5)
+        old, *_, new = self.create_recipes_asc_views(repeat=5)
 
         response = self.logged.get(self.url)
         recipes = response.context['user_additions']
 
-        self.assertIn(r5, recipes)
-        self.assertNotIn(r1, recipes)
+        self.assertIn(new, recipes)
+        self.assertNotIn(old, recipes)
         self.assertEqual(len(recipes), 4)
 
     # Helper functions
@@ -180,58 +129,40 @@ class HomePageTests(TestCase):
 
 
 class SearchFunctionTests(TestCase):
-    """
-    Test suite to ensure that search functionality is performing as expected.
-    """
 
     def setUp(self):
         self.url = reverse('home')
         self.client = Client()
 
     def test_search_form_response_ok(self):
-        """
-        Ensures that inputting the correct info in search bar search_results in
-        correct response status (302 - redirects to results page).
-        """
+        data = {'q': 'valid inquiry that should not throw errors'}
 
-        data = {'q': 'multiple words and then some'}
         response = self.client.post(path=self.url, data=data)
 
         self.assertEqual(response.status_code, 302)
 
     def test_search_form_redirection_url_ok(self):
-        """
-        Ensures that inputting the correct info in search bar will redirect to
-        the correct view.
-        """
-
-        query = "secret grandma's ingredient"
-        query = encode(query)
+        query = encode("secret grandma's ingredient")
         query_utf_encoded = urllib.parse.quote_plus(query)
         data = {'q': query}
+        expected_url = reverse('search:search_results') + '?q=' + query_utf_encoded
+
         response = self.client.post(self.url, data)
-        url = reverse('search:search_results') + '?q=' + query_utf_encoded
 
-        self.assertRedirects(response, expected_url=url)
+        self.assertRedirects(response, expected_url=expected_url)
 
-    def test_search_form_redirection_url_ok_utf(self):
-        """
-        Ensures that inputting the correct info in search bar will
-        redirect to the correct view, even when UTF-8 char is used.
-        """
-
-        query = "šecret grandma's ingredient"
-        query = encode(query)
+    def test_search_form_redirection_url_ok_utf_searchphrase(self):
+        query = encode("šecret grandma's ingredient")
         query_utf_encoded = urllib.parse.quote_plus(query)
         data = {'q': query}
-        response = self.client.post(self.url, data)
-        url = reverse('search:search_results') + '?q=' + query_utf_encoded
+        expected_url = reverse('search:search_results') + '?q=' + query_utf_encoded
 
-        self.assertRedirects(response, expected_url=url)
+        response = self.client.post(self.url, data)
+
+        self.assertRedirects(response, expected_url=expected_url)
 
 
 class RegisterViewTests(TestCase):
-    """ Test suite to ensure register view functions properly. """
 
     def setUp(self):
         self.client = Client()
@@ -242,67 +173,52 @@ class RegisterViewTests(TestCase):
             'password2': 'VerySecretPassword'
         }
 
-    def test_correct_url(self):
-        """ Ensures that a correct URL is mapped to a view. """
-        
+    def test_correct_url_mapped_to_view(self):
         view = resolve('/accounts/register/')
 
         self.assertEqual(view.view_name, 'register')
         self.assertEqual(view.func, register)
 
     def test_can_access_register_view(self):
-        """ Ensures that user can access a view. """
-
         response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
-    def test_has_form(self):
-        """ Ensures a register form is shown. """
-
+    def test_has_register_form(self):
         response = self.client.get(self.url)
 
         self.assertTrue(response.context['form'])
 
     def test_registered_user_redirected(self):
-        """ Ensures a registered user is redirected from a register view. """
-
         User.objects.create_user(username='test', password='test')
         client = Client()
         client.login(username='test', password='test')
+
         response = client.get(self.url)
 
         self.assertRedirects(response, reverse('home'), status_code=HTTPStatus.FOUND)
 
-    def test_valid_data_redirect(self):
-        """ Ensures that upon valid data submission user is redirected. """
-
+    def test_redirect_upon_valid_data(self):
         response = self.client.post(self.url, data=self.data)
 
         self.assertEqual(response.status_code, HTTPStatus.FOUND)
 
-    def test_valid_data_user_created(self):
-        """ Ensures a user is created when valid data is submitted. """
-
+    def test_user_created_when_data_valid(self):
         self.client.post(self.url, data=self.data)
         user = User.objects.get(username='ElaborateUsername')
 
         self.assertTrue(user)
 
-    def test_valid_data_user_logged_in(self):
-        """ Ensures that upon submission of valid data, user is logged in. """
-
+    def test_user_logged_in_when_valid_data(self):
         self.client.post(self.url, data=self.data)
         user = auth.get_user(self.client)
-        response = self.client.get(reverse('fridge:fridge_detail'))
-
         self.assertTrue(user.is_authenticated())
+
         # Just to make sure we are really logged in.
+        response = self.client.get(reverse('fridge:fridge_detail'))
         self.assertEqual(response.status_code, HTTPStatus.OK)
 
     def test_username_exists(self):
-        """ Ensures that no duplicate accounts can be created. """
-
         User.objects.create_user(username=self.data['username'],
                                  password=self.data['password1'])
 
@@ -314,8 +230,7 @@ class RegisterViewTests(TestCase):
 class LoginTests(TestCase):
     """
     Test suite to ensure login works correctly. Although at the moment
-    Django's login functionality is used, it may change in the future,
-    and thus it is a good idea to write basic tests to ensure it works.
+    Django's login functionality is used, it may change in the future.
     """
 
     def setUp(self):
@@ -324,10 +239,6 @@ class LoginTests(TestCase):
         self.client = Client()
 
     def test_invalid_data(self):
-        """
-        Ensures that upon submission of invalid data, user is not logged in.
-        """
-
         data = {
             'username': 'test',
             'password': 'testing',
@@ -339,9 +250,7 @@ class LoginTests(TestCase):
         self.assertNotEqual(response.status_code, HTTPStatus.FOUND)
         self.assertFalse(user.is_authenticated())
 
-    def test_valid_data(self):
-        """ Ensures that upon submitting valid data, user can log in. """
-
+    def test_login_with_valid_data(self):
         data = {
             'username': 'test',
             'password': 'test',
@@ -354,9 +263,8 @@ class LoginTests(TestCase):
         self.assertTrue(user.is_authenticated())
 
     def test_missing_password(self):
-        """ Ensure that not filling in password field is not allowed. """
-
         data = {'username': 'test', }
+
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 
@@ -364,9 +272,8 @@ class LoginTests(TestCase):
         self.assertFalse(user.is_authenticated())
 
     def test_missing_username(self):
-        """ Ensure that not filling in username field is not allowed. """
-
         data = {'password': 'test', }
+
         response = self.client.post(self.url, data=data)
         user = auth.get_user(self.client)
 

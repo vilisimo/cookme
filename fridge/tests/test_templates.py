@@ -1,8 +1,3 @@
-"""
-Test suite for templates to ensure that they contain information that must be
-shown never mind the style used.
-"""
-
 from http import HTTPStatus
 
 from django.contrib.auth.models import User
@@ -18,8 +13,6 @@ from utilities.mock_db import (
 
 
 class AddRecipeTests(TestCase):
-    """ Test suite to check whether add_recipe template is correct. """
-
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.potato = Ingredient.objects.create(name='Potato', type='Vegetable')
@@ -35,85 +28,60 @@ class AddRecipeTests(TestCase):
             'form-0-quantity': '1',
         }
 
-    def test_add_recipe_form_is_sent(self):
-        """ Ensures that a form & formset is sent to a template. """
-
+    def test_add_recipe_form_is_sent_to_template(self):
         url = reverse('fridge:add_recipe')
+
         response = self.client.get(url)
 
         self.assertIn('form', response.context)
         self.assertIn('formset', response.context)
 
-    def test_form_invalid(self):
-        """
-        Ensures that when all information is missing, an error message is shown.
-        """
-
+    def test_invalid_form_shows_error(self):
         response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-    def test_form_invalid_missing_description(self):
-        """
-        Ensures that when description field is missing, form is considered to
-        be invalid.
-        """
-
+    def test_description_is_required(self):
         self.data['title'] = 'test'
         self.data['description'] = '   '
         self.data['cuisine'] = 'ot'
         self.data['steps'] = 'step'
+
         response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-    def test_form_invalid_missing_cuisine(self):
-        """
-        Ensures that when cuisine field is missing, form is considered to be
-        invalid.
-        """
-
+    def test_cuisine_is_required(self):
         self.data['title'] = 'test'
         self.data['description'] = 'test'
         self.data['cuisine'] = '  '
         self.data['steps'] = 'step'
+
         response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-    def test_form_invalid_missing_steps(self):
-        """
-        Ensures that when steps field is missing, form is considered to be
-        invalid.
-        """
-
+    def test_steps_are_required(self):
         self.data['title'] = 'test'
         self.data['description'] = 'test'
         self.data['cuisine'] = 'ot'
         self.data['steps'] = '   '
+
         response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'This field is required.')
 
-    def test_form_invalid_same_ingredients(self):
-        """
-        Ensures that the same ingredients cannot be selected and posted.
-        """
-
+    def test_same_ingredients_not_allowed(self):
         self.data['form-0-ingredient'] = str(self.potato.pk)
         self.data['form-1-ingredient'] = str(self.potato.pk)
         self.data['form-1-unit'] = str(self.unit.pk)
         self.data['form-1-quantity'] = '1'
+
         response = self.client.post(reverse('fridge:add_recipe'), self.data)
 
         self.assertContains(response, 'Ingredients should be distinct.')
 
-    def test_form_invalid_missing_ingredient(self):
-        """
-        Ensures that ingredients are required and skipping them is not allowed.
-        Error message should be shown, in case HTML validation fails.
-        """
-
+    def test_ingredients_are_required(self):
         data = {
             'title': 'test',
             'description': 'test',
@@ -123,14 +91,13 @@ class AddRecipeTests(TestCase):
             'form-INITIAL_FORMS': '0',
             'form-MAX_NUM_FORMS': '',
         }
+
         response = self.client.post(reverse('fridge:add_recipe'), data)
 
         self.assertContains(response, 'This field is required.')
 
 
 class FridgeDetailFridgeIngredientFormTests(TestCase):
-    """ Test suite to ensure that FridgeIngredientForm performs well. """
-
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='test')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')

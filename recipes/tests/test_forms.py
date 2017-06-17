@@ -1,7 +1,3 @@
-"""
-Test suite for custom form functionality.
-"""
-
 from string import capwords
 
 from django.contrib.auth.models import User
@@ -11,7 +7,7 @@ from django.test import TestCase
 
 from ingredients.models import Ingredient, Unit
 from recipes.forms import (
-    BaseRecipeIngredientFormSet,
+    BaseRecipeIngredientFormSet as BaseFormSet,
     RecipeIngredientForm,
     AddRecipeForm,
 )
@@ -19,11 +15,6 @@ from recipes.models import Recipe
 
 
 class AddRecipeFormTests(TestCase):
-    """
-    Test suite to test the AddRecipeForm and ensure that it does not accept
-    invalid input.
-    """
-
     def setUp(self):
         user = User.objects.create_user(username='test', password='test')
         self.data = {
@@ -34,61 +25,52 @@ class AddRecipeFormTests(TestCase):
             'steps': 'step'
         }
 
-    def test_add_recipe_form_valid(self):
-        """ Ensures that information is entered into the fields. """
-
+    def test_add_recipe_form_valid_data(self):
         form = AddRecipeForm(data=self.data)
 
         self.assertTrue(form.is_valid())
 
-    def test_add_recipe_form_missing_title(self):
-        """ Ensures that empty title cannot be passed. """
-
+    def test_add_recipe_form_missing_title_not_allowed(self):
         self.data['title'] = '   '
+
         form = AddRecipeForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
-    def test_add_recipe_form_missing_description(self):
-        """ Ensures that empty description cannot be passed. """
-
+    def test_add_recipe_form_missing_description_not_allowed(self):
         self.data['description'] = ' '
+
         form = AddRecipeForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
-    def test_add_recipe_form_missing_cuisine(self):
-        """ Ensures that empty cuisine field cannot be passed. """
-
+    def test_add_recipe_form_missing_cuisine_not_allowed(self):
         self.data['cuisine'] = '  '
+
         form = AddRecipeForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
-    def test_add_recipe_form_missing_steps(self):
-        """ Ensures that empty steps field cannot be passed. """
+    def test_add_recipe_form_missing_steps_not_allowed(self):
         self.data['steps'] = '  '
+
         form = AddRecipeForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
     def test_image_field(self):
-        """ Ensures that the form can take image field. """
-
         with open('static/test/test.png', 'rb') as image:
             image_data = {'image': SimpleUploadedFile(image.name, image.read())}
+
             form = AddRecipeForm(data=self.data, files=image_data)
 
             self.assertTrue(form.is_valid())
 
 
 class RecipeIngredientFormSetTests(TestCase):
-    """ Test suite to ensure that custom formset functions work properly. """
-
     def setUp(self):
         unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        self.rec_formset = formset_factory(RecipeIngredientForm,
-                                           formset=BaseRecipeIngredientFormSet)
+        self.rec_formset = formset_factory(RecipeIngredientForm, formset=BaseFormSet)
         self.data = {
             'form-TOTAL_FORMS': '2',
             'form-INITIAL_FORMS': '0',
@@ -101,11 +83,8 @@ class RecipeIngredientFormSetTests(TestCase):
             'form-1-quantity': '1',
         }
 
-    def test_formset_empty(self):
-        """
-        Ensures that a formset cannot be empty (by default it can, even if all
-        fields are required).
-        """
+    def test_formset_empty_not_allowed(self):
+        """ By default it can be empty, even if all fields are required. """
 
         data = {
             'form-TOTAL_FORMS': '1',
@@ -117,103 +96,73 @@ class RecipeIngredientFormSetTests(TestCase):
 
         self.assertFalse(formset.is_valid())
 
-    def test_formset_same_ingredients(self):
-        """
-        Ensures that an error is shown when the same ingredients are typed in.
-        """
-
+    def test_formset_same_ingredients_not_allowed(self):
         self.data['form-1-ingredient'] = 'test'
-        formset = self.rec_formset(self.data)
         expected_error = 'Ingredients should be distinct.'
+
+        formset = self.rec_formset(self.data)
 
         self.assertFalse(formset.is_valid())
         self.assertIn(expected_error, formset.non_form_errors())
 
-    def test_formset_different_ingredients(self):
-        """ Ensures that a user can select different ingredients. """
-
+    def test_formset_different_ingredients_allowed(self):
         formset = self.rec_formset(self.data)
 
         self.assertTrue(formset.is_valid())
 
 
 class RecipeIngredientFormTests(TestCase):
-    """
-    Test suite to ensure that RecipeIngredient creation form validates input
-    and throws correct errors.
-    """
-
     def setUp(self):
         self.user = User.objects.create_user(username='test')
         self.unit = Unit.objects.create(name='kilogram', abbrev='kg')
-        self.recipe = Recipe.objects.create(author=self.user, title='test',
-                                            description='test', steps='test',
-                                            cuisine='ot')
+        self.recipe = Recipe.objects.create(author=self.user, title='test', description='test',
+                                            steps='test', cuisine='ot')
         self.data = {
             'ingredient': 'test',
             'unit': self.unit.pk,
             'quantity': 1.0
         }
 
-    def test_fields_empty(self):
-        """ Ensures that information is entered into the fields. """
-
-        data = dict()
-        form = RecipeIngredientForm(data=data)
+    def test_empty_fields_not_allowed(self):
+        form = RecipeIngredientForm(data=(dict()))
 
         self.assertFalse(form.is_valid())
 
-    def test_field_missing_unit(self):
-        """ Ensures that an empty unit field is not allowed. """
-
+    def test_missing_unit_field_not_allowed(self):
         self.data['unit'] = ' '
+
         form = RecipeIngredientForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
-    def test_field_missing_quantity(self):
-        """ Ensures that an empty quantity field is not allowed. """
-
+    def test_missing_quantity_field_not_allowed(self):
         self.data['quantity'] = None
+
         form = RecipeIngredientForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
-    def test_fields_filled_in(self):
-        """ Ensures that filled in form is considered to be valid. """
-
+    def test_filled_in_fields_valid(self):
         form = RecipeIngredientForm(data=self.data)
 
         self.assertTrue(form.is_valid(), 'Correct data threw an error.')
 
-    def test_fields_valid_create_ingredient_entry(self):
+    def test_valid_fields_create_ingredient_entry(self):
         """
-        Ensures that when the form is filled in properly, an Ingredient
-        entry is created in the database.
-
         Note: 'name' variable is capitalized, since save method capitalizes all
         words in ingredient title.
         """
 
-        name = 'Test'
         form = RecipeIngredientForm(data=self.data)
-
-        # Ensures that the form is valid before submitting it.
         self.assertTrue(form.is_valid())
 
         instance = form.save(commit=False)
         instance.recipe = self.recipe
-        ingredient = Ingredient.objects.get(name=name)
+        ingredient = Ingredient.objects.get(name='Test')
 
-        # Now checks that ingredient was truly created.
         self.assertTrue(ingredient)
 
-    def test_fields_ingredient_entry_capitalized(self):
-        """
-        Ensures that title is correctly capitalized by searching for ingredient
-        with capitalized title.
-        """
-
+    def test_ingredient_entry_capitalized_upon_save(self):
         name = 'test test test'
         self.data['ingredient'] = name
         form = RecipeIngredientForm(data=self.data)
@@ -226,21 +175,16 @@ class RecipeIngredientFormTests(TestCase):
 
         self.assertTrue(ingredient)
 
-    def test_quantity_negative(self):
-        """ Ensures that quantity of an ingredient is always positive. """
-
+    def test_negative_quantity_not_allowed(self):
         self.data['quantity'] = -0.01
+
         form = RecipeIngredientForm(data=self.data)
 
         self.assertFalse(form.is_valid())
 
-    def test_fields_non_existent_pks(self):
-        """
-        Ensures that an error is thrown if non-existent PKs are selected.
-        Should not be possible to do - but good to check nevertheless.
-        """
-
+    def test_non_existent_pks_not_allowed(self):
         self.data['unit'] = 9999
+
         form = RecipeIngredientForm(data=self.data)
 
         self.assertFalse(form.is_valid())
