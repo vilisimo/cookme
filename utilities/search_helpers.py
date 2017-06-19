@@ -80,15 +80,6 @@ def superset_recipes(ingredients):
     :return: a list of recipes that have matching ingredients.
     """
 
-    # recipes = Recipe.objects.filter(ingredients__name__in=ingredients).distinct()
-    # Surely there should be a better way to do it. The one below?
-    # matched = []
-    # for recipe in recipes:
-    #     recipe_ings = set([ing.name for ing in recipe.ingredients.all()])
-    #     if ingredients.issubset(recipe_ings):
-    #         matched.append(recipe)
-
-    # Pretty hairy SQL query.
     matched = (Recipe.objects.filter(ingredients__name__in=ingredients)
                .annotate(num_ings=Count('ingredients__name'))
                .filter(num_ings=len(ingredients)))
@@ -96,7 +87,7 @@ def superset_recipes(ingredients):
     return matched
 
 
-def subset_recipes(ingredients, fridge=None):
+def recipes_containing(ingredients, fridge=None):
     """
     Returns a list of recipes that contain ingredients from a list and
     nothing more (but they do not have to have every ingredient). That is,
@@ -134,5 +125,4 @@ def subset_recipes(ingredients, fridge=None):
         recipes = Recipe.objects.exclude(ingredients__in=non_matching)
 
     return recipes
-
 

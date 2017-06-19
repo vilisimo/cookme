@@ -9,7 +9,7 @@ from recipes.forms import (
     AddRecipeForm,
 )
 from recipes.models import Recipe
-from utilities.search_helpers import subset_recipes
+from utilities.search_helpers import recipes_containing
 from .forms import FridgeIngredientForm
 from .models import FridgeIngredient, Fridge
 
@@ -193,7 +193,7 @@ def possibilities(request):
     ingredients = fridge.ingredients.all()
     ingredients = [ingredient.name for ingredient in ingredients]
 
-    recipes = subset_recipes(ingredients)
+    recipes = recipes_containing(ingredients)
 
     content = {
         'ingredients': ingredients,
@@ -219,7 +219,7 @@ def fridge_recipes(request):
     fridge = Fridge.objects.get_or_create(user=user)[0]
     fridge_ingredients = fridge.ingredients.all()
     ingredient_names = [ingredient.name for ingredient in fridge_ingredients]
-    recipes = subset_recipes(ingredient_names, fridge=fridge)
+    recipes = recipes_containing(ingredient_names, fridge=fridge)
 
     content = {
         'ingredients': ingredient_names,

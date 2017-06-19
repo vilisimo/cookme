@@ -14,39 +14,25 @@ from utilities.populate import (
 
 
 class GetUserTests(TestCase):
-    """
-    Test suite to ensure get_user() works properly and does not break
-    from the slightest breeze.
-    """
-
-    def test_get_user_no_user(self):
-        """
-        Ensures that get_user creates a user when the instance does not exist.
-        """
-
+    def test_get_user_creates_user_when_it_doesnt_exist(self):
         user = get_user('test', 'test')
 
         self.assertTrue(user)
 
-    def test_user_in_db(self):
-        """
-        Ensures that the function does not try to create identical copy of a
-        user.
-        """
-
+    def test_doesnt_create_same_user_twice(self):
         u1 = User.objects.create_user(username='test', password='test')
         u2 = get_user('test', 'test')
 
         self.assertEquals(u1, u2)
 
-    def test_user_in_db_create_diff_pass(self):
+    def test_get_user_ignores_different_passwords(self):
         """
         Ensures that even when different password is passed, there is no
         attempt to try to duplicate the user.
 
         NOTE: it is impossible to retrieve user's password. Hence, even if we
-        pass a different password, the function will return a user, because
-        function does not care about the password, only about the username.
+        pass a different password, the function will return a user, because it
+        does not care about the password.
         """
 
         u1 = User.objects.create_user(username='test', password='test1')
@@ -56,16 +42,12 @@ class GetUserTests(TestCase):
 
 
 class PopulateUnitsTests(TestCase):
-    """ Test suite to make sure that unit population goes well. """
-
     def setUp(self):
         current = os.path.normpath(os.getcwd())
         self.directory = os.path.join(current, 'utilities', 'data')
         self.units_txt = os.path.join(self.directory, 'units.txt')
 
     def test_units_created(self):
-        """ Ensures that units are properly created when the file exists. """
-
         with open(self.units_txt) as f:
             f.readline()  # Get rid of the line specifying what columns mean
             first = f.readline().split(';')  # Get info about first ingredient.
@@ -77,43 +59,26 @@ class PopulateUnitsTests(TestCase):
         description = first[3]
 
         populate_units(units_txt=self.units_txt)
-        u = Unit.objects.get(name=name, abbrev=abbrev, description=description,
-                             plural=plural)
+        u = Unit.objects.get(name=name, abbrev=abbrev, description=description, plural=plural)
 
         self.assertTrue(u)
 
     def test_correct_amount_of_units_created(self):
-        """ Ensures that all but one lines are used for the population. """
-
-        with open(self.units_txt) as f:
-            for i, l in enumerate(f):
-                pass
-            expected = i  # Note no +1, since first line should be skipped.
-
+        expected = count_lines(self.units_txt)
         populate_units(self.units_txt)
         actual_count = len(Unit.objects.all())
 
         self.assertEquals(expected, actual_count)
 
-    def test_exceptions_raised(self):
-        """
-        Ensures that TypeError is raised if input file is not provided.
-        Ensures that FileNotFoundError is raised if input file is not found.
-        """
-
+    def test_raises_type_error_without_file(self):
         with self.assertRaises(TypeError):
             populate_units()
 
+    def test_raises_type_error_with_non_existent_file(self):
         with self.assertRaises(FileNotFoundError):
             populate_units('does_not_exist.txt')
 
-    def test_empty_file(self):
-        """
-        Ensures that when empty file is passed in, no units are created. It
-        might be more user friendly to throw an error/exception, but since
-        I'm the only user, I'll skip that.
-        """
-
+    def test_empty_file_does_not_create_anything(self):
         with NamedTemporaryFile() as temp_file:
             populate_units(temp_file.name)
         units = Unit.objects.all()
@@ -122,21 +87,12 @@ class PopulateUnitsTests(TestCase):
 
 
 class PopulateIngredientsTests(TestCase):
-    """
-    Test suite to ensure that populate_ingredients() does not break when
-    someone looks at it.
-    """
-
     def setUp(self):
         current = os.path.normpath(os.getcwd())
         self.directory = os.path.join(current, 'utilities', 'data')
         self.ingredients_txt = os.path.join(self.directory, 'ingredients.txt')
 
     def test_ingredients_created(self):
-        """
-        Ensures that file is opened and ingredients are created accordingly.
-        """
-
         with open(self.ingredients_txt) as f:
             f.readline()
             first = f.readline().split(';')  # Get info about first ingredient.
@@ -152,40 +108,22 @@ class PopulateIngredientsTests(TestCase):
         self.assertTrue(i)
 
     def test_correct_amount_of_ingredients_created(self):
-        """
-        Ensures that there are as many ingredients as there are lines in the
-        text file (-1 for the first line, which has descriptions).
-        """
-
-        with open(self.ingredients_txt) as f:
-            for i, line in enumerate(f):
-                pass
-            expected = i
+        expected = count_lines(self.ingredients_txt)
 
         populate_ingredients(ingredients_txt=self.ingredients_txt)
         ingredients = Ingredient.objects.all()
 
         self.assertEquals(expected, len(ingredients))
 
-    def test_exceptions_raised(self):
-        """
-        Ensures that TypeError is raised if input file is not provided.
-        Ensures that FileNotFoundError is raised if input file is not found.
-        """
-
+    def test_type_error_raised(self):
         with self.assertRaises(TypeError):
             populate_ingredients()
 
+    def test_not_found_raised(self):
         with self.assertRaises(FileNotFoundError):
             populate_ingredients('does_not_exist.txt')
 
-    def test_empty_file(self):
-        """
-        Ensures that when empty file is passed in, no ingredients are created.
-        It might be more user friendly to throw an error/exception, but since
-        I'm the only user, I'll skip that.
-        """
-
+    def test_empty_file_does_not_create_anything(self):
         with NamedTemporaryFile() as temp_file:
             populate_units(temp_file.name)
         ingredients = Ingredient.objects.all()
@@ -194,19 +132,13 @@ class PopulateIngredientsTests(TestCase):
 
 
 class TestColourfulPrint(TestCase):
-    """ Small test suite to test colourful prints. """
-
     def test_error(self):
-        """ Ensures that error is printed with proper colours. """
-
         red = '\033[91m'
         text = bcolors.error("text")
 
         self.assertIn(red, text)
 
     def test_success(self):
-        """ Ensures that success messages are printed in proper colour. """
-
         blue = '\033[94m'
         text = bcolors.success("text")
 
@@ -214,15 +146,7 @@ class TestColourfulPrint(TestCase):
 
 
 class CommitRecipeTests(TestCase):
-    """
-    Ensures that helper function commit_recipe creates a recipe instance,
-    commits it to the database, and does not break when a wrong input is
-    provided.
-    """
-
-    def test_creates_recipe_values_ok(self):
-        """ Ensures Recipe object is created when values are correct. """
-
+    def test_creates_recipe_when_values_ok(self):
         values = {
             'author': 'Test',
             'title': 'Test',
@@ -238,13 +162,7 @@ class CommitRecipeTests(TestCase):
 
         self.assertTrue(recipe)
 
-    def test_does_not_have_values(self):
-        """
-        Ensures that when no values are provided, exception is raised and user
-        is informed to provide a value (happens only when launching from
-        command line, though).
-        """
-
+    def test_exception_when_no_values(self):
         values = {}
         recipe = None
         with self.assertRaises(KeyError):
@@ -252,13 +170,7 @@ class CommitRecipeTests(TestCase):
 
         self.assertFalse(recipe)
 
-    # Check this test later - not sure what it does?..
-    def test_does_not_have_one_value(self):
-        """
-        Ensures that when all but one value (key) is provided, exception is
-        raised and user is informed to provide a value.
-        """
-
+    def test_when_dict_does_not_have_one_value(self):
         values = {
             'author': 'Test',
             'description': 'Test',
@@ -273,23 +185,11 @@ class CommitRecipeTests(TestCase):
 
 
 class CommitRecipeIngredientTests(TestCase):
-    """
-    Ensures that helper function commit_recipe_ingredients creates a
-    RecipeIngredient instance, commits it to the database, and does not break
-    when a wrong input is provided.
-    """
-
     def setUp(self):
-        u = User.objects.create_user(username='test')
-        self.r = Recipe.objects.create(author=u, title='test', description='t')
+        user = User.objects.create_user(username='test')
+        self.r = Recipe.objects.create(author=user, title='test', description='t')
 
     def test_does_not_have_values(self):
-        """
-        Ensures that when no values are provided, exception is raised and user
-        is informed to provide a value (happens only when launching from
-        command line, though).
-        """
-
         values = {}
         recipe_ingredients = []
         with self.assertRaises(KeyError):
@@ -298,8 +198,6 @@ class CommitRecipeIngredientTests(TestCase):
         self.assertFalse(recipe_ingredients)
 
     def test_creates_recipe_ingredient_values_ok(self):
-        """ Ensures RecipeIngredient is created when values are correct. """
-
         Ingredient.objects.create(name='test', type='Bread')
         Ingredient.objects.create(name='test2', type='Bread')
         Unit.objects.create(name='kilogram', abbrev='kg')
@@ -317,32 +215,16 @@ class CommitRecipeIngredientTests(TestCase):
 
 
 class PopulateRecipes(TestCase):
-    """
-    Test suite to ensure populate_recipes() works correctly and handles all
-    unusual situations well.
-    """
-
     def setUp(self):
         current = os.path.normpath(os.getcwd())
         self.parent = os.path.join(current, 'utilities', 'data')
         self.directory = os.path.join(self.parent, 'recipes')
 
-    def test_no_folder(self):
-        """ Ensure that an exception is raised when the folder is not given. """
-
+    def test_no_folder_given(self):
         with self.assertRaises(FileNotFoundError):
             populate_recipes()
 
-    def test_empty_folder(self):
-        """
-        Ensure that when an empty folder is given, no recipes are created.
-        Also ensure that nothing is created (nothing should if exception is
-        thrown, but you never know...).
-
-        Note that never mind the directory, listdir will return an empty
-        list, triggering an error, for which we are testing.
-        """
-
+    def test_no_recipes_when_empty_folder_given(self):
         with mock.patch('utilities.populate.os.listdir') as mocked_listdir:
             mocked_listdir.return_value = []
 
@@ -352,11 +234,7 @@ class PopulateRecipes(TestCase):
             recipes = Recipe.objects.all()
             self.assertFalse(recipes, "Recipes were created after exception!")
 
-    def test_population_with_proper_files(self):
-        """
-        Ensure that with a proper file recipes are created.
-        """
-
+    def test_population_creates_recipes_with_proper_files(self):
         count = len(os.listdir(self.directory))
         populate_ingredients(os.path.join(self.parent, 'ingredients.txt'))
         populate_units(os.path.join(self.parent, 'units.txt'))
@@ -369,3 +247,11 @@ class PopulateRecipes(TestCase):
     #     1. What happens if YAML file is empty?
     #     2. What happens if it is not empty, but some values are missing?
     #     3. What happens if values are not missing, but they are empty?
+
+
+def count_lines(text_file):
+    with open(text_file) as f:
+        for index, line in enumerate(f):
+            pass
+    return index
+
