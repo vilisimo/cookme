@@ -17,7 +17,7 @@
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
   {% endblock %}
 
-  {% block head %}
+  {% block stylesheets %}
     <!-- Put any additional stylesheets, JS, etc here. -->
   {% endblock %}
 
@@ -27,7 +27,7 @@
   <header>
     <nav>
       <ul>
-        <li id="home"><a href="{% url 'home' %}">Cook<span class="title-second-part">me</span></a></li>
+        <li id="home"><a href="{% url 'home' %}">Cookme</a></li>
         {% if user.is_authenticated %}
           <li><a href="{% url 'logout' %}">Logout</a></li>
           <li><a href="{% url 'fridge:fridge_detail' %}">Fridge</a></li>
