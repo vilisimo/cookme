@@ -1,11 +1,9 @@
-window.addEventListener('DOMContentLoaded', attachEventHandlers, false);
-
 function Element(id, charsLeftContainer) {
     this.elementId = id;
     this.charsContainer = charsLeftContainer;
 }
 
-function attachEventHandlers() {
+$(function() {
     const title = new Element('id_title', 'title_chars_left');
     const description = new Element('id_description', 'description_chars_left');
     const steps = new Element('id_steps', 'steps_chars_left');
@@ -13,28 +11,27 @@ function attachEventHandlers() {
     addCharsLeftEventTo(title);
     addCharsLeftEventTo(description);
     addCharsLeftEventTo(steps);
-}
+});
 
 function addCharsLeftEventTo(element) {
-    const textArea = document.getElementById(element.elementId);
-    const outputArea = document.getElementById(element.charsContainer);
-
-    textArea.addEventListener('input', function() {
-        showCharsLeft(textArea, maxLengthOf(textArea), outputArea)
-    }, false);
-}
-
-function maxLengthOf(element) {
-    return element.getAttribute('maxlength');
+    const $textArea = $(`#${element.elementId}`);
+    const $outputArea = $(`#${element.charsContainer}`);
+    $textArea.on('input', function() {
+        showCharsLeft($textArea, maxLengthOf($textArea), $outputArea)
+    });
 }
 
 function showCharsLeft(element, maxLength, charsLeftDiv) {
-    const textLength = element.value.length;
-    const left = maxLength - textLength;
+    const textLength = element.val().length;
+    const charsLeft = maxLength - textLength;
 
-    if (left < maxLength) {
-        charsLeftDiv.textContent = `${left} characters left`;
+    if (charsLeft < maxLength) {
+        charsLeftDiv.text(`${charsLeft} characters left`);
     } else {
-        charsLeftDiv.textContent = '';
+        charsLeftDiv.text('');
     }
+}
+
+function maxLengthOf(element) {
+    return element.attr('maxlength');
 }
