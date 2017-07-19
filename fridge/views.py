@@ -37,8 +37,7 @@ def add_recipe(request):
     # before requesting to add a recipe (should be impossible, but who knows).
     user = request.user
     fridge = Fridge.objects.get_or_create(user=user)[0]
-    RecInFormset = formset_factory(RecipeIngredientForm,
-                                   formset=BaseRecipeIngredientFormSet)
+    RecInFormset = formset_factory(RecipeIngredientForm, formset=BaseRecipeIngredientFormSet)
 
     if request.method == 'POST':
         form = AddRecipeForm(request.POST, request.FILES)

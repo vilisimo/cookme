@@ -1,5 +1,6 @@
 from string import capwords
 
+from django.core.files.images import get_image_dimensions
 from django.forms import (
     TextInput,
     NumberInput,
@@ -24,6 +25,16 @@ class AddRecipeForm(ModelForm):
     Note: If user wants to add an exiting recipe to a fridge, he/she has to
     navigate to that recipe and click an appropriate button.
     """
+
+    def clean(self):
+        cleaned_data = super(AddRecipeForm, self).clean()
+        image = cleaned_data.get('image')
+        width, height = get_image_dimensions(image)
+        if image:
+            if width > 600 or height > 600:
+                print("Too big")
+                raise ValidationError("Image is too big!")
+            return image
 
     class Meta:
         model = Recipe
