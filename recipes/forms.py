@@ -28,17 +28,16 @@ class AddRecipeForm(ModelForm):
     navigate to that recipe and click an appropriate button.
     """
 
-    MAX_WIDTH = getattr(settings, 'WIDTH')
-    MAX_HEIGHT = getattr(settings, 'HEIGHT')
-
+    # Validates that image is of appropriate dimensions
     def clean(self):
         cleaned_data = super(AddRecipeForm, self).clean()
         image = cleaned_data.get('image')
 
         if image and image != DEFAULT_IMAGE_LOCATION:
             width, height = get_image_dimensions(image)
-            if width > self.MAX_WIDTH or height > self.MAX_HEIGHT:
-                raise ValidationError("Image is too big!")
+            if width > settings.MAX_WIDTH or height > settings.MAX_HEIGHT:
+                raise ValidationError(f"Image is too big. Allowed dimensions: "
+                                      f"{settings.MAX_WIDTH} x {settings.MAX_HEIGHT}")
             return image
 
     class Meta:

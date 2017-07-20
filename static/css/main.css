@@ -31,6 +31,14 @@ a {
     text-decoration: none;
 }
 
+/* Django class for errors */
+ul.errorlist {
+    display: block;
+    margin: 10px 0 10px 0;
+    color: red;
+    font-weight: bold;
+}
+
 
 /* ==================== */
 /*    Navigation bar    */

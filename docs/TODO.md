@@ -31,13 +31,13 @@ pass on to templates, use in tests, etc., no need to change in multiple places.
 - Merge fridge_subset_recipes() with subset_recipes().
 - It is still possible to navigate to registration view after successfully 
 submitting registration details. It should not be possible.
-- Cache about view so that it does not need to be computed every time 
-(reading file is expensive).
+- Cache about view so that it does not need to be read from file upon every request.
 - Consider downloading README file from GitHub, as it most likely won't be on 
 live server.
 - Add a cron job to update the file once in a while (when it is updated on 
 GitHub).
 - Fix 4++ images showing up in recipes list
+- Add JS validation for image
 
 JavaScript:
 1. Highlight current page in navbar.
