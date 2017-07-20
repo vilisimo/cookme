@@ -56,14 +56,10 @@ def populate_fridge_ingredients():
     ingredients = populate_ingredients()
     units = populate_units()
 
-    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[0],
-                             unit=units[0], quantity=1)
-    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[1],
-                             unit=units[0], quantity=1)
-    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[2],
-                             unit=units[0], quantity=1)
-    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[3],
-                             unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[0], unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[1], unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[2], unit=units[0], quantity=1)
+    FI.objects.get_or_create(fridge=fridge, ingredient=ingredients[3], unit=units[0], quantity=1)
     fridge_ingredients = FI.objects.all()
 
     return fridge_ingredients

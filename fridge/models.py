@@ -44,8 +44,7 @@ class FridgeIngredient(models.Model):
     fridge = models.ForeignKey(Fridge)
     ingredient = models.ForeignKey(Ingredient)
     unit = models.ForeignKey(Unit, blank=False, null=False)
-    quantity = models.FloatField(validators=[MinValueValidator(0)],
-                                 blank=False, null=False)
+    quantity = models.FloatField(validators=[MinValueValidator(0)], blank=False, null=False)
 
     class Meta:
         unique_together = ('fridge', 'ingredient')

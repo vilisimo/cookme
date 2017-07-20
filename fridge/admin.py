@@ -8,8 +8,7 @@ class FridgeAdmin(admin.ModelAdmin):
     list_display_links = ('__str__',)
 
     def ingredient_list(self, obj):
-        return ", ".join([ingredient.name for ingredient in
-                          obj.ingredients.all()])
+        return ", ".join([ingredient.name for ingredient in obj.ingredients.all()])
 
     def recipe_list(self, obj):
         return ", ".join([recipe.title for recipe in obj.recipes.all()])

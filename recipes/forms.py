@@ -1,5 +1,7 @@
 from string import capwords
 
+from django.core.files.images import get_image_dimensions
+from django.conf import settings
 from django.forms import (
     TextInput,
     NumberInput,
@@ -14,6 +16,7 @@ from django.forms import (
 from django.utils.translation import gettext as _
 
 from ingredients.models import Ingredient, Unit
+from .models import DEFAULT_IMAGE_LOCATION
 from .models import RecipeIngredient, Recipe
 
 
@@ -24,6 +27,18 @@ class AddRecipeForm(ModelForm):
     Note: If user wants to add an exiting recipe to a fridge, he/she has to
     navigate to that recipe and click an appropriate button.
     """
+
+    # Validates that image is of appropriate dimensions
+    def clean(self):
+        cleaned_data = super(AddRecipeForm, self).clean()
+        image = cleaned_data.get('image')
+
+        if image and image != DEFAULT_IMAGE_LOCATION:
+            width, height = get_image_dimensions(image)
+            if width > settings.MAX_WIDTH or height > settings.MAX_HEIGHT:
+                raise ValidationError(f"Image is too big. Allowed dimensions: "
+                                      f"{settings.MAX_WIDTH} x {settings.MAX_HEIGHT}")
+            return image
 
     class Meta:
         model = Recipe
