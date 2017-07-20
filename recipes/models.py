@@ -11,6 +11,9 @@ from django.utils.text import slugify
 from ingredients.models import Ingredient, Unit
 
 
+DEFAULT_IMAGE_LOCATION = 'recipes/no-image.jpg'
+
+
 def user_directory_path(instance, filename):
     return f'user_{instance.author.id}/{filename}'
 
@@ -46,14 +49,12 @@ class Recipe(models.Model):
     title = models.CharField(max_length=100, null=False)
     description = models.TextField(max_length=250, null=False, blank=False)
     steps = models.TextField(max_length=3000, null=False, blank=False)
-    cuisine = models.CharField(max_length=2, choices=CUISINES, default='ot',
-                               blank=False, null=False)
+    cuisine = models.CharField(max_length=2, choices=CUISINES, default='ot', blank=False, null=False)
     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
     date = models.DateTimeField(editable=False)
     views = models.PositiveIntegerField(default=0)
     slug = models.SlugField()
-    image = models.ImageField(upload_to='recipes/', blank=True,
-                              default='recipes/no-image.jpg')
+    image = models.ImageField(upload_to='recipes/', blank=True, default=DEFAULT_IMAGE_LOCATION)
 
     def save(self, *args, **kwargs):
         """
@@ -99,8 +100,7 @@ class Recipe(models.Model):
 class Rating(models.Model):
     """ Model representing ratings that can be made. """
 
-    stars = models.IntegerField(validators=[MinValueValidator(1),
-                                MaxValueValidator(5)])
+    stars = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     user = models.OneToOneField(User)
     recipe = models.ForeignKey(Recipe, blank=False, null=False)
     date = models.DateTimeField(editable=False)
@@ -122,8 +122,7 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe)
     ingredient = models.ForeignKey(Ingredient)
     unit = models.ForeignKey(Unit, blank=False, null=False)
-    quantity = models.FloatField(validators=[MinValueValidator(0)],
-                                 blank=False, null=False)
+    quantity = models.FloatField(validators=[MinValueValidator(0)], blank=False, null=False)
 
     class Meta:
         unique_together = ('recipe', 'ingredient')
