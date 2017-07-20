@@ -143,8 +143,7 @@ def _populate_unit_from_input_line(line):
     line = [item.strip() for item in line.strip().split(';')]
     # Get or create is used in case we need to update the DB rather
     # than populate it from scratch.
-    Unit.objects.get_or_create(name=line[0], abbrev=line[1], plural=line[2],
-                               description=line[3])
+    Unit.objects.get_or_create(name=line[0], abbrev=line[1], plural=line[2], description=line[3])
 
 
 @transaction.atomic
@@ -209,8 +208,7 @@ def populate_recipes(recipe_folder=None):
         raise
 
     except User.DoesNotExist:
-        terminal_out('Such username does not exist. Please create a user.',
-                     error=True)
+        terminal_out('Such username does not exist. Please create a user.', error=True)
         raise
 
     except KeyError as e:
@@ -264,10 +262,8 @@ def commit_recipe(values):
             step_list.append(values['steps'][step].strip())
 
         u = get_user(username=a, password=a)
-        recipe = Recipe.objects.get_or_create(author=u, title=t, cuisine=c,
-                                              description=d,
-                                              steps="\n".join(step_list),
-                                              image=p)[0]
+        recipe = Recipe.objects.get_or_create(author=u, title=t, cuisine=c, description=d,
+                                              steps="\n".join(step_list), image=p)[0]
         return recipe
     except KeyError:
         raise
@@ -289,8 +285,7 @@ def commit_recipe_ingredient(values, recipe):
         for ing in ingredients:
             quantity_unit = values['ingredients'][ing].split()
             quantity = quantity_unit[0]
-            unit = Unit.objects.get_or_create(abbrev__iexact=
-                                              quantity_unit[1])[0]
+            unit = Unit.objects.get_or_create(abbrev__iexact=quantity_unit[1])[0]
             ingr = Ingredient.objects.get_or_create(name__iexact=ing)[0]
 
             ris.append(RI.objects.get_or_create(recipe=recipe, ingredient=ingr,

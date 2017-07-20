@@ -107,8 +107,7 @@ def fridge_detail(request):
             fi = form.save(commit=False)
             try:
                 # If F.I. exists, we do not need to create it, only update it.
-                fi = FridgeIngredient.objects.get(fridge=fridge,
-                                                  ingredient=fi.ingredient)
+                fi = FridgeIngredient.objects.get(fridge=fridge, ingredient=fi.ingredient)
                 fi.quantity += float(form.cleaned_data['quantity'])
             except FridgeIngredient.DoesNotExist:
                 # If it does not, we need to supply fridge in order to save it.
