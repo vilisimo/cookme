@@ -36,7 +36,6 @@ submitting registration details. It should not be possible.
 live server.
 - Add a cron job to update the file once in a while (when it is updated on 
 GitHub).
-- Fix 4++ images showing up in recipes list
 - Add JS validation for image
 
 JavaScript:
