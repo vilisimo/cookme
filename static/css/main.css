@@ -240,6 +240,7 @@ h3 {
 
 .four-recipes {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .four {
@@ -272,10 +273,6 @@ h3 {
 }
 
 @media all and (max-width: 1000px) {
-    .four-recipes {
-        flex-wrap: wrap;
-    }
-
     .four {
         flex-basis: 50%;
     }
