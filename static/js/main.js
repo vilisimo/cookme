@@ -28,6 +28,8 @@ function addCharsLeftEvent() {
     const $outputArea = $(`#${this.charsContainer}`);
     $textArea.on('input', function() {
         showCharsLeft($textArea, maxLengthOf($textArea), $outputArea)
+    }).on('blur', function() {
+        $outputArea.hide();
     });
 }
 
@@ -36,7 +38,7 @@ function showCharsLeft(element, maxLength, charsLeftDiv) {
     const charsLeft = maxLength - textLength;
 
     if (charsLeft < maxLength) {
-        charsLeftDiv.text(`${charsLeft} characters left`);
+        charsLeftDiv.text(`${charsLeft} characters left`).show();
     } else {
         charsLeftDiv.text('');
     }
