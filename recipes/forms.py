@@ -1,7 +1,7 @@
 from string import capwords
 
-from django.core.files.images import get_image_dimensions
 from django.conf import settings
+from django.core.files.images import get_image_dimensions
 from django.forms import (
     TextInput,
     NumberInput,
@@ -11,8 +11,9 @@ from django.forms import (
     BaseFormSet,
     ModelChoiceField,
     ValidationError,
-    CharField,
+    CharField
 )
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
 from ingredients.models import Ingredient, Unit
@@ -28,6 +29,13 @@ class AddRecipeForm(ModelForm):
     navigate to that recipe and click an appropriate button.
     """
 
+    def __init__(self, *args, **kwargs):
+        super(AddRecipeForm, self).__init__(*args, **kwargs)
+        self.fields['image'].widget.attrs.update({
+            'data-width': settings.MAX_WIDTH,
+            'data-height': settings.MAX_HEIGHT
+        })
+
     # Validates that image is of appropriate dimensions
     def clean(self):
         cleaned_data = super(AddRecipeForm, self).clean()
@@ -36,8 +44,10 @@ class AddRecipeForm(ModelForm):
         if image and image != DEFAULT_IMAGE_LOCATION:
             width, height = get_image_dimensions(image)
             if width > settings.MAX_WIDTH or height > settings.MAX_HEIGHT:
-                raise ValidationError(f"Image is too big. Allowed dimensions: "
-                                      f"{settings.MAX_WIDTH} x {settings.MAX_HEIGHT}")
+                error = f"Uploaded image is too big. <br/>Allowed dimensions: " \
+                        f"{settings.MAX_WIDTH} x {settings.MAX_HEIGHT}.<br/>" \
+                        f"Uploaded image: {width} x {height}"
+                raise ValidationError(mark_safe(error))
             return image
 
     class Meta:
@@ -59,7 +69,7 @@ class AddRecipeForm(ModelForm):
             ),
             'cuisine': Select(
                 attrs={'required': 'true'}
-            ),
+            )
         }
 
         labels = {
@@ -111,7 +121,7 @@ class RecipeIngredientForm(ModelForm):
         Allows the user to enter an ingredient instead of selecting it.
 
         Unfortunately, copy-paste from fridge/forms, since ModelForm
-        inheritance is slightly tricky and I need more time to figure it out
+        inheritance is slightly tricky and IA need more time to figure it out
         properly.
         """
 

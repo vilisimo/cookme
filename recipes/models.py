@@ -39,7 +39,7 @@ class Recipe(models.Model):
         ('lb', 'Lebanese'),
         ('mx', 'Mexican'),
         ('th', 'Thai'),
-        ('sc', 'Scotland'),
+        ('sc', 'Scottish'),
         ('za', 'South African'),
         ('es', 'Spanish'),
         ('ot', 'Other'),

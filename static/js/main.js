@@ -7,8 +7,35 @@ function InputArea(id, charsLeftContainer, addEventFunction) {
 }
 
 $(function() {
+    /* Add char counters to text input areas */
     const elements = createElements();
-    addEventsTo(elements);
+    addInputEventsTo(elements);
+
+    /* Add image validator to image field (activated on form submit) */
+    const imageField = $('#id_image');
+    imageField.change(function() {
+        const _URL = window.URL || window.webkitURL;
+        let image, file;
+        if ((file = this.files[0])) {
+            image = new Image();
+            image.onload = function () {
+                const allowedWidth = imageField.attr('data-width');
+                const allowedHeight = imageField.attr('data-height');
+                if (allowedWidth < this.width && allowedHeight < this.height) {
+                    $('.recipe-image').find('.errorlist').remove();
+                    $(`<ul class="errorlist">
+                        <li>
+                          Uploaded image is too big. <br/>
+                          Allowed dimensions: ${allowedWidth} x ${allowedHeight}<br/> 
+                          Uploaded image: ${this.width} x ${this.height}
+                        </li>
+                      </ul>`
+                    ).insertAfter(imageField);
+                }
+            };
+            image.src = _URL.createObjectURL(file);
+        }
+    });
 });
 
 function createElements() {
@@ -17,10 +44,6 @@ function createElements() {
     const steps = new InputArea('id_steps', 'steps_chars_left', addCharsLeftEvent);
 
     return [title, description, steps]
-}
-
-function addEventsTo(elements) {
-    elements.forEach((element) => element.applyEvent());
 }
 
 function addCharsLeftEvent() {
@@ -47,3 +70,8 @@ function showCharsLeft(element, maxLength, charsLeftDiv) {
 function maxLengthOf(element) {
     return element.attr('maxlength');
 }
+
+function addInputEventsTo(elements) {
+    elements.forEach((element) => element.applyEvent());
+}
+

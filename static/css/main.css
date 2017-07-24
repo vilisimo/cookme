@@ -32,11 +32,11 @@ a {
 }
 
 /* Django class for errors */
-ul.errorlist {
-    display: block;
+.errorlist {
+    display: inline-block;
     margin: 10px 0 10px 0;
     color: red;
-    font-weight: bold;
+    /*font-weight: bold;*/
 }
 
 
