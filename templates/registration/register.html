@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 
 {% block main %}
+  <div class="danger">
+    <p>
+      <b>WARNING!</b> This is a practice website. There are no special security measures taken to
+      protect your password!
+    </p>
+  </div>
+
   <form id="register-form" method="post" action="{% url 'register' %}">
     {% csrf_token %}
 

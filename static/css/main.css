@@ -962,3 +962,16 @@ footer {
     padding: 20px 0;
 }
 
+
+/* ==================== */
+/*   Password Warning   */
+/* ==================== */
+
+.danger {
+    display: block;
+    border: solid 2px red;
+    padding: 10px;
+    width: 400px;
+    text-align: center;
+    margin: 0 auto;
+}
