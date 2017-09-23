@@ -1,0 +1,21 @@
+# Completely original and nonsensical recipe
+
+author: "test"
+title: "Grandpa's Best"
+description: "The secret recipe that the grandpa stole from the grandma."
+cuisine: "ot"
+
+ingredients:
+  lemon: "2 unit"
+  water: "1 L"
+  mint leaves: "2 unit"
+
+steps:
+  1: "Carefully sneak into the kitchen while grandma is not looking."
+  2: "Siphon some lemon juice from the jug."
+  3: "Sneak out of the kitchen."
+  4: "If you are caught, blame the grandchildren."
+  5: "If grandchildren are not around, feign senility."
+  6: "Enjoy your sweet, sweet lemon juice!"
+
+picture: "recipes/lemons.jpeg"
