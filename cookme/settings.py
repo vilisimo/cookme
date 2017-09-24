@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 # from .local_settings import SECRET_KEY
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -146,3 +147,8 @@ SECURE_BROWSER_XSS_FILTER = True
 # SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
+
+
+# Heroku configuration
+env_db = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(env_db)
