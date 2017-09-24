@@ -120,6 +120,8 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+# Deployment directory
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Static files uploaded by user
 MEDIA_URL = '/media/'
