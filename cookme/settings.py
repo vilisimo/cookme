@@ -11,7 +11,7 @@ PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 # Random key for GitHub so that it is easier to set things up.
 # NOTE: this key is not used in dev/production.
-SECRET_KEY = 'z+ogt(o0760*rl6%n$_2u3$$m=d$t-fzx0e)+rmbtv*vj6$wp2'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -141,6 +141,6 @@ MAX_HEIGHT = 600
 # Deployment settings
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
