@@ -37,18 +37,18 @@ class AddRecipeForm(ModelForm):
         })
 
     # Validates that image is of appropriate dimensions
-    def clean(self):
-        cleaned_data = super(AddRecipeForm, self).clean()
-        image = cleaned_data.get('image')
-
-        if image and image != DEFAULT_IMAGE_LOCATION:
-            width, height = get_image_dimensions(image)
-            if width > settings.MAX_WIDTH or height > settings.MAX_HEIGHT:
-                error = f"Uploaded image is too big. <br/>Allowed dimensions: " \
-                        f"{settings.MAX_WIDTH} x {settings.MAX_HEIGHT}.<br/>" \
-                        f"Uploaded image: {width} x {height}"
-                raise ValidationError(mark_safe(error))
-            return image
+    # def clean(self):
+    #     cleaned_data = super(AddRecipeForm, self).clean()
+    #     image = cleaned_data.get('image')
+    #
+    #     if image and image != DEFAULT_IMAGE_LOCATION:
+    #         width, height = get_image_dimensions(image)
+    #         if width > settings.MAX_WIDTH or height > settings.MAX_HEIGHT:
+    #             error = f"Uploaded image is too big. <br/>Allowed dimensions: " \
+    #                     f"{settings.MAX_WIDTH} x {settings.MAX_HEIGHT}.<br/>" \
+    #                     f"Uploaded image: {width} x {height}"
+    #             raise ValidationError(mark_safe(error))
+    #         return image
 
     class Meta:
         model = Recipe
