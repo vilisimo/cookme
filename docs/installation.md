@@ -1,7 +1,11 @@
+## Note
+Since the project is already deployed, the settings reflect that. To fiddle 
+around with the project, it's best to look at the older commits or commit 
+history to see what's changed and how to develop purely on local machine.
+
 ## Installation
-As the project is fairly simple and only a few packages were used, installation 
-should be pretty straightforward on all OS'es. Instructions are for OS X & Linux
-distributions, though Windows should be fairly similar as well.
+Instructions are for OS X & Linux distributions. However, Windows set-up
+should be relatively similar.
 
 1. Open terminal.
 2. Ensure that Python 3.6 is installed:
@@ -32,10 +36,26 @@ distributions, though Windows should be fairly similar as well.
     ~~~ 
     mkvirtualenv -p python3.6 cookme.
     ~~~
-8. Set up environment key (`SECRET_KEY`) that is used by Django. For example:
+8. Set up environment keys:
     ~~~
-    export SECRET_KEY="z+ogt(o0760*rl6%n$_2u3$$m=d$t-fzx0e)+rmbtv*vj6$wp2" 
+    export AWS_ACCESS_KEY_ID = [your access key id]
+    export AWS_SECRET_ACCESS_KEY = [your aws secret access key]
+    export AWS_STORAGE_BUCKET_NAME = [your bucket name]
+    export AWS_S3_REGION_NAME = [your region name]
+    export COOKME_SECRET_KEY = [your secret key]
+    export COOKME_DEBUG = True 
     ~~~
+   Alternatively, you can set up your `virtualenvwrapper` to initialize them every time it
+   is activated. Please refer to this [StackOverflow](https://stackoverflow.com/a/11134336/4543382) 
+   thread to find out how.
+   
+   For AWS-related info, [this](https://www.caktusgroup.com/blog/2014/11/10/Using-Amazon-S3-to-store-your-Django-sites-static-and-media-files/)
+   is a good place to learn more about how to set up AWS for static & media file serving. 
+   While following it, you will set up all of the AWS_* keys above.
+   
+   Alternatively, for development purposes, static/media files could simply be served from
+   local machine. This [commit](https://github.com/vilisimo/cookme/blob/636aa49ebaff2e899c2f22d32f86d56657a5e372/cookme/settings.py)
+   settings could serve as a starting point for the setup.
 9. Once cloned, move to project's directory: 
     ~~~
     cd cookme/
@@ -52,6 +72,8 @@ distributions, though Windows should be fairly similar as well.
     ~~~
     python populate.py
     ~~~
+   This will not only set up migrations, but also create two users: 
+   _test_ (password: _test_) and _admin_ (superuser, password: _admin_)  
 13. Once population is done, move back to the root folder.
 14. Run the server:
     ~~~
