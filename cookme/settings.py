@@ -1,26 +1,16 @@
 import os
 import dj_database_url
-# from .local_settings import SECRET_KEY
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
+SECRET_KEY = os.environ['COOKME_SECRET_KEY']
 
-# Random key for GitHub so that it is easier to set things up.
-# NOTE: this key is not used in dev/production.
-SECRET_KEY = os.environ['SECRET_KEY']
-
-# SECURITY WARNING: don't run with debug turned on in production!
+# Only enables debug if the environment variable is set to something
 DEBUG = bool(os.environ.get('COOKME_DEBUG', False))
 
 ALLOWED_HOSTS = ['cookmetoo.herokuapp.com', '127.0.0.1']
 
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -49,9 +39,8 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'cookme.urls'
 
-# Since there are no plans of reusability, it makes more sense to have
-# everything in one place, rather than scattered throughout the project. Even if
-# apps have to be moved, easy enough with current setup.
+# Although this set up does not follow recommendations, it is easier
+# to manage in a small practice project with no plans of reusing apps.
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 TEMPLATES = [
     {
@@ -122,6 +111,7 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+
 # Deployment directory
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -145,7 +135,9 @@ MAX_HEIGHT = 600
 # Deployment settings
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
-# SESSION_COOKIE_SECURE = True
+# For local development, https is not enabled and login fails.
+# However, for remote one there's no reason to keep this disabled.
+SESSION_COOKIE_SECURE = bool(os.environ.get('SESSION_COOKIE_SECURE', True))
 CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = 'DENY'
 
