@@ -37,9 +37,8 @@ class AddRecipeForm(ModelForm):
         })
 
     # Validates that image is of appropriate dimensions
-    def clean(self):
-        cleaned_data = super(AddRecipeForm, self).clean()
-        image = cleaned_data.get('image')
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
 
         if image and image != DEFAULT_IMAGE_LOCATION:
             width, height = get_image_dimensions(image)
