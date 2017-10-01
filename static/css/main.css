@@ -971,7 +971,8 @@ footer {
     display: block;
     border: solid 2px red;
     padding: 10px;
-    width: 400px;
+    width: auto;
+    max-width: 400px;
     text-align: center;
     margin: 0 auto;
 }
