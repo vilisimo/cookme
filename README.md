@@ -3,7 +3,7 @@ https://cookmetoo.herokuapp.com/
 (_cookme.herokuapp.com_ was, sadly, taken)
 
 ## What is Cookme?
-It is a practice website that serve as a simple recipe holder with a no-nonsense 
+It is a practice website that serves as a simple recipe holder with a no-nonsense 
 frontend. 
 
 A user is presented with a clean interface that enables browsing of recipes that 
