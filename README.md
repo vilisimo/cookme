@@ -15,13 +15,14 @@ website to search the fridge for liked recipes that can be made with ingredients
 the fridge. 
 
 This is a practice project to get a better grip of:
-    - Django
-    - Python
-    - CSS
-    - HTML
-    - JavaScript
-    - jQuery
-    - deployment process. 
+
+   - Django
+   - Python 3
+   - CSS
+   - HTML
+   - JavaScript
+   - jQuery
+   - Deployment process
 
 It is not designed to be an innovative app. Rather, focus is on getting exposure to 
 different technologies and how they work together. 
@@ -41,6 +42,7 @@ To see the thought process behind the project, refer to the
 
 ### Languages/tools/technologies used
 Development:
+
    - Python 3.6.2
    - Django 1.11
    - JavaScript + jQuery 3.2.1
@@ -48,15 +50,18 @@ Development:
    - CSS3
    
 Deployment:
+
    - Heroku
    - Amazon S3
 
 IDEs / Editors:
+
    - IntelliJ
    - Sublime Text 3
    - Vim
    
 Operating Systems:
+
    - Linux
    - OS X
 
